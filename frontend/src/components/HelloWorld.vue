@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ userName }}</h1>
+    <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -35,23 +35,7 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  },
-  data() {
-    return {
-      userName: 'user',
-    };
-  },
-  mounted() {
-    const tg = window.Telegram.WebApp;
-
-    // Инициализация Web App
-    tg.ready();
-
-    // Получение данных пользователя
-    const user = tg.initDataUnsafe.user;
-    this.userName = user ? user.username : 'Unknown';
-    console.log(this.userName)
-  },
+  }
 }
 </script>
 
