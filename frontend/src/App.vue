@@ -1,12 +1,36 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <StatusBar/>
+  <div style="height: 100%;">
+    <router-view/>
+  </div>
+  
+  <NavBar/>
 </template>
 
+<script>
+import StatusBar from '../src/components/StatusBar.vue';
+import NavBar from '../src/components/NavBar.vue';
+export default {
+  components: { NavBar, StatusBar } ,
+  data() {
+    return {
+
+    }
+  }
+}
+</script>
+
 <style>
+@font-face {
+    font-family: "Druk Wide";
+    src: url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.eot");
+    src: url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.svg#Druk Wide Cy Bold Regular")format("svg");
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -15,16 +39,8 @@
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+body{
+  margin: 0;
+  padding: 0;
 }
 </style>
