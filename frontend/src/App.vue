@@ -2,6 +2,7 @@
   <StatusBar/>
   <div style="height: 100%;">
     <router-view/>
+    {{ logs }}
   </div>
   
   <NavBar/>
@@ -14,8 +15,11 @@ export default {
   components: { NavBar, StatusBar } ,
   data() {
     return {
-
+      logs: '',
     }
+  },
+  mounted(){
+    this.logs = this.$user.login()
   }
 }
 </script>
