@@ -44,6 +44,11 @@ export default {
 }
 
 .nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,16 +85,21 @@ export default {
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-
+.button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .button img {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
 .title {
     color: white;
     font-family: "Druk Wide";
-    font-size: 10px;
+    font-size: 8px;
     margin: 0;
     margin-top: 5px;
 }
