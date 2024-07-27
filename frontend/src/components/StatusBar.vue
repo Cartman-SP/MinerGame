@@ -23,6 +23,7 @@
   </script>
   
   <style scoped>
+  
   .logo{
     width: 100%;
     scale: .8;
