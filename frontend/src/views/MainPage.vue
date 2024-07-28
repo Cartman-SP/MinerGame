@@ -7,32 +7,32 @@
           <img class="logoSmall" src="../assets/logo-small.png" alt="">
         </div>
         <div>
-          <h1 class="balNum">150 000 000</h1>
+          <h1 class="balNum">{{ balance }}</h1>
           <p class="subtitle">ПРИБЫЛЬ В ЧАС</p>
         </div>
       </div>
     </div>
 
     <div class="earning">
-      250 000 YL
+      {{ gph }} YL
     </div>
 
-    <div class="spinners-block">
+    <div class="spinners-block" @click="tap">
       <img class="spinner-one" src="../assets/spinner-1.png" alt="">
       <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
     </div>
 
     <div class="stats-block">
       <div class="energy-block">
-        <p>2000/2000</p>
+        <p>{{ energy }}/2000</p>
         <img src="../assets/icon-battery.png" style="width: 25px; height: 15px;" alt="">
       </div>
-      <div class="timer-block">
+      <div class="timer-block" @click="start_mining">
         <p>START MINING</p>
-        <p style=" color: #00C0FF; font-size: 10px; margin: 0;">00:25:13</p>
+        <p style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
       </div>
       <div class="upgrade-block">
-        <p style="font-size: 8px;">UPRADE</p>
+        <p style="font-size: 8px;">UPGRADE</p>
         <img src="../assets/icon-upgrade.png" style="width: 25px; height: 25px;" alt="">
       </div>
     </div>
@@ -41,9 +41,220 @@
 
 <script>
 export default {
+  data() {
+    return {
+      socket: null,
+      miningSocket: null,
+      energySocket: null,
+      timer: null,
+      miningTimer: null,
+      remainingTime: 0,
+    };
+  },
+  methods: {
+    async start_mining() {
+      if (this.remainingTime > 0) {
+        console.log("Mining already in progress");
+        return;
+      }
 
-}
+      try {
+        const response = await this.$axios.post('/start_mining/', {
+          user_id: this.$user.data.user_id,
+        }, {
+          withCredentials: true
+        });
+        this.$user.data.mining_end = response.data.mining_end;
+        console.log("Mining end time set to:", this.$user.data.mining_end);
+        this.calculateRemainingTime();
+        this.startMiningTimer();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    tap() {
+      if (this.$user.data.energy > 0) {
+        if (this.socket) {
+          const message = {
+            user_id: this.$user.data.user_id,
+            increment: this.$user.data.gpc,
+          };
+          this.socket.send(JSON.stringify(message));
+        }
+      }
+    },
+    onMessage(event) {
+      const data = JSON.parse(event.data);
+      this.$user.data.balance = data.balance;
+      this.$user.data.energy = data.energy;
+    },
+    onMiningMessage(event) {
+      const data = JSON.parse(event.data);
+      this.$user.data.balance = data.balance;
+      this.$user.data.energy = data.energy;
+    },
+    onEnergyMessage(event) {
+      const data = JSON.parse(event.data);
+      this.$user.data.energy = data.energy;
+    },
+    formatTime(duration) {
+      const hours = Math.floor(duration / 3600);
+      const minutes = Math.floor((duration % 3600) / 60);
+      const seconds = Math.floor(duration % 60);
+
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    },
+    calculateRemainingTime() {
+      console.log("Calculating remaining time...");
+      if (this.$user.data.mining_end) {
+        const now = new Date().getTime();
+        const end = new Date(this.$user.data.mining_end).getTime();
+        console.log("Current time (now):", now);
+        console.log("Mining end time (end):", end);
+        const remaining = end - now;
+        console.log("Time remaining (ms):", remaining);
+        this.remainingTime = remaining > 0 ? remaining / 1000 : 0;
+        console.log("Remaining time in seconds:", this.remainingTime);
+      } else {
+        this.remainingTime = 0;
+      }
+    },
+    updateRemainingTime() {
+      if (this.remainingTime > 0) {
+        this.remainingTime -= 1;
+        console.log("Updated remaining time in seconds:", this.remainingTime);
+      }
+    },
+    handleMiningEndChange(newEndTime) {
+      console.log("Handling mining end change:", newEndTime);
+      this.$user.data.mining_end = newEndTime;
+      this.calculateRemainingTime();
+    },
+    startMiningTimer() {
+      if (this.miningTimer) {
+        clearInterval(this.miningTimer);
+      }
+      this.miningTimer = setInterval(() => {
+        if (this.remainingTime > 0) {
+          if (this.miningSocket) {
+            const message = {
+              user_id: this.$user.data.user_id,
+              gph: this.$user.data.gph,
+            };
+            this.miningSocket.send(JSON.stringify(message));
+          }
+        } else {
+          clearInterval(this.miningTimer);
+        }
+      }, 5000); // каждые 5 секунд
+    },
+    initializeWebSocketConnections() {
+      const userId = this.$user.data.user_id;
+
+      this.socket = new WebSocket(`ws://localhost:8001/ws/some_path/${userId}/`);
+      this.socket.onmessage = this.onMessage;
+      this.socket.onopen = () => {
+        console.log('WebSocket connection established');
+      };
+      this.socket.onclose = () => {
+        console.log('WebSocket connection closed');
+      };
+      this.socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      this.miningSocket = new WebSocket(`ws://localhost:8001/ws/mining/${userId}/`);
+      this.miningSocket.onmessage = this.onMiningMessage;
+      this.miningSocket.onopen = () => {
+        console.log('Mining WebSocket connection established');
+        this.startMiningTimer();
+      };
+      this.miningSocket.onclose = () => {
+        console.log('Mining WebSocket connection closed');
+      };
+      this.miningSocket.onerror = (error) => {
+        console.error('Mining WebSocket error:', error);
+      };
+
+      this.energySocket = new WebSocket(`ws://localhost:8001/ws/energy/${userId}/`);
+      this.energySocket.onmessage = this.onEnergyMessage;
+      this.energySocket.onopen = () => {
+        console.log('Energy WebSocket connection established');
+        this.startEnergyUpdate(); // Start energy updates
+      };
+      this.energySocket.onclose = () => {
+        console.log('Energy WebSocket connection closed');
+      };
+      this.energySocket.onerror = (error) => {
+        console.error('Energy WebSocket error:', error);
+      };
+    },
+    startEnergyUpdate() {
+      setInterval(() => {
+        if (this.energySocket) {
+          const message = {
+            user_id: this.$user.data.user_id,
+          };
+          this.energySocket.send(JSON.stringify(message));
+        }
+      }, 5000); // каждые 5 секунд
+    }
+  },
+  computed: {
+    balance() {
+      return this.$user.data.balance;
+    },
+    energy() {
+      return this.$user.data.energy;
+    },
+    gph() {
+      return this.$user.data.gph;
+    },
+    formattedRemainingTime() {
+      const formattedTime = this.formatTime(this.remainingTime);
+      console.log("Formatted remaining time:", formattedTime);
+      return formattedTime;
+    }
+  },
+  mounted() {
+    console.log("Component mounted, calculating remaining time...");
+    this.calculateRemainingTime();
+    this.timer = setInterval(() => {
+        this.updateRemainingTime();
+    }, 1000);
+
+    this.initializeWebSocketConnections();
+
+    this.$watch(() => this.$user.data.mining_end, (newVal) => {
+      console.log("mining_end changed:", newVal);
+      if (newVal) {
+        this.handleMiningEndChange(newVal);
+      }
+    });
+  },
+  beforeUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    if (this.miningTimer) {
+      clearInterval(this.miningTimer);
+    }
+    if (this.socket) {
+      this.socket.close();
+    }
+    if (this.miningSocket) {
+      this.miningSocket.close();
+    }
+    if (this.energySocket) {
+      this.energySocket.close();
+    }
+  }
+};
 </script>
+
+
+
+
 
 <style scoped>
 @keyframes rotate {
@@ -84,7 +295,7 @@ export default {
   width: 100%;
   position: absolute;
   right: 0%;
-  top: 25%;
+  top: 26.5%;
   animation: rotate 1s linear infinite;
 }
 .spinner-one{

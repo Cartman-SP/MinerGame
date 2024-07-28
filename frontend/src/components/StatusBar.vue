@@ -2,7 +2,7 @@
     <div class="statusBar">
         <div class="profile">
             <img class="avatar" src="https://pixelbox.ru/wp-content/uploads/2022/08/avatar-boy-telegram-pixelbox.ru-76.jpg" alt="Avatar">
-            <p class="name">КИБОРГ</p>
+            <p class="name">{{username}}</p>
         </div>
         <div style="width: 120px;">
             <img class="logo" src="../assets/logo.png" alt="logo">
@@ -11,14 +11,21 @@
         <div class="level">
             <p class="levelName">WHALE</p>
             <p>20%</p>
-            <p class="goals">7/10</p>
+            <p class="goals">{{ lvl }}/10</p>
         </div>
     </div>
   </template>
   
   <script>
   export default {
-    
+    computed:{
+      username(){
+        return this.$user.data.username
+      },
+      lvl(){
+        return this.$user.data.lvl
+      },
+    }
   }
   </script>
   

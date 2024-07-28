@@ -1,6 +1,6 @@
 <template>
   <div class="nav">
-    <div class="button">
+    <div class="button" @click="this.$router.push('/wallet')">
         <div class="icon">
             <img src="../assets/icon-wallet.png" alt="">
         </div>

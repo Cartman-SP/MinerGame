@@ -2,7 +2,6 @@
   <StatusBar/>
   <div style="height: 100%;">
     <router-view/>
-    {{ logs }}
   </div>
   
   <NavBar/>
@@ -19,7 +18,6 @@ export default {
     }
   },
   mounted(){
-    this.logs = this.$user.login()
   }
 }
 </script>

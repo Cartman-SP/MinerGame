@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '../views/MainPage.vue'
+import WalletPage from '../views/WalletPage.vue'
 
 const routes = [
   {
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/wallet',
     name: 'wallet',
-    component: MainPage
+    component: WalletPage
   },
   {
     path: '/top',

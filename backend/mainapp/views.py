@@ -1,20 +1,17 @@
-from django.shortcuts import render
+from datetime import timedelta
+from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from .models import TelegramUser
-from mainapp.serializers import *
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework import status
 from .models import TelegramUser, Room
 from .serializers import TelegramUserSerializer, RoomSerializer
 
 @api_view(['GET'])
 def get_or_create_user(request):
-    user_id = request.query_params.get('user_id')
-    username = request.query_params.get('username')
-    usertag = request.query_params.get('usertag')
+    print(request.query_params)
+    user_id = request.query_params.get('id')
+    username = request.query_params.get('first_name')
+    usertag = request.query_params.get('username')
 
     print(f"user_id: {user_id}, username: {username}, usertag: {usertag}")
 
@@ -29,32 +26,44 @@ def get_or_create_user(request):
             username=username,
             usertag=usertag
         )
-
-    # Check if user creation was successful
+    
     if user:
-        # Create rooms associated with the user
+        # Если last_login не Null, обновляем баланс и энергию
+        if user.last_login:
+            time_diff = timezone.now() - user.last_login
+            hours_diff = time_diff.total_seconds() / 3600
+
+            # Обновляем баланс и энергию
+            user.balance += user.gph * hours_diff
+            user.energy = min(2000, user.energy + 1800 * hours_diff)
+
+        # Обновляем last_login
+        user.last_login = timezone.now()
+        user.save()
+
+        # Создаём комнаты, если их нет
         if not user.room_set.exists():
             for idx, lvl in enumerate([1, 2], start=1):
                 Room.objects.create(
-                    user_id=user.id,  # Associate room with the user
+                    user_id=user.id,  # Ассоциируем комнату с пользователем
                     lvl=lvl,
                 )
-
     else:
-        # Handle case where user creation failed
+        # Обрабатываем случай, если создание пользователя не удалось
         return Response({"error": "Failed to create user"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    # Serialize user and their rooms
+    # Сериализуем пользователя и его комнаты
     user_serializer = TelegramUserSerializer(user)
     room_serializer = RoomSerializer(user.room_set.all(), many=True)
 
-    # Combine user data and room data into response
+    # Комбинируем данные пользователя и комнат в ответ
     response_data = {
         "user": user_serializer.data,
         "rooms": room_serializer.data
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def upgrade_room(request):
@@ -154,6 +163,20 @@ def upgrade_coin(request):
 
 
 
+@api_view(['POST'])
+def start_mining(request):
+    user_id = request.data.get('user_id')
+    if not user_id:
+        return Response({"error": "user_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = TelegramUser.objects.get(user_id=user_id)
+    except TelegramUser.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    user.update_mining_end()
+
+    return Response({"success": "Mining started", "mining_end": user.mining_end}, status=status.HTTP_200_OK)
 
 
 
