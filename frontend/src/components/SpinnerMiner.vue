@@ -23,12 +23,12 @@ from {
   width: 100%;
 }
 .spinner-one-fan{
-  width: 100%;
+  width: 70%;
   position: absolute;
   animation: rotate 1s linear infinite;
 }
 .spinner-one{
-  width: 100%;
+  width: 70%;
   position: relative;
   right: 0%;
 }
