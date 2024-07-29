@@ -7,7 +7,7 @@
           <img class="logoSmall" src="../assets/logo-small.png" alt="">
         </div>
         <div>
-          <h1 class="balNum">{{ balance }}</h1>
+          <h1 class="balNum">{{ Math.floor(balance) }}</h1>
           <p class="subtitle">ПРИБЫЛЬ В ЧАС</p>
         </div>
       </div>
