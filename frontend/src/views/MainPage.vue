@@ -20,7 +20,7 @@
     <Spinner @click="tap()"/>
 
     <div class="stats-block">
-      <div class="energy-block">
+      <div class="energy-block" @click="this.$router.push('/boost')">
         <p>{{ energy }}/2000</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
