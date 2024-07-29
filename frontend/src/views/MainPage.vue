@@ -17,10 +17,7 @@
       {{ gph }} YL
     </div>
 
-    <div class="spinners-block" @click="tap">
-      <img class="spinner-one" src="../assets/spinner-1.png" alt="">
-      <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
-    </div>
+    <Spinner/>
 
     <div class="stats-block">
       <div class="energy-block">
@@ -40,7 +37,9 @@
 </template>
 
 <script>
+import Spinner from '../components/SpinnerMiner.vue';
 export default {
+  components: { Spinner } ,
   data() {
     return {
       socket: null,
@@ -257,11 +256,7 @@ export default {
 
 
 <style scoped>
-@keyframes rotate {
-    from {
-      transform: rotate(360deg);
-    }
-  }
+
 .energy-block, .upgrade-block{
   display: flex;
   align-items: center;
@@ -291,17 +286,7 @@ export default {
   align-items: center;
   margin-top: -50px;
 }
-.spinner-one-fan{
-  width: 100%;
-  position: absolute;
-  right: 0%;
-  top: 26.5%;
-  animation: rotate 1s linear infinite;
-}
-.spinner-one{
-  position: relative;
-  width: 100%;
-}
+
 .earning{
   margin-top: 7px;
   padding: 3px 10px;

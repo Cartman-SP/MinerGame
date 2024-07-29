@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '../views/MainPage.vue'
 import WalletPage from '../views/WalletPage.vue'
+import UpgradePage from '../views/UpgradePage.vue'
 
 const routes = [
   {
@@ -31,7 +32,7 @@ const routes = [
   {
     path: '/upgrade',
     name: 'upgrade',
-    component: MainPage
+    component: UpgradePage
   },
 
 ]
