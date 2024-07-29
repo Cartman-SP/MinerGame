@@ -12,10 +12,8 @@
         </div>
         <p class="title">TOP</p>
     </div>
-    <div class="mainButton">
-        <div class="left"></div>
-        <!-- <img src="../assets/icon-spinner.png" alt=""> -->
-        <div class="right"></div>
+    <div class="mainButton" @click="spinImage">
+        <img ref="spinner" class="fan-btn" src="../assets/icon-spinner.png" alt="">
     </div>
     <div class="button">
         <div class="icon">
@@ -34,13 +32,31 @@
 
 <script>
 export default {
-
+    methods: {
+        spinImage() {
+            const spinner = this.$refs.spinner;
+            spinner.classList.add('spin');
+            this.$router.push('/');
+            setTimeout(() => {
+                spinner.classList.remove('spin');
+            
+            }, 500);
+        }
+    }
 }
 </script>
 
 <style>
 :root {
     --color-gradient: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin .5s ease;
 }
 
 .nav {
@@ -60,31 +76,30 @@ export default {
     width: 100%;
     height: 60px;
 }
+.fan-btn{
+    background: var(--color-gradient);
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
+    border-radius: 50%;
+    bottom: 20px;
+    position: absolute;
+    
+}
+
+.fan-btn img{}
 
 .mainButton {
     width: 100%;
     height: 60px;
     display: flex;
+    justify-content: center;
+    background: var(--color-gradient);
+    position: relative;
 }
 
-.left {
-    height: 60px;
-    width: 50%;
-    background: radial-gradient(circle at 100% 0, transparent 50%, black 10px);
-    background-position: top right;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;    
-}
 
-.right {
-    height: 60px;
-    width: 50%;
-    
-    background: radial-gradient(circle at 0 0, transparent 50%, black 10px);
-    background-position: top left;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-}
 .button{
     display: flex;
     flex-direction: column;

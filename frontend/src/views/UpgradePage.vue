@@ -7,7 +7,7 @@
         <div class="blocks">
             <div class="block">
                 <div class="photo">
-                    <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
+                    <img class="spinner" src="../assets/spinner-icon.png" alt="">
                 </div>
                 <div class="cost">
                     <p class="price">12 500</p>
@@ -19,36 +19,36 @@
 
             <div class="block">
                 <div class="photo">
-                    <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
+                    <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">12 500</p>
+                    <p class="price-locked">ДОСТУПНО НА <br> <span>УРОВНЕ</span></p>
                     <div class="logo-background">
-                        <img class="logoSmall" src="../assets/logo-small.png" alt="">
+                        3
                     </div>
                 </div>
             </div>
 
             <div class="block">
                 <div class="photo">
-                    <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
+                    <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">12 500</p>
+                    <p class="price-locked">ДОСТУПНО НА <br> <span>УРОВНЕ</span></p>
                     <div class="logo-background">
-                        <img class="logoSmall" src="../assets/logo-small.png" alt="">
+                        6
                     </div>
                 </div>
             </div>
 
             <div class="block">
                 <div class="photo">
-                    <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
+                    <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">12 500</p>
+                    <p class="price-locked">ДОСТУПНО НА <br> <span>УРОВНЕ</span></p>
                     <div class="logo-background">
-                        <img class="logoSmall" src="../assets/logo-small.png" alt="">
+                        9
                     </div>
                 </div>
             </div>
@@ -65,6 +65,16 @@ export default {
 </script>
 
 <style scoped>
+.price-locked{
+    color: #C9C9C9;
+    font-family: "Druk Wide";
+    font-size: 8px;
+    margin-bottom: 2px;
+}
+.price-locked span{
+    font-size: 14px;
+    
+}
 .price{
     color: white;
     font-family: "Druk Wide";
@@ -95,18 +105,23 @@ export default {
     justify-content: space-between;
     margin-top: 5px;
     align-items: center;
+    height: 30px;
 }
 .photo img{
-    width: 100px;
+    width: 90px;
+    margin: 5px;
 }
 .logo-background{
   width: 30px;
   height: 30px;
-  background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+  background: linear-gradient(180deg, rgb(0, 166, 255) 0%, rgba(0,230,255,1) 100%);
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 14px;
 }
 .logoSmall{
   width: 20px;
