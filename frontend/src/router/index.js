@@ -3,6 +3,8 @@ import MainPage from '../views/MainPage.vue'
 import WalletPage from '../views/WalletPage.vue'
 import UpgradePage from '../views/UpgradePage.vue'
 import BoostPage from '../views/BoostPage.vue'
+import ProfilePage from '../views/ProfilePage.vue'
+import TaskPage from '../views/TaskPage.vue'
 
 const routes = [
   {
@@ -21,6 +23,11 @@ const routes = [
     component: MainPage
   },
   {
+    path: '/task',
+    name: 'task',
+    component: TaskPage
+  },
+  {
     path: '/friends',
     name: 'friends',
     component: MainPage
@@ -28,7 +35,7 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
-    component: MainPage
+    component: ProfilePage
   },
   {
     path: '/upgrade',

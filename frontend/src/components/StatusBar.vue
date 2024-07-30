@@ -1,6 +1,6 @@
 <template>
     <div class="statusBar">
-        <div class="profile">
+        <div class="profile"  @click="this.$router.push('/profile')">
             <img class="avatar" src="https://pixelbox.ru/wp-content/uploads/2022/08/avatar-boy-telegram-pixelbox.ru-76.jpg" alt="Avatar">
             <p class="name">{{username}}</p>
         </div>

@@ -21,7 +21,7 @@
         </div>
         <p class="title">FRIENDS</p>
     </div>
-    <div class="button">
+    <div class="button"   @click="this.$router.push('/task')">
         <div class="icon">
             <img src="../assets/icon-task.png" alt="">
         </div>
