@@ -21,7 +21,7 @@
 
     <div class="stats-block">
       <div class="energy-block" @click="this.$router.push('/boost')">
-        <p>{{ energy }}/2000</p>
+        <p>{{ energy }}/{{ max_energy }}</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
       <div class="timer-block" @click="start_mining">
@@ -58,11 +58,7 @@ export default {
       }
 
       try {
-        const response = await this.$axios.post('/start_mining/', {
-          user_id: this.$user.data.user_id,
-        }, {
-          withCredentials: true
-        });
+        const response = await this.$axios.post('/start_mining/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
         this.$user.data.mining_end = response.data.mining_end;
         console.log("Mining end time set to:", this.$user.data.mining_end);
         this.calculateRemainingTime();
@@ -208,6 +204,9 @@ export default {
     },
     gph() {
       return this.$user.data.gph;
+    },
+    max_energy(){
+      return this.$user.data.max_energy;
     },
     formattedRemainingTime() {
       const formattedTime = this.formatTime(this.remainingTime);

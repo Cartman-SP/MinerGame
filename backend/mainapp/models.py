@@ -16,6 +16,10 @@ class TelegramUser(models.Model):
     mining_duration = models.DurationField(default=timedelta(minutes=30))
     last_login = models.DateTimeField(null=True, blank=True)
     max_energy = models.IntegerField(default=2000)
+    enery_lvl = models.IntegerField(default=1)
+    tap_lvl = models.IntegerField(default=1)
+    refresh_energy = models.IntegerField(default=5)
+    refresh_energy_date = models.DateField(auto_now_add=True)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()

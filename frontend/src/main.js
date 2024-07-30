@@ -20,6 +20,10 @@ class User {
       gph: 0,
       gpc: 0,
       mining_end: '',
+      enery_lvl: 0,
+      tap_lvl: 0,
+      refresh_energy: 0,
+      max_energy : 0,
     });
     this.loading = reactive({ status: true });
     this.error = null;
@@ -55,6 +59,10 @@ class User {
         this.data.gph = response.data.user.gph;
         this.data.gpc = response.data.user.gpc;
         this.data.mining_end = response.data.user.mining_end;
+        this.data.enery_lvl=response.data.user.enery_lvl
+        this.data.tap_lvl=response.data.user.tap_lvl
+        this.data.refresh_energy=response.data.user.refresh_energy
+        this.data.max_energy = response.data.user.max_energy
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;

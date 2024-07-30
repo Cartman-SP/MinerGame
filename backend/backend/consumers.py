@@ -104,16 +104,13 @@ class TapConsumer(AsyncWebsocketConsumer):
     def update_last_login(self):
         user_id = self.scope["user"].id
         TelegramUser = apps.get_model('mainapp', 'TelegramUser')
-        telegram_user = TelegramUser.objects.get(user_id=user_id)
-        telegram_user.last_login = timezone.now()
-        telegram_user.save()
+        try:
+            telegram_user = TelegramUser.objects.get(user_id=user_id)
+            telegram_user.last_login = timezone.now()
+            telegram_user.save()
+        except TelegramUser.DoesNotExist:
+            print(f"TelegramUser with user_id {user_id} does not exist.")
 
-import json
-import asyncio
-from channels.generic.websocket import AsyncWebsocketConsumer
-from channels.db import database_sync_to_async
-from django.apps import apps
-from django.utils import timezone
 
 class EnergyConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -133,8 +130,8 @@ class EnergyConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def increase_energy(self, telegram_user):
-        if(telegram_user.max_energy<telegram_user.energy+5):
-            telegram_user.energy=telegram_user.max_energy
+        if telegram_user.max_energy < telegram_user.energy + 5:
+            telegram_user.energy = telegram_user.max_energy
         else:
             telegram_user.energy += 5
         telegram_user.save()
@@ -152,6 +149,9 @@ class EnergyConsumer(AsyncWebsocketConsumer):
     def update_last_login(self):
         user_id = self.scope["user"].id
         TelegramUser = apps.get_model('mainapp', 'TelegramUser')
-        telegram_user = TelegramUser.objects.get(user_id=user_id)
-        telegram_user.last_login = timezone.now()
-        telegram_user.save()
+        try:
+            telegram_user = TelegramUser.objects.get(user_id=user_id)
+            telegram_user.last_login = timezone.now()
+            telegram_user.save()
+        except TelegramUser.DoesNotExist:
+            print(f"TelegramUser with user_id {user_id} does not exist.")

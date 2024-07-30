@@ -35,8 +35,10 @@ def get_or_create_user(request):
 
             # Обновляем баланс и энергию
             user.balance += user.gph * hours_diff
-            user.energy = min(2000, user.energy + 1800 * hours_diff)
-
+            user.energy = min(user.max_energy, user.energy + 1800 * hours_diff)
+        if user.refresh_energy_date < timezone.now().date():
+            user.refresh_energy=5
+            user.refresh_energy_date = timezone.now().date()
         # Обновляем last_login
         user.last_login = timezone.now()
         user.save()
@@ -64,103 +66,40 @@ def get_or_create_user(request):
 
     return Response(response_data, status=status.HTTP_200_OK)
 
-
 @api_view(['POST'])
-def upgrade_room(request):
-    type = request.data.get('type')
-    room_id = request.data.get('room_id')
-    upgrade_cost = request.data.get('upgrade_cost')
-    room = Room.objects.get(id=room_id)
-    user = room.user
-    balance = user.balance
-    if(balance>upgrade_cost):
-        print(room_id)
-        room = Room.objects.get(id=room_id)
-        if(type=='comp'):
-            room.comp_lvl +=1
-        elif(type=='mic'):
-            room.micro_lvl +=1
-        elif(type=='webcam'):
-            room.webcam_lvl +=1
-        room.user.balance -= int(upgrade_cost)
-        room.user.save()
-        room.save()
-        return Response({'status':'Ok'}, status=status.HTTP_200_OK)
-    else:
-        return Response({"error": "Not enoughbalance"}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['POST'])
-def lvl_up(request):
-    user_id =  request.data.get('user_id')
-    user = TelegramUser.objects.get(user_id=user_id)
-    lvl = request.data.get('lvl')
-    user.lvl = lvl
-    print(123)
-    user.save()
-    print(user.lvl)
-    if(lvl==2):
-        if(len(Room.objects.filter(user=user,lvl=3))==0):
-            room = Room.objects.create(lvl=3,user=user)
-            room.save()
-    if(lvl==3):
-        if(len(Room.objects.filter(user=user,lvl=4))==0):
-            room = Room.objects.create(lvl=4,user=user)
-            room.save()
-    if(lvl==4):
-        if(len(Room.objects.filter(user=user,lvl=5))==0):
-            room = Room.objects.create(lvl=5,user=user)
-            room.save()
-    if(lvl==5):
-        if(len(Room.objects.filter(user=user,lvl=6))==0):
-            room = Room.objects.create(lvl=6,user=user)
-            room.save()
-
-    return Response({'status':'Ok'}, status=status.HTTP_200_OK)
-
-
-@api_view(['POST'])
-def upgrade_coin(request):
+def set_max_energy(request):
     user_id = request.data.get('user_id')
     user = TelegramUser.objects.get(user_id=user_id)
-    gpc = user.gpc
-    context = {}
-    upgrade_costs = {
-        2: 5000,
-        3: 10000,
-        5: 20000,
-        8: 50000,
-        12: 100000,
-        20: 250000,
-        30: 500000,
-        50: 1000000,
-        100: 2500000
-    }
-    new_gpc_values = {
-        2: 3,
-        3: 5,
-        5: 8,
-        8: 12,
-        12: 20,
-        20: 30,
-        30: 50,
-        50: 100,
-        100: 150
-    }
+    if(user.refresh_energy==5):
+        user.refresh_energy_date = timezone.now()
+    user.energy = user.max_energy
+    user.refresh_energy-=1
+    user.save()
+    return Response({"success": "Mining started"}, status=status.HTTP_200_OK)
 
-    if gpc in upgrade_costs:
-        cost = upgrade_costs[gpc]
-        if user.balance >= cost:
-            user.balance -= cost
-            user.gpc = new_gpc_values[gpc]
-            context['gpc'] = user.gpc
-            context['cost'] = cost
-            user.save()
-            return Response(context, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Not enough balance"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def upgrade(request):
+    upcost = [0,65,140,350,750,1600,3600,10000,22000,55000,90000,130000,160000,200000,250000,350000]
+    user_id = request.data.get('user_id')
+    print(user_id)
+    user = TelegramUser.objects.get(user_id=user_id)
+    num = request.data.get('num')
+    if(num==1):
+        cost = upcost[user.enery_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.enery_lvl+=1
+            user.max_energy+=250
     else:
-        return Response({"error": "Invalid GPC value"}, status=status.HTTP_400_BAD_REQUEST)
-
+        cost = upcost[user.tap_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.tap_lvl+=1
+            user.gpc+=1
+    user.save()
+    return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])

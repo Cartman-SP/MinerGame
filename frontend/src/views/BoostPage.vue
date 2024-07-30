@@ -4,48 +4,49 @@
             <h1 class="title">BOOST</h1>
         </div>
         <div class="content">
-            <div class="block" @click="toggleModal">
+            <div class="block" @click="toggleModal(1)">
                 <img class="icon" src="../assets/icon-battery-boost.png" alt="">
                 <div class="statement">
-                    <p class="price-locked">ENERGY LIMIT<br> <span>30 000</span></p>
+                    <p class="price-locked">ENERGY LIMIT<br> <span>{{upcost[enery_lvl]}}</span></p>
                     <div class="logo-background">
-                        <span style="font-size: 26px;">7</span>LVL
+                        <span style="font-size: 26px;">{{enery_lvl}}</span>LVL
                     </div>
                 </div>
             </div>
-            <div class="block" @click="toggleModal">
+            <div class="block" @click="toggleModal(2)">
                 <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
                 <div class="statement">
-                    <p class="price-locked">MULTITAP<br> <span>30 000</span></p>
+                    <p class="price-locked">MULTITAP<br> <span>{{upcost[tap_lvl]}}</span></p>
                     <div class="logo-background">
-                        <span style="font-size: 26px;">7</span>LVL
+                        <span style="font-size: 26px;">{{tap_lvl}}</span>LVL
                     </div>
                 </div>
             </div>
-            <div class="block" @click="toggleModal">
+            <div class="block" @click="give_energy">
                 <img class="icon" src="../assets/icon-energy-boost.png" alt="">
                 <div class="statement">
-                    <p class="price-locked">FULL ENERGY<br> <span>30 000</span></p>
+                    <p class="price-locked">FULL ENERGY<br> </p>
                     <div class="logo-background">
-                        <span style="font-size: 18px;">7/7</span>
+                        <span style="font-size: 18px;">{{ refresh_energy }}/5</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="overlay" ref="overlay" @click="toggleModal" v-if="showModal"></div>
+        <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
             <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
-            <h3>MULTITAP</h3>
+            <h3>{{ name }}</h3>
             <div class="info">
-                <p class="level">4 LVL</p>
+                <p class="level">{{ lvl }} LVL</p>
                 <hr>
-                <p class="boost">+1 TAP</p>
+                <p class="boost">{{up}}</p>
             </div>
 
-            <div class="buy">
+            <div class="buy" @click="upgrade">
                 ПОЛУЧИТЬ ЗА
                 <div class="cost">
-                    75K
+                    {{ cost }}
+
                 </div>
             </div>
         </div>
@@ -58,13 +59,81 @@ export default {
     data(){
         return{
             showModal: false,
+            name: '',
+            lvl: 0,
+            up: '',
+            cost: 0,
+            num:1,
+            upcost: [0,65,140,350,750,1600,3600,10000,22000,55000,90000,130000,160000,200000,250000,350000]
+        }
+    },
+
+    computed: {
+        enery_lvl(){
+            return this.$user.data.enery_lvl
+        },
+        tap_lvl(){
+            return this.$user.data.tap_lvl
+        },
+        refresh_energy(){
+            return this.$user.data.refresh_energy
         }
     },
     methods:{
-        toggleModal(){
-            if (this.showModal) {
-                
+        async give_energy(){
+            if(this.$user.data.refresh_energy>1 && this.$user.data.energy<this.$user.data.max_energy){
+                let data = {'user_id':this.$user.data.user_id}
+            try {
+                const response = await this.$axios.post('/set_max_energy/', data, {withCredentials: true});
+                console.log(response)
+                this.$user.data.energy = this.$user.data.max_energy;
+                this.$user.data.refresh_energy -=1
+            }catch (error) {
+                this.error = error;
+                console.error('Error fetching data:', error);
+            }
+            }
+        },
+        async upgrade(){
+            let data = {'user_id':this.$user.data.user_id,'num':this.num}
+            try {
+                const response = await this.$axios.post('/upgrade/', data, {withCredentials: true});
+                console.log(response.data);
+                this.$user.data.balance = response.data.balance
+                this.$user.data.enery_lvl = response.data.energy_lvl
+                this.$user.data.gpc = response.data.gpc
+                this.$user.data.max_energy = response.data.max_energy
+                this.$user.data.tap_lvl = response.data.tap_lvl
+                if(this.num==1){
+                    this.lvl = response.data.energy_lvl
+                    this.cost = this.upcost[response.data.energy_lvl]
+                }else{
+                    this.lvl = response.data.tap_lvl
+                    this.cost = this.upcost[response.data.tap_lvl]        
+                }
+            }
+            catch (error) {
+                this.error = error;
+                console.error('Error fetching data:', error);
+            }
+        },
 
+        toggleModal(num){
+            if(num==1){
+                this.num = num
+                this.name = 'ENERGY LIMIT'
+                this.lvl = this.enery_lvl
+                this.up = '+250 ENERGY'
+                this.cost = this.upcost[this.enery_lvl] > 1000 ? (this.upcost[this.enery_lvl] / 1000) + 'K' : this.upcost[this.enery_lvl]
+            }else{
+                this.num = num
+                this.name = 'MULTITAP'
+                this.lvl = this.tap_lvl
+                this.up = '+1 TAP'
+                this.cost = this.upcost[this.tap_lvl] > 1000 ? (this.upcost[this.tap_lvl] / 1000) + 'K' : this.upcost[this.tap_lvl]
+ 
+            }
+            if (this.showModal) {
                 const modalwindow = this.$refs.modal;
                 modalwindow.classList.remove('show');
                 const modaloverlay = this.$refs.overlay;
