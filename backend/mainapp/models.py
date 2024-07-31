@@ -20,6 +20,8 @@ class TelegramUser(models.Model):
     tap_lvl = models.IntegerField(default=1)
     refresh_energy = models.IntegerField(default=5)
     refresh_energy_date = models.DateField(auto_now_add=True)
+    video_lvl = models.IntegerField(default=1)
+    modifier = models.FloatField(default=1)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()

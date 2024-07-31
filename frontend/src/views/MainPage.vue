@@ -14,7 +14,7 @@
     </div>
 
     <div class="earning">
-      {{ gph }} YL
+      {{ gph*modifier }} YL
     </div>
 
     <Spinner @click="tap()"/>
@@ -207,6 +207,9 @@ export default {
     },
     max_energy(){
       return this.$user.data.max_energy;
+    },
+    modifier(){
+      return this.$user.data.modifier;
     },
     formattedRemainingTime() {
       const formattedTime = this.formatTime(this.remainingTime);

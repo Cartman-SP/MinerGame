@@ -22,7 +22,7 @@ class MiningConsumer(AsyncWebsocketConsumer):
 
         telegram_user = await self.get_or_create_telegram_user(user_id)
         if telegram_user:
-            increment = gph / 720
+            increment = gph / 720 * telegram_user.modifier
             telegram_user.balance += increment
             await self.update_telegram_user(telegram_user)
 
@@ -40,7 +40,7 @@ class MiningConsumer(AsyncWebsocketConsumer):
         user_id = self.scope["user"].id
         telegram_user = await self.get_or_create_telegram_user(user_id)
         if telegram_user:
-            increment = telegram_user.gph / 720
+            increment = telegram_user.gph / 720 * telegram_user.modifier
             telegram_user.balance += increment
             await self.update_telegram_user(telegram_user)
 
@@ -66,6 +66,7 @@ class MiningConsumer(AsyncWebsocketConsumer):
         telegram_user = TelegramUser.objects.get(user_id=user_id)
         telegram_user.last_login = timezone.now()
         telegram_user.save()
+
 
 class TapConsumer(AsyncWebsocketConsumer):
     async def connect(self):

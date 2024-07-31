@@ -77,6 +77,19 @@ def set_max_energy(request):
     user.save()
     return Response({"success": "Mining started"}, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def lvlup(request):
+    multiples = [0, 1, 1.3, 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 3]
+    user_id = request.data.get('user_id')
+    lvl = request.data.get('lvl')
+    user = TelegramUser.objects.get(user_id=user_id)
+    user.lvl = lvl
+    user.gpc +=1
+    user.modifier = multiples[int(lvl)]
+    user.max_energy+=250
+    user.save()
+    return Response({'gpc':user.gpc,'modifier':user.modifier,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
+
 
 
 @api_view(['POST'])
@@ -99,7 +112,7 @@ def upgrade(request):
             user.tap_lvl+=1
             user.gpc+=1
     user.save()
-    return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
+    return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy,'lvl':user.lvl}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -117,5 +130,26 @@ def start_mining(request):
 
     return Response({"success": "Mining started", "mining_end": user.mining_end}, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def upgrade_mining(request):
+    upcost = [0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,470000000]
+    user_id = request.data.get('user_id')
+    print(user_id)
+    user = TelegramUser.objects.get(user_id=user_id)
+    num = request.data.get('num')
+    if(num==1):
+        cost = upcost[user.enery_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.enery_lvl+=1
+            user.max_energy+=250
+    else:
+        cost = upcost[user.tap_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.tap_lvl+=1
+            user.gpc+=1
+    user.save()
+    return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
 
 
