@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import TelegramUser, Room
 from .serializers import TelegramUserSerializer, RoomSerializer
+import requests 
 
 @api_view(['GET'])
 def get_or_create_user(request):
@@ -153,3 +154,37 @@ def upgrade_mining(request):
     return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def check_subscribe(request):
+    bot_token = '6705532890:AAG7x2iBNy9GdCLZWqqNF1LunZtev7_yOmA'
+    channel_id = '@MinerGam3'
+    user_id = request.query_params.get('user_id')
+    print(user_id)
+    url = f'https://api.telegram.org/bot{bot_token}/getChatMember'
+    params = {
+        'chat_id': channel_id,
+        'user_id': user_id
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    print(data)
+    user = TelegramUser.objects.get(user_id=user_id)
+    if data['ok']:
+        state = data['result']['status']
+        if state in ['member', 'administrator', 'creator']:
+            if(user.subscribe_money_gived):
+                print(321)
+                user.subscribed=True
+                user.save()
+                return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+            else:
+                print(123)
+                user.subscribed=True
+                user.balance+=5000
+                user.subscribe_money_gived=True
+                user.save()
+                return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+        else:
+            return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)

@@ -22,6 +22,8 @@ class TelegramUser(models.Model):
     refresh_energy_date = models.DateField(auto_now_add=True)
     video_lvl = models.IntegerField(default=1)
     modifier = models.FloatField(default=1)
+    subscribed = models.BooleanField(default=False)
+    subscribe_money_gived = models.BooleanField(default=False)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()

@@ -25,6 +25,8 @@ class User {
       refresh_energy: 0,
       max_energy: 0,
       modifier: 1,
+      subscribed: false,
+      subscribed_money_gived: false
     });
     this.loading = reactive({ status: true });
     this.error = null;
@@ -103,6 +105,8 @@ class User {
         this.data.refresh_energy = response.data.user.refresh_energy;
         this.data.max_energy = response.data.user.max_energy;
         this.data.modifier = response.data.user.modifier
+        this.data.subscribed = response.data.user.subscribed
+        this.data.subscribed_money_gived = response.data.user.subscribed_money_gived
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;

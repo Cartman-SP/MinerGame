@@ -25,15 +25,20 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
+            <a href="https://t.me/MinerGam3" target="_blank">
             <div class="task">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
-                <p class="name">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 8 000</p>
-                <div class="logo-background" style="background: #a0a0a0;">
+                <p class="name">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
+                <div class="logo-background" v-if="this.$user.data.subscribed">
+                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+                </div>
+                <div class="logo-background" style="background: #a0a0a0;" v-else>
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
+            </a>
         </div>
         
     </div>
@@ -83,7 +88,23 @@
 
 <script>
 export default {
+ methods:{
+    async check_subscribe(){
+        try{
+            console.log(this.$user.data.user_id)
+            const response = this.$axios.get('/check_subscribe/', {params:{user_id: this.$user.data.user_id}})
+            this.$user.data.balance = response.data.balance
+            this.$user.data.subscribed = response.data.subscribed
+            this.$user.data.subscribed_money_gived = response.data.subscribed_money_gived
+        }catch(error){
+            console.log(error)
+        }
+    }
+},
 
+mounted(){
+    this.check_subscribe()
+}
 }
 </script>
 
