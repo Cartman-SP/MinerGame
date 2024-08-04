@@ -5,7 +5,7 @@
     </div>
     <div class="profile"  @click="this.$router.push('/profile')">
         <img class="avatar" src="https://pixelbox.ru/wp-content/uploads/2022/08/avatar-boy-telegram-pixelbox.ru-76.jpg" alt="Avatar">
-        <p class="profile-name">{{username || 'GOVNO'}}</p>
+        <p class="profile-name">{{username}}</p>
     </div>
     <div class="information">
       <div class="container">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="container">
-        <p class="name">ЧАСОВ В ИГРЕ</p>
+        <p class="name">МИНУТ В ИГРЕ</p>
         <div class="info">
           <p class="value">689</p>
         </div>
