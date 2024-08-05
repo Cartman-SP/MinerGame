@@ -8,9 +8,9 @@
         <p>{{ energy }}/{{ max_energy }}</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
-      <div class="timer-block" @click="start_mining">
-        <p>START MINING</p>
-        <p style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
+      <div class="timer-block" @click="start_mining" :style="getStyle">
+        <p v-if="formattedRemainingTime === '00:00:00'" style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
+        <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
       </div>
       <div class="upgrade-block" @click="this.$router.push('/upgrade')">
         <p style="font-size: 8px;">UPGRADE</p>
@@ -260,6 +260,11 @@ export default {
     }
   },
   computed: {
+    getStyle() {
+      return this.formattedRemainingTime === '00:00:00'
+        ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
+        : 'filter: drop-shadow(0 0 3px rgb(0, 0, 0))';
+    },
     balance() {
       return this.$user.data.balance;
     },
@@ -444,14 +449,19 @@ export default {
   font-family: "Druk Wide";
   font-size: 6px;
 }
-
+.timer-block{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .energy-block, .timer-block, .upgrade-block{
   width: 90px;
   padding: 5px;
   height: 30px;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
   border-radius: 10px;
-  filter: drop-shadow(0 0px 3px rgb(0, 0, 0));
+  
 }
 .stats-block{
   display: flex;
