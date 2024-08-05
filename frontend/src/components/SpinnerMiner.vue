@@ -1,8 +1,7 @@
 <template>
   <div class="spinner">
     <div class="spinners-block" >
-      <img class="spinner-one-fan" src="../assets/spinner-1-fan.png" alt="">
-      <img class="spinner-one" src="../assets/spinner-1.png" alt="">
+      <img class="spinner" src="../assets/test.gif" alt="">
     </div>
   </div>
 </template>
@@ -14,22 +13,14 @@ export default {
 </script>
 
 <style scoped>
-@keyframes rotate {
+/* @keyframes rotate {
 from {
     transform: rotate(360deg);
 }
-}
-.spinners-block{
-  width: 100%;
-}
-.spinner-one-fan{
-  width: 70%;
-  position: absolute;
-  animation: rotate 1s linear infinite;
-}
-.spinner-one{
-  width: 70%;
-  position: relative;
-  right: 0%;
+} */
+.spinner{
+  width: 300px;
+  height: 300px;
+  margin: -30px 0;
 }
 </style>
