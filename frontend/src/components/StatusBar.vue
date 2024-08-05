@@ -54,6 +54,12 @@
   </script>
   
   <style scoped>
+  .name{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow:hidden !important;
+    width: 100px;
+  }
   .title{
     color: white;
     font-family: "Druk Wide";
