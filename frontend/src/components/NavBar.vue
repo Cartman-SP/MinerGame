@@ -15,7 +15,7 @@
     <div class="mainButton" @click="spinImage">
         <img ref="spinner" class="fan-btn" src="../assets/icon-spinner.png" alt="">
     </div>
-    <div class="button">
+    <div class="button" @click="this.$router.push('/friends')">
         <div class="icon">
             <img src="../assets/icon-friend.png" alt="">
         </div>

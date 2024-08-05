@@ -5,6 +5,7 @@ import UpgradePage from '../views/UpgradePage.vue'
 import BoostPage from '../views/BoostPage.vue'
 import ProfilePage from '../views/ProfilePage.vue'
 import TaskPage from '../views/TaskPage.vue'
+import FriendsPage from '../views/FriendsPage.vue'
 
 const routes = [
   {
@@ -46,6 +47,11 @@ const routes = [
     path: '/boost',
     name: 'boost',
     component: BoostPage
+  },
+  {
+    path: '/friends',
+    name: 'friends',
+    component: FriendsPage
   },
 ]
 
