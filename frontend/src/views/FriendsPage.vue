@@ -1,7 +1,7 @@
 <template>
   <div class="friends">
     <div class="buttons">
-      <div class="invite">
+      <div class="invite" @click="shareLink()">
           <p class="name">ПРИГЛАСИТЬ ДРУГА</p>
           <img src="../assets/icon-addfriend-friends.png" alt="" class="invite-icon">
       </div>
@@ -34,22 +34,31 @@
         <span>ДОХОД ОТ <br>РЕФЕРАЛОВ</span>
       </div>
       <div class="table">
-        <div v-for="i in 10" :key="i" >
+        <div v-for="i in friends" :key="i" >
           <div class="human">
             <div class="leftPart">
               <div class="avatar">
-                <img src="" alt="" srcset="">
+                <img :src="i.photo_url" alt="" srcset="">
               </div>
               <h4 class="player">
-                Бибизяна
+                {{i.username}}
               </h4>
             </div>
             
             <div class="earningBlock">
-              <h2 class="earning">
-                + 12.5M
+              <h2 class="earning" v-if="i.ispremium">
+                {{Math.floor(i.balance * 0.01)}}
               </h2>
-              <h2 class="percent">
+              <h2 class="earning" v-else>
+                {{Math.floor(i.balance * 0.005)}}
+              </h2>
+              
+              <h2 class="percent" v-if="i.ispremium">
+                0.5
+                <br>
+                %
+              </h2>
+              <h2 class="percent" v-else>
                 0.5
                 <br>
                 %
@@ -66,7 +75,37 @@
 
 <script>
 export default {
+  data() {
+    return {
+      friends: [],
+    }
+  },
+  computed:{
+        invite(){
+            return 'https://t.me/M1nerGamebot/Miner?startapp='+this.$user.data.user_id
+        } 
+    },
+  methods:{
+    shareLink(){
+        const url = this.invite;
+        const text = '\nПривет! Хочу пригласить тебя поиграть в классную игру, где ты сможешь создать свою собственную майнинг ферму прямо на телефоне! Развивай свою империю, добывай криптовалюту и зарабатывай вместе со мной! \nА в качестве бонуса при запуске игры тебя ждет приятное вознаграждение 💸';
+        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    },
+    async get_friends() {
+    try {
+        const response = await this.$axios.get('/get_friends/', { params: { user_id: this.$user.data.user_id } });
+        this.friends = response.data;
+        console.log(response);
+        console.log(this.friends);
+    } catch (error) {
+        console.error(error);
+    }
+}
 
+  },
+  mounted(){
+    this.get_friends()
+  }
 }
 </script>
 

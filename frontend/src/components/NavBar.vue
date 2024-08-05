@@ -6,7 +6,7 @@
         </div>
         <p class="title">WALLET</p>
     </div>
-    <div class="button">
+    <div class="button" @click="this.$router.push('/top')">
         <div class="icon">
             <img src="../assets/icon-top.png" alt="">
         </div>

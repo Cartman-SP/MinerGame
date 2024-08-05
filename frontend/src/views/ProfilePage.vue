@@ -4,26 +4,26 @@
         <h1 class="title">PROFILE</h1>
     </div> -->
     <div class="profile"  @click="this.$router.push('/profile')">
-        <img class="avatar" src="https://pixelbox.ru/wp-content/uploads/2022/08/avatar-boy-telegram-pixelbox.ru-76.jpg" alt="Avatar">
-        <p class="profile-name">{{username||'no username'}}</p>
+        <img class="avatar" :src="user.avatar" alt="Avatar">
+        <p class="profile-name">{{user.username||'no username'}}</p>
     </div>
     <div class="information">
       <div class="container">
         <p class="name">БАЛАНС</p>
         <div class="info">
-          <p class="value">500.8K</p>
+          <p class="value">{{ Math.floor(user.balance) }}</p>
         </div>
       </div>
       <div class="container">
         <p class="name">РАНГ</p>
         <div class="info">
-          <p class="value">ХУЕСОС</p>
+          <p class="value">{{ user.lvl }}</p>
         </div>
       </div>
       <div class="container">
         <p class="name">ДРУЗЕЙ</p>
         <div class="info">
-          <p class="value">34</p>
+          <p class="value">{{ user.friends_invited }}</p>
         </div>
       </div>
       <div class="container">
@@ -35,7 +35,7 @@
       <div class="container">
         <p class="name">ПРИБЫЛЬ В ЧАС</p>
         <div class="info">
-          <p class="value">26.5K</p>
+          <p class="value">{{ user.gph }}</p>
         </div>
       </div>
     </div>
@@ -44,7 +44,11 @@
 
 <script>
 export default {
-
+  computed:{
+    user(){
+        return this.$user.data
+    }
+  }
 }
 </script>
 

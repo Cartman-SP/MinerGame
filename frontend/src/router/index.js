@@ -6,7 +6,7 @@ import BoostPage from '../views/BoostPage.vue'
 import ProfilePage from '../views/ProfilePage.vue'
 import TaskPage from '../views/TaskPage.vue'
 import FriendsPage from '../views/FriendsPage.vue'
-
+import TopPage from '../views/TopPage.vue'
 const routes = [
   {
     path: '/',
@@ -32,6 +32,11 @@ const routes = [
     path: '/friends',
     name: 'friends',
     component: MainPage
+  },
+  {
+    path: '/top',
+    name: 'top',
+    component: TopPage
   },
   {
     path: '/profile',

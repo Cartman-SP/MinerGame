@@ -49,36 +49,6 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <div class="other-task">
-                <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
-                <div class="other-logo-background">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
-            <div class="other-task">
-                <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
-                <div class="other-logo-background">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
-            <div class="other-task">
-                <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
-                <div class="other-logo-background">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
-            <div class="other-task">
-                <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
-                <div class="other-logo-background">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
-            <div class="other-task">
-                <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
-                <div class="other-logo-background">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -169,7 +139,7 @@ methods:{
         const url = this.invite;
         const text = '\nПривет! Хочу пригласить тебя поиграть в классную игру, где ты сможешь создать свою собственную майнинг ферму прямо на телефоне! Развивай свою империю, добывай криптовалюту и зарабатывай вместе со мной! \nА в качестве бонуса при запуске игры тебя ждет приятное вознаграждение 💸';
         window.location.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
-    }
+    },
     toggleModal(){
         if (this.showModal) {
             

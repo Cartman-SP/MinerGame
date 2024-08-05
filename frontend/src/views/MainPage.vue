@@ -17,9 +17,6 @@
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
     </div>
-    <button @click="toggleModal">modal</button>
-
-    
   </div>
 </template>
 

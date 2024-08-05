@@ -60,7 +60,9 @@ def get_or_create_user(request):
                 inviter=inviter,
                 user=user
             )
-            inviter.balance += 4000
+            if(inviter.friends_invited<3):
+                inviter.balance += 4000
+            inviter.friends_invited+=1
             inviter.save()
             referal.save()
         except:
@@ -227,3 +229,24 @@ def check_subscribe(request):
             return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
     else:
         return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def get_friends(request):
+    user_id = request.query_params.get('user_id')
+    try:
+        user = TelegramUser.objects.get(user_id=user_id)
+    except TelegramUser.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    referals = Referal.objects.filter(inviter=user)
+    friends = [referal.user for referal in referals]
+    
+    # Debug prints
+    for friend in friends:
+        print(friend.username)
+    print(friends)
+    
+    serializer = TelegramUserSerializer(friends, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

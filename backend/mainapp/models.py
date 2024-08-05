@@ -27,6 +27,7 @@ class TelegramUser(models.Model):
     subscribe_money_gived = models.BooleanField(default=False)
     photo_url = models.URLField(blank=True, null=True)
     ispremium = models.BooleanField(default=False)
+    friends_invited = models.IntegerField(default=0)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()

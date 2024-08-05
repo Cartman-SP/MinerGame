@@ -27,6 +27,7 @@ class User {
       modifier: 1,
       subscribed: false,
       subscribed_money_gived: false,
+      friends_invited: 0,
       avatar: '' // Добавляем свойство для аватарки
     });
     this.loading = reactive({ status: true });
@@ -116,7 +117,7 @@ class User {
         this.data.subscribed_money_gived = response.data.user.subscribed_money_gived;
         this.data.avatar = response.data.user.avatar || this.data.avatar; // Устанавливаем аватарку из ответа сервера
         this.data.avatar = response.data.user.photo_url || 'default-avatar-url';
-
+        this.data.friends_invited = response.data.user.friends_invited
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;
