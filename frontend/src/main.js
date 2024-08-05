@@ -32,6 +32,7 @@ class User {
       daily_reward_claimed: false,
       daily_reward_day: 0,
       daily_reward_date: '',
+      secs_in_game: 0,
     });
     this.loading = reactive({ status: true });
     this.error = null;
@@ -123,6 +124,7 @@ class User {
         this.data.daily_reward_claimed = response.data.user.daily_reward_claimed
         this.data.daily_reward_day = response.data.user.daily_reward_day
         this.data.daily_reward_date = response.data.user.daily_reward_date
+        this.data.secs_in_game = response.data.user.secs_in_game
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;

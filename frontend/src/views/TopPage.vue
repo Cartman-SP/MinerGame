@@ -59,16 +59,16 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="bottom_card">
-        <img src="" alt="" >
+      <div class="bottom_card" v-for="i in top" :key="i">
+        <img :src="top[i].photo_url" alt="" >
         <div class="name_container">
-          <p class="name">Monkey</p>
+          <p class="name">{{top[i].username}}</p>
           <div class="divider"></div>
         </div>
         <div class="amount">
-          <p class="amount_text"> 150.4M</p>
+          <p class="amount_text"> {{top[i].balance}} </p>
           <div class="number">
-            <p class="number_text">4</p>
+            <p class="number_text">{{i}} 1</p>
           </div>
         </div>
       </div>
@@ -78,7 +78,30 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      top:[],
+      user_position: 0,
+      numbers: [0,1]
+    };
+  },
+  mounted(){
+    this.get_top()
+  },
+  methods:{
+    get_top(){
+      try{
+            console.log(this.$user.data.user_id)
+            const response = this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
+            console.log(response.data, '----------')
+            this.top = response.data.top_users
+            this.user_position = response.data.user_position
+            
+        }catch(error){
+            console.log(error)
+        }
+    }
+  }
 }
 </script>
 

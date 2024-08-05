@@ -29,7 +29,7 @@
       <div class="container">
         <p class="name">МИНУТ В ИГРЕ</p>
         <div class="info">
-          <p class="value">689</p>
+          <p class="value">{{Math.floor(user.secs_in_game/60)}}</p>
         </div>
       </div>
       <div class="container">
@@ -48,6 +48,7 @@ export default {
     user(){
         return this.$user.data
     }
+
   }
 }
 </script>

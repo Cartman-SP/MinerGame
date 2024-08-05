@@ -31,7 +31,7 @@ class TelegramUser(models.Model):
     daily_reward_claimed = models.BooleanField(default=False)
     daily_reward_day = models.IntegerField(default=0)
     daily_reward_date = models.DateField(auto_now_add=True)
-    
+    secs_in_game = models.IntegerField(default=0)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()

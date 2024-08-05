@@ -1,4 +1,8 @@
 <template>
+  <div v-if="!loaded" >
+    <img src="../src/assets/load.jpg" style="object-fit: cover; width: 100%;height: 100%;" alt="">
+  </div>
+  <div v-else>
   <StatusBar/>
   <Balance/>
   <div style="height: 100%;">
@@ -6,23 +10,36 @@
   </div>
   
   <NavBar/>
+  </div>
+
 </template>
 
 <script>
 import Balance from '../src/components/BalanceBlock.vue';
 import StatusBar from '../src/components/StatusBar.vue';
 import NavBar from '../src/components/NavBar.vue';
+
 export default {
-  components: { NavBar, StatusBar, Balance } ,
+  components: { NavBar, StatusBar, Balance },
   data() {
     return {
       logs: '',
+      loaded: false,
     }
   },
-  mounted(){
+  methods: {
+    load() {
+      setTimeout(() => {
+        this.loaded = true;
+      }, 5000); // 5 seconds delay
+    }
+  },
+  mounted() {
+    this.load();
   }
 }
 </script>
+
 
 <style>
 @font-face {

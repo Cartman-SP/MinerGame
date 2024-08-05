@@ -135,6 +135,7 @@ class EnergyConsumer(AsyncWebsocketConsumer):
             telegram_user.energy = telegram_user.max_energy
         else:
             telegram_user.energy += 5
+        telegram_user.secs_in_game +=5
         telegram_user.save()
         return telegram_user.energy
 

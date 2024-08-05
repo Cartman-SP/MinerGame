@@ -190,7 +190,6 @@ def upgrade_mining(request):
         if(user.balance>cost):
             user.balance-=cost
             user.enery_lvl+=1
-            user.max_energy+=250
     else:
         cost = upcost[user.tap_lvl]
         if(user.balance>cost):
@@ -272,3 +271,26 @@ def claim_reward(request):
         user.daily_reward_day+=1
     user.save()
     return Response({"balance": user.balance, "daily_reward_claimed": user.daily_reward_claimed,"daily_reward_day": user.daily_reward_day,}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_top(request):
+    user_id = request.query_params.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    
+    # Получаем первых 7 пользователей, отсортированных по balance
+    top = TelegramUser.objects.order_by('-balance')[:7]
+    
+    # Определяем позицию текущего пользователя
+    user_position = TelegramUser.objects.filter(balance__gt=user.balance).count() + 1
+    
+    # Сериализуем данные
+    serializer = TelegramUserSerializer(top, many=True)
+    
+    # Возвращаем данные вместе с позицией пользователя
+    response_data = {
+        "top_users": serializer.data,
+        "user_position": user_position
+    }
+    
+    return Response(response_data, status=status.HTTP_200_OK)
