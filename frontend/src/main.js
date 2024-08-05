@@ -26,67 +26,74 @@ class User {
       max_energy: 0,
       modifier: 1,
       subscribed: false,
-      subscribed_money_gived: false
+      subscribed_money_gived: false,
+      avatar: '' // Добавляем свойство для аватарки
     });
     this.loading = reactive({ status: true });
     this.error = null;
 
     // Добавляем watcher для поля balance
     watch(() => this.data.balance, (newBalance, oldBalance) => {
-      console.log(newBalance,oldBalance)
-      if(newBalance>17500 && this.data.lvl<2){
-        this.lvlup(2)
-      }else if(newBalance>90000 && this.data.lvl<3){
-        this.lvlup(3)
-      }else if(newBalance>400000 && this.data.lvl<4){
-        this.lvlup(4)
-      }else if(newBalance>5000000 && this.data.lvl<5){
-        this.lvlup(5)
-      }else if(newBalance>650000 && this.data.lvl<6){
-        this.lvlup(6)
-      }else if(newBalance>100000000 && this.data.lvl<7){
-        this.lvlup(7)
-      }else if(newBalance>510000000 && this.data.lvl<8){
-        this.lvlup(8)
-      }else if(newBalance>1600000000 && this.data.lvl<9){
-        this.lvlup(9)
-      }else if(newBalance>3800000000 && this.data.lvl<10){
-        this.lvlup(10)
+      console.log(oldBalance)
+      if(newBalance > 17500 && this.data.lvl < 2){
+        this.lvlup(2);
+      } else if(newBalance > 90000 && this.data.lvl < 3){
+        this.lvlup(3);
+      } else if(newBalance > 400000 && this.data.lvl < 4){
+        this.lvlup(4);
+      } else if(newBalance > 5000000 && this.data.lvl < 5){
+        this.lvlup(5);
+      } else if(newBalance > 650000 && this.data.lvl < 6){
+        this.lvlup(6);
+      } else if(newBalance > 100000000 && this.data.lvl < 7){
+        this.lvlup(7);
+      } else if(newBalance > 510000000 && this.data.lvl < 8){
+        this.lvlup(8);
+      } else if(newBalance > 1600000000 && this.data.lvl < 9){
+        this.lvlup(9);
+      } else if(newBalance > 3800000000 && this.data.lvl < 10){
+        this.lvlup(10);
       }
-
     });
   }
 
-  lvlup(lvl){
-    this.data.lvl = lvl
+  async lvlup(lvl) {
+    this.data.lvl = lvl;
     try {
-      const response = app.config.globalProperties.$axios.post('/lvlup/', {'user_id':this.data.user_id, 'lvl':lvl}, {withCredentials: true});
+      const response = await app.config.globalProperties.$axios.post('/lvlup/', {
+        'user_id': this.data.user_id,
+        'lvl': lvl
+      }, { withCredentials: true });
       console.log(response.data);
-      this.data.gpc = response.data.gpc
-      this.data.modifier= response.data.modifier
-      this.data.max_energy =  response.data.max_energy
-
+      this.data.gpc = response.data.gpc;
+      this.data.modifier = response.data.modifier;
+      this.data.max_energy = response.data.max_energy;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
-  async login() {
-    const webexample = {
-      "id": 612594627,
-      "first_name": "CHXRNVKHA",
-      "last_name": "",
-      "username": "F1owerGG",
-      "language_code": "ru",
-      "is_premium": true,
-      "allows_write_to_pm": true
-    };
 
+  async login() {
     const tg = window.Telegram.WebApp;
 
     if (tg) {
       tg.ready();
-      const tginfo = tg.initDataUnsafe.user;
-      let data = tginfo ? tginfo : webexample;
+      const tginfo = tg.initDataUnsafe.user || {
+        "id": 612594627,
+        "first_name": "CHXRNVKHA",
+        "last_name": "",
+        "username": "F1owerGG",
+        "language_code": "ru",
+        "is_premium": true,
+        "allows_write_to_pm": true,
+        "photo_url": "default-avatar-url" // Добавляем аватарку по умолчанию
+      };
+
+      const start = tg.initDataUnsafe.start_param ? tg.initDataUnsafe.start_param : 0;
+      tginfo.start = start;
+      let data = tginfo;
+
+      // Устанавливаем аватарку
 
       try {
         const response = await app.config.globalProperties.$axios.get('/get_user/', { params: data });
@@ -104,9 +111,12 @@ class User {
         this.data.tap_lvl = response.data.user.tap_lvl;
         this.data.refresh_energy = response.data.user.refresh_energy;
         this.data.max_energy = response.data.user.max_energy;
-        this.data.modifier = response.data.user.modifier
-        this.data.subscribed = response.data.user.subscribed
-        this.data.subscribed_money_gived = response.data.user.subscribed_money_gived
+        this.data.modifier = response.data.user.modifier;
+        this.data.subscribed = response.data.user.subscribed;
+        this.data.subscribed_money_gived = response.data.user.subscribed_money_gived;
+        this.data.avatar = response.data.user.avatar || this.data.avatar; // Устанавливаем аватарку из ответа сервера
+        this.data.avatar = response.data.user.photo_url || 'default-avatar-url';
+
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;
@@ -120,6 +130,7 @@ class User {
     }
   }
 }
+
 
 // Создаем экземпляр User
 const user = new User();

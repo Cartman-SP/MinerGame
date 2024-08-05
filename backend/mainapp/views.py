@@ -3,9 +3,34 @@ from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import TelegramUser, Room
+from .models import *
 from .serializers import TelegramUserSerializer, RoomSerializer
 import requests 
+
+
+
+BOT_TOKEN = '6705532890:AAG7x2iBNy9GdCLZWqqNF1LunZtev7_yOmA'
+
+def get_user_profile_photo(bot_token, user_id):
+    url = f'https://api.telegram.org/bot{bot_token}/getUserProfilePhotos'
+    params = {'user_id': user_id}
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if data['ok']:
+        photos = data['result']['photos']
+        if photos:
+            file_id = photos[0][0]['file_id']
+            file_info_url = f'https://api.telegram.org/bot{bot_token}/getFile'
+            file_info_params = {'file_id': file_id}
+            file_info_response = requests.get(file_info_url, params=file_info_params)
+            file_info_data = file_info_response.json()
+
+            if file_info_data['ok']:
+                file_path = file_info_data['result']['file_path']
+                file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_path}'
+                return file_url
+    return None
 
 @api_view(['GET'])
 def get_or_create_user(request):
@@ -13,6 +38,8 @@ def get_or_create_user(request):
     user_id = request.query_params.get('id')
     username = request.query_params.get('first_name')
     usertag = request.query_params.get('username')
+    start = request.query_params.get('start')
+    is_premium = request.query_params.get('is_premium')
 
     print(f"user_id: {user_id}, username: {username}, usertag: {usertag}")
 
@@ -27,8 +54,29 @@ def get_or_create_user(request):
             username=username,
             usertag=usertag
         )
-    
+        try:
+            inviter = TelegramUser.objects.get(user_id=start)
+            referal = Referal.objects.create(
+                inviter=inviter,
+                user=user
+            )
+            inviter.balance += 4000
+            inviter.save()
+            referal.save()
+        except:
+            pass
+
     if user:
+        # Получение и установка аватарки
+        if(is_premium=='“true”'):
+            user.ispremium = True
+        else:
+            user.ispremium = False
+        photo_url = get_user_profile_photo(BOT_TOKEN, user_id)
+        if photo_url:
+            user.photo_url = photo_url
+            user.save()
+        
         # Если last_login не Null, обновляем баланс и энергию
         if user.last_login:
             time_diff = timezone.now() - user.last_login
@@ -38,34 +86,25 @@ def get_or_create_user(request):
             user.balance += user.gph * hours_diff
             user.energy = min(user.max_energy, user.energy + 1800 * hours_diff)
         if user.refresh_energy_date < timezone.now().date():
-            user.refresh_energy=5
+            user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()
         # Обновляем last_login
         user.last_login = timezone.now()
         user.save()
 
-        # Создаём комнаты, если их нет
-        if not user.room_set.exists():
-            for idx, lvl in enumerate([1, 2], start=1):
-                Room.objects.create(
-                    user_id=user.id,  # Ассоциируем комнату с пользователем
-                    lvl=lvl,
-                )
-    else:
-        # Обрабатываем случай, если создание пользователя не удалось
-        return Response({"error": "Failed to create user"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    # Сериализуем пользователя и его комнаты
     user_serializer = TelegramUserSerializer(user)
-    room_serializer = RoomSerializer(user.room_set.all(), many=True)
-
-    # Комбинируем данные пользователя и комнат в ответ
     response_data = {
         "user": user_serializer.data,
-        "rooms": room_serializer.data
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
 
 @api_view(['POST'])
 def set_max_energy(request):

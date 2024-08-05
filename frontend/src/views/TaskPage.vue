@@ -16,7 +16,7 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <div class="task">
+            <div class="task" @click="shareLink">  
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
@@ -86,6 +86,11 @@
 
 <script>
 export default {
+    computed:{
+        invite(){
+            return 'https://t.me/M1nerGamebot/Miner?startapp='+this.$user.data.user_id
+        } 
+    },
  methods:{
     async check_subscribe(){
         try{
@@ -101,6 +106,11 @@ export default {
     redirectToTelegram() {
         window.location.href = 'https://t.me/MinerGam3';
     },
+    shareLink(){
+        const url = this.invite;
+        const text = '\nПривет! Хочу пригласить тебя поиграть в классную игру, где ты сможешь создать свою собственную майнинг ферму прямо на телефоне! Развивай свою империю, добывай криптовалюту и зарабатывай вместе со мной! \nА в качестве бонуса при запуске игры тебя ждет приятное вознаграждение 💸';
+        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    }
 },
 
 mounted(){

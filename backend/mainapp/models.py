@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib import admin
 
 class TelegramUser(models.Model):
     user_id = models.IntegerField(unique=True)
@@ -24,9 +25,16 @@ class TelegramUser(models.Model):
     modifier = models.FloatField(default=1)
     subscribed = models.BooleanField(default=False)
     subscribe_money_gived = models.BooleanField(default=False)
+    photo_url = models.URLField(blank=True, null=True)
+    ispremium = models.BooleanField(default=False)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()
+
+class Referal(models.Model):
+    inviter = models.ForeignKey(TelegramUser, related_name='invitations', on_delete=models.CASCADE)
+    user = models.ForeignKey(TelegramUser, related_name='referrals', on_delete=models.CASCADE)
+
 
 class Room(models.Model):
     lvl  = models.IntegerField()
@@ -35,3 +43,4 @@ class Room(models.Model):
     micro_lvl = models.IntegerField(default=1)
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
     
+admin.register(TelegramUser)
