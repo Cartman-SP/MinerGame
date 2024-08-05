@@ -30,6 +30,12 @@
     <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/top'">
       <h1 class="title">TOP</h1>
     </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/upgrade'">
+      <h1 class="title">UPGRADE</h1>
+    </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/boost'">
+      <h1 class="title">BOOST</h1>
+    </div>
   </div>
     
   </template>
@@ -51,6 +57,12 @@
   </script>
   
   <style scoped>
+  .name{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow:hidden !important;
+    width: 100px;
+  }
   .title{
     color: white;
     font-family: "Druk Wide";
