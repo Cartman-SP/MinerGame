@@ -28,7 +28,10 @@ class User {
       subscribed: false,
       subscribed_money_gived: false,
       friends_invited: 0,
-      avatar: '' // Добавляем свойство для аватарки
+      avatar: '' ,
+      daily_reward_claimed: false,
+      daily_reward_day: 0,
+      daily_reward_date: '',
     });
     this.loading = reactive({ status: true });
     this.error = null;
@@ -94,7 +97,6 @@ class User {
       tginfo.start = start;
       let data = tginfo;
 
-      // Устанавливаем аватарку
 
       try {
         const response = await app.config.globalProperties.$axios.get('/get_user/', { params: data });
@@ -118,6 +120,9 @@ class User {
         this.data.avatar = response.data.user.avatar || this.data.avatar; // Устанавливаем аватарку из ответа сервера
         this.data.avatar = response.data.user.photo_url || 'default-avatar-url';
         this.data.friends_invited = response.data.user.friends_invited
+        this.data.daily_reward_claimed = response.data.user.daily_reward_claimed
+        this.data.daily_reward_day = response.data.user.daily_reward_day
+        this.data.daily_reward_date = response.data.user.daily_reward_date
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;

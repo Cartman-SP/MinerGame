@@ -12,18 +12,9 @@ async def start(update: Update, context: CallbackContext) -> None:
     if args:
         referral_code = args[0]
 
-        # Генерация ссылки для запуска WebApp с реферальным кодом
-        webapp_url = f"https://your-webapp.com/?referral={referral_code}"
-        
-        # Сохранение реферального кода на сервере
         user_id = update.message.from_user.id
-        response = requests.post(f"http://your-django-server/api/save-referral/", data={'user_id': user_id, 'referral_code': referral_code})
-        
-        # Отправьте пользователю ответное сообщение
-        if response.status_code == 200:
+        #response = requests.post(f"http://your-django-server/api/save-referral/", data={'user_id': user_id, 'referral_code': referral_code})
             keyboard = [[InlineKeyboardButton("Запустить WebApp", url=webapp_url)]]
-            reply_markup = InlineKeyboardMarkup(keyboard)
-            await update.message.reply_text(f"Привет! Вы используете реферальный код: {referral_code}.", reply_markup=reply_markup)
         else:
             await update.message.reply_text("Произошла ошибка при сохранении реферального кода.")
 

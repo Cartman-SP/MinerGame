@@ -8,5 +8,6 @@ urlpatterns = [
     path('set_max_energy/',set_max_energy,name='set_max_energy'),
     path('lvlup/',lvlup,name='lvlup'),
     path('check_subscribe/',check_subscribe,name='check_subscribe'),
-    path('get_friends/',get_friends,name='get_friends')
+    path('get_friends/',get_friends,name='get_friends'),
+    path('claim_reward/',claim_reward,name='claim_reward'),
 ]

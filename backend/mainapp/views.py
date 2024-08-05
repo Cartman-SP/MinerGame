@@ -69,7 +69,12 @@ def get_or_create_user(request):
             pass
 
     if user:
-        # Получение и установка аватарки
+        date_difference = timezone.now().date() - user.daily_reward_date
+        if user.daily_reward_date<timezone.now().date():
+            if date_difference > timedelta(days=1):
+                user.daily_reward_day = 0
+            user.daily_reward_claimed = False
+
         if(is_premium=='“true”'):
             user.ispremium = True
         else:
@@ -100,6 +105,7 @@ def get_or_create_user(request):
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
+
 
 
 
@@ -226,6 +232,8 @@ def check_subscribe(request):
                 user.save()
                 return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
         else:
+            user.subscribed = False
+            user.save()
             return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
     else:
         return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
@@ -250,3 +258,17 @@ def get_friends(request):
     
     serializer = TelegramUserSerializer(friends, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def claim_reward(request):
+    user_id = request.data.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    gifts = [500,1000,3000,5000,10000,20000,40000,100000]
+    if(not(user.daily_reward_claimed)):
+        user.balance += gifts[user.daily_reward_day]
+        user.daily_reward_claimed = True
+        user.daily_reward_date = timezone.now().date()
+        user.daily_reward_day+=1
+    user.save()
+    return Response({"balance": user.balance, "daily_reward_claimed": user.daily_reward_claimed,"daily_reward_day": user.daily_reward_day,}, status=status.HTTP_200_OK)

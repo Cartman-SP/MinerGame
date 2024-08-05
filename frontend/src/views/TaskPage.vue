@@ -7,7 +7,7 @@
     <div class="daily">
         <p class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
         <div class="daily-tasks">
-            <div class="task" @click="toggleModal">
+            <div class="task" @click="toggleModal" v-if="claimed">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
@@ -16,7 +16,16 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <div class="task" @click="shareLink">  
+            <div class="task" @click="toggleModal" v-else>
+                <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
+                    <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
+                </div>
+                <p class="name" style="font-size: 10px;">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <div class="logo-background" style="background: #a0a0a0;">
+                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+                </div>
+            </div>
+            <div class="task" @click="shareLink" v-if="friends_invited<3">  
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
@@ -25,6 +34,18 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
+
+            <div class="task" @click="shareLink" v-else>  
+                <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
+                    <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
+                </div>
+                <p class="name">ПРИГЛАСИТЬ ДРУГА <br>+ 4 000</p>
+                <div class="logo-background" style="background: #a0a0a0;">
+                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+                </div>
+            </div>
+
+            
             <div class="task" @click="redirectToTelegram">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
@@ -61,42 +82,77 @@
 
         <div class="awards">
           <div class="day">
-            <p class="day-num">1 ДЕНЬ</p>
+            <p class="day-num" >1 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">500</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" v-if="days>0">
+            <p class="day-num">2 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">1000</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">2 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">1000</p>
+          </div>
+          <div class="day" v-if="days>1">
+            <p class="day-num">3 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">3000</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">3 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">3000</p>
+          </div>
+          <div class="day" v-if="days>3">
+            <p class="day-num">4 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">5000</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">4 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">5000</p>
+          </div>
+          <div class="day" v-if="days>4">
+            <p class="day-num">5 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">10 000</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">5 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">10 000</p>
+          </div>
+          <div class="day" v-if="days>5">
+            <p class="day-num">6 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">20 000</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">6 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">20 000</p>
+          </div>
+          <div class="day" v-if="days>6">
+            <p class="day-num">7 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">40 000</p>
           </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">7 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">40 000</p>
+          </div>
+          <div class="day" v-if="days>7">
+            <p class="day-num">8 ДЕНЬ</p>
+            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
+            <p class="amount">100 000</p>
+          </div>
+          <div class="day" style="opacity: .4;" v-else>
+            <p class="day-num">8 ДЕНЬ</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">100 000</p>
           </div>
@@ -110,17 +166,40 @@
 
 <script>
 export default {
-    computed:{
-        invite(){
-            return 'https://t.me/M1nerGamebot/Miner?startapp='+this.$user.data.user_id
-        } 
-    },
 data(){
     return{
         showModal: false,
     }
 },
+computed:{
+    days(){
+        return this.$user.data.daily_reward_day
+    },
+    invite(){
+        return 'https://t.me/M1nerGamebot/Miner?startapp='+this.$user.data.user_id
+    },
+    claimed(){
+        return this.$user.data.daily_reward_claimed
+    },
+    friends_invited(){
+        return this.$user.data.friends_invited
+    }
+},
 methods:{
+    async claim_reward(){
+        try {
+        const response = await this.$axios.post('/claim_reward/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
+        this.$user.data.balance = response.data.balance;
+        this.$user.data.daily_reward_claimed = response.data.daily_reward_claimed
+        this.$user.data.daily_reward_day = response.data.daily_reward_day
+        console.log("Mining end time set to:", this.$user.data.mining_end);
+        this.calculateRemainingTime();
+        this.startMiningTimer();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+
     async check_subscribe(){
         try{
             console.log(this.$user.data.user_id)
@@ -142,8 +221,11 @@ methods:{
     },
     toggleModal(){
         if (this.showModal) {
-            
-
+            if(this.$user.data.daily_reward_claimed){
+                console.log('already claimed')
+            }else{
+                this.claim_reward()   
+            }
             const modalwindow = this.$refs.modal;
             modalwindow.classList.remove('show');
             const modaloverlay = this.$refs.overlay;

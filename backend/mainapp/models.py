@@ -28,6 +28,10 @@ class TelegramUser(models.Model):
     photo_url = models.URLField(blank=True, null=True)
     ispremium = models.BooleanField(default=False)
     friends_invited = models.IntegerField(default=0)
+    daily_reward_claimed = models.BooleanField(default=False)
+    daily_reward_day = models.IntegerField(default=0)
+    daily_reward_date = models.DateField(auto_now_add=True)
+    
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()
