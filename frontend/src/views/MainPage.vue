@@ -19,58 +19,7 @@
     </div>
     <button @click="toggleModal">modal</button>
 
-    <div class="overlay" ref="overlay" @click="toggleModal" v-if="showModal"></div>
-    <div class="modal" v-if="showModal" ref="modal">
-        <img class="icon" src="../assets/icon-gift.png" alt="">
-        <h3>ЕЖЕДНЕВНАЯ НАГРАДА</h3>
-        <p>Забирайте ежедневно приз без пропусков<br>иначесчетчик дней начнется с 1 дня</p>
-
-        <div class="awards">
-          <div class="day">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">500</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">1000</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">3000</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">5000</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">10 000</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">20 000</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">40 000</p>
-          </div>
-          <div class="day" style="opacity: .4;">
-            <p class="day-num">1 ДЕНЬ</p>
-            <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">100 000</p>
-          </div>
-        </div>
-        <div class="collect" @click="toggleModal">
-          ЗАБРАТЬ ПРИЗ
-        </div>
-    </div>
+    
   </div>
 </template>
 
@@ -81,7 +30,7 @@ export default {
   components: { Spinner } ,
   data() {
     return {
-      showModal: false,
+      
       socket: null,
       miningSocket: null,
       energySocket: null,
@@ -91,30 +40,7 @@ export default {
     };
   },
   methods: {
-    toggleModal(){
-        if (this.showModal) {
-            
-
-            const modalwindow = this.$refs.modal;
-            modalwindow.classList.remove('show');
-            const modaloverlay = this.$refs.overlay;
-            modaloverlay.classList.remove('showOverlay');
-
-            setTimeout(() => {
-                this.showModal = false
-            }, 400);
-            
-
-        } else {
-            this.showModal = true
-            setTimeout(() => {
-                const modalwindow = this.$refs.modal;
-                modalwindow.classList.add('show');
-                const modaloverlay = this.$refs.overlay;
-                modaloverlay.classList.add('showOverlay');
-            }, 10);
-        }
-    },
+    
     async start_mining() {
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");
@@ -327,114 +253,7 @@ export default {
 
 
 <style scoped>
-@keyframes scale {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-.icon{
-  animation: scale 2s ease infinite;
-  width: 200px;
-  filter: drop-shadow(0 0px 10px rgb(0, 0, 0));
-}
-.modal{
-    background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
-    border-top: 2px solid #00C5FF;
-    filter: drop-shadow(0 -5px 5px #00c3ff8d);
-    border-radius: 10px 10px 0 0;
-    padding: 20px 0;
-    position: absolute;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    height: 550px;
-    bottom: -600px;
-    z-index: 10;
-    transition: all .4s ease;
-}
-.show{
-    bottom: 0;
-    transition: all .4s ease;
-}
-.showOverlay{
-    opacity: 1 !important;
-    transition: all .4s ease;
-}
-.overlay{
-    opacity: 0;
-    position: absolute;
-    z-index: 9;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.551);
-    height: 100vh;
-    width: 100vw;
-    transition: all .4s ease;
-}
-.modal h3{
-    color: white;
-    font-family: "Druk Wide";
-    font-size: 14px;
-    margin: 5px 0;
-}
 
-.modal p{
-    color: white;
-    font-family: "Druk Wide";
-    font-size: 10px;
-    margin: 5px 0;
-}
-.awards{
-  padding: 10px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 10px;
-  grid-row-gap: 10px; 
-}
-.day{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
-  padding: 5px;
-  border-radius: 15px;
-  filter: drop-shadow(0 5px 3px rgba(21, 21, 21, 0.566));
-}
-.day-num{
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 16px;
-  margin: 5px 0;
-}
-.amount{
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 12px;
-  padding: 3px;
-  margin: 0;
-  width: 65px;
-  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
-  border-radius: 10px;
-}
-.collect{
-  
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 14px;
-  border-radius: 10px;
-  padding: 15px 40px;
-  margin: 0;
-  margin-top: 20px;
-  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
-  filter: drop-shadow(0 0px 3px rgb(0, 0, 0));
-}
 
 .energy-block, .upgrade-block{
   display: flex;
