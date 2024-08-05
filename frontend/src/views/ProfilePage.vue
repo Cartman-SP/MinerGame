@@ -1,11 +1,11 @@
 <template>
   <div class="profilepage">
-    <div class="header">
+    <!-- <div class="header">
         <h1 class="title">PROFILE</h1>
-    </div>
+    </div> -->
     <div class="profile"  @click="this.$router.push('/profile')">
         <img class="avatar" src="https://pixelbox.ru/wp-content/uploads/2022/08/avatar-boy-telegram-pixelbox.ru-76.jpg" alt="Avatar">
-        <p class="profile-name">{{username}}</p>
+        <p class="profile-name">{{username||'no username'}}</p>
     </div>
     <div class="information">
       <div class="container">
@@ -51,7 +51,7 @@ export default {
 <style scoped>
 .profilepage{
   overflow-y: scroll;
-  height: 90vh;
+  height: 70vh;
 }
 .avatar{
   width: 70px;

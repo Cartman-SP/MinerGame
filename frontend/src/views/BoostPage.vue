@@ -1,8 +1,8 @@
 <template>
     <div class="upgrade">
-        <div class="header">
+        <!-- <div class="header">
             <h1 class="title">BOOST</h1>
-        </div>
+        </div> -->
         <div class="content">
             <div class="block" @click="toggleModal(1)">
                 <img class="icon" src="../assets/icon-battery-boost.png" alt="">

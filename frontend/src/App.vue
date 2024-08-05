@@ -1,5 +1,6 @@
 <template>
   <StatusBar/>
+  <Balance/>
   <div style="height: 100%;">
     <router-view/>
   </div>
@@ -8,10 +9,11 @@
 </template>
 
 <script>
+import Balance from '../src/components/BalanceBlock.vue';
 import StatusBar from '../src/components/StatusBar.vue';
 import NavBar from '../src/components/NavBar.vue';
 export default {
-  components: { NavBar, StatusBar } ,
+  components: { NavBar, StatusBar, Balance } ,
   data() {
     return {
       logs: '',

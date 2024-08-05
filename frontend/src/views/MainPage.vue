@@ -1,21 +1,5 @@
 <template>
   <div class="mainpage">
-    <p class="title">ВАШ БАЛАНС:</p>
-    <div class="balance-block">
-      <div class="balance">
-        <div class="logo-background">
-          <img class="logoSmall" src="../assets/logo-small.png" alt="">
-        </div>
-        <div>
-          <h1 class="balNum">{{ Math.floor(balance) }}</h1>
-          <p class="subtitle">ПРИБЫЛЬ В ЧАС</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="earning">
-      {{ gph*modifier }} YL
-    </div>
 
     <Spinner @click="tap()"/>
 
@@ -92,6 +76,7 @@
 
 <script>
 import Spinner from '../components/SpinnerMiner.vue';
+
 export default {
   components: { Spinner } ,
   data() {
@@ -278,17 +263,17 @@ export default {
     balance() {
       return this.$user.data.balance;
     },
-    energy() {
-      return this.$user.data.energy;
-    },
     gph() {
       return this.$user.data.gph;
     },
-    max_energy(){
-      return this.$user.data.max_energy;
-    },
     modifier(){
       return this.$user.data.modifier;
+    },
+    energy() {
+      return this.$user.data.energy;
+    },
+    max_energy(){
+      return this.$user.data.max_energy;
     },
     formattedRemainingTime() {
       const formattedTime = this.formatTime(this.remainingTime);
@@ -476,27 +461,7 @@ export default {
   margin-top: 0px;
 }
 
-.earning{
-  margin-top: 7px;
-  padding: 3px 10px;
-  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 8px;
-  border-radius: 10px;
-  filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
-}
-.subtitle{
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 6px;
-  margin: 0;
-  margin-right: 25px;
-}
-.balance{
-  display: flex;
-  justify-content: space-between;
-}
+
 .logo-background{
   width: 50px;
   height: 50px;
@@ -524,22 +489,5 @@ export default {
   font-size: 8px;
   margin: 0;
   margin-top: 10px;
-}
-.balance-block{
-  padding: 5px 30px 5px 5px;
-  height: 50px;
-  background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
-  border-radius: 35px;
-  width: fit-content;
-  filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
-}
-.balNum{
-  margin: 0;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  margin-left: 20px;
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 18px;
 }
 </style>

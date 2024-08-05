@@ -1,8 +1,8 @@
 <template>
     <div class="upgrade">
-        <div class="header">
+        <!-- <div class="header">
             <h1 class="title">UPGRADE</h1>
-        </div>
+        </div> -->
 
         <div class="blocks">
             <div class="block">

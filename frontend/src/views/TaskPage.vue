@@ -1,8 +1,8 @@
 <template>
   <div class="taskpage">
-    <div class="header">
+    <!-- <div class="header">
         <h1 class="title">TASK</h1>
-    </div>
+    </div> -->
 
     <div class="daily">
         <p class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
@@ -25,8 +25,7 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <a href="https://t.me/MinerGam3" target="_blank">
-            <div class="task">
+            <div class="task" @click="redirectToTelegram">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
@@ -38,7 +37,6 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            </a>
         </div>
         
     </div>
@@ -99,7 +97,10 @@ export default {
         }catch(error){
             console.log(error)
         }
-    }
+    },
+    redirectToTelegram() {
+        window.location.href = 'https://t.me/MinerGam3';
+    },
 },
 
 mounted(){
@@ -120,7 +121,7 @@ mounted(){
 }
 .taskpage{
     overflow-y: scroll;
-    height: 90vh;
+    height: 70vh;
 }
 .naming{
     color: white;

@@ -1,8 +1,8 @@
 <template>
     <div class="wallet-page">
-        <div class="header">
+        <!-- <div class="header">
             <h1 class="title">WALLET</h1>
-        </div>
+        </div> -->
         <img src="../assets/logo-small-blue.png" alt="" style="width: 50px; margin-bottom: 40px;">
         <p class="unavailable">ВРЕМЕННО НЕДОСТУПНО</p>
         <div style="position: relative;">

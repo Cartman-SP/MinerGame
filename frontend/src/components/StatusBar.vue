@@ -1,5 +1,6 @@
 <template>
-    <div class="statusBar">
+  <div>
+    <div class="statusBar" v-if="this.$route.path === '/'">
         <div class="profile"  @click="this.$router.push('/profile')">
             <img class="avatar" src="https://pixelbox.ru/wp-content/uploads/2022/08/avatar-boy-telegram-pixelbox.ru-76.jpg" alt="Avatar">
             <p class="name">{{username}}</p>
@@ -14,6 +15,23 @@
             <p class="goals">{{ lvl }}/10</p>
         </div>
     </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/profile'">
+      <h1 class="title">PROFILE</h1>
+    </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/wallet'">
+      <h1 class="title">WALLET</h1>
+    </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/task'">
+      <h1 class="title">TASKS</h1>
+    </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/friends'">
+      <h1 class="title">FRIENDS</h1>
+    </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/top'">
+      <h1 class="title">TOP</h1>
+    </div>
+  </div>
+    
   </template>
   
   <script>
@@ -30,6 +48,12 @@
   </script>
   
   <style scoped>
+  .title{
+    color: white;
+    font-family: "Druk Wide";
+    font-size: 18px;
+    margin: 0;
+  }
   
   .logo{
     width: 100%;
@@ -38,6 +62,7 @@
   .statusBar{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background: #383637;
     padding: 2px 10px;
     height: 60px;
