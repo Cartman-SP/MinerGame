@@ -55,28 +55,12 @@ export default {
     },
     tap() {
       if (this.$user.data.energy > 0) {
-        if (this.socket) {
           const message = {
             user_id: this.$user.data.user_id,
             increment: this.$user.data.gpc,
           };
-          this.socket.send(JSON.stringify(message));
-        }
+          this.$user.data.tapsocket.send(JSON.stringify(message));
       }
-    },
-    onMessage(event) {
-      const data = JSON.parse(event.data);
-      this.$user.data.balance = data.balance;
-      this.$user.data.energy = data.energy;
-    },
-    onMiningMessage(event) {
-      const data = JSON.parse(event.data);
-      this.$user.data.balance = data.balance;
-      this.$user.data.energy = data.energy;
-    },
-    onEnergyMessage(event) {
-      const data = JSON.parse(event.data);
-      this.$user.data.energy = data.energy;
     },
     formatTime(duration) {
       const hours = Math.floor(duration / 3600);
@@ -117,67 +101,23 @@ export default {
       }
       this.miningTimer = setInterval(() => {
         if (this.remainingTime > 0) {
-          if (this.miningSocket) {
             const message = {
               user_id: this.$user.data.user_id,
               gph: this.$user.data.gph,
             };
-            this.miningSocket.send(JSON.stringify(message));
-          }
+            this.$user.data.miningsocket.send(JSON.stringify(message));
         } else {
           clearInterval(this.miningTimer);
         }
       }, 1000); // каждую 1 секунд
     },
-    initializeWebSocketConnections() {
-      const userId = this.$user.data.user_id;
-
-      this.socket = new WebSocket(`ws://localhost:8001/ws/some_path/${userId}/`);
-      this.socket.onmessage = this.onMessage;
-      this.socket.onopen = () => {
-        console.log('WebSocket connection established');
-      };
-      this.socket.onclose = () => {
-        console.log('WebSocket connection closed');
-      };
-      this.socket.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
-
-      this.miningSocket = new WebSocket(`ws://localhost:8001/ws/mining/${userId}/`);
-      this.miningSocket.onmessage = this.onMiningMessage;
-      this.miningSocket.onopen = () => {
-        console.log('Mining WebSocket connection established');
-        this.startMiningTimer();
-      };
-      this.miningSocket.onclose = () => {
-        console.log('Mining WebSocket connection closed');
-      };
-      this.miningSocket.onerror = (error) => {
-        console.error('Mining WebSocket error:', error);
-      };
-
-      this.energySocket = new WebSocket(`ws://localhost:8001/ws/energy/${userId}/`);
-      this.energySocket.onmessage = this.onEnergyMessage;
-      this.energySocket.onopen = () => {
-        console.log('Energy WebSocket connection established');
-        this.startEnergyUpdate(); // Start energy updates
-      };
-      this.energySocket.onclose = () => {
-        console.log('Energy WebSocket connection closed');
-      };
-      this.energySocket.onerror = (error) => {
-        console.error('Energy WebSocket error:', error);
-      };
-    },
     startEnergyUpdate() {
       setInterval(() => {
-        if (this.energySocket) {
           const message = {
             user_id: this.$user.data.user_id,
           };
-          this.energySocket.send(JSON.stringify(message));
-        }
+          console.log(123)
+          this.$user.data.energysocket.send(JSON.stringify(message));
       }, 5000); // каждые 5 секунд
     }
   },
@@ -218,7 +158,8 @@ export default {
         this.updateRemainingTime();
     }, 1000);
 
-    this.initializeWebSocketConnections();
+    this.startMiningTimer();
+    this.startEnergyUpdate();
 
     this.$watch(() => this.$user.data.mining_end, (newVal) => {
       console.log("mining_end changed:", newVal);
