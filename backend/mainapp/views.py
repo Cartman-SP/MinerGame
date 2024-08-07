@@ -182,24 +182,20 @@ def start_mining(request):
 
 @api_view(['POST'])
 def upgrade_mining(request):
-    upcost = [0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,470000000]
+    upcost = [0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,350000000]
+    upgph = [731,1638,3627,8307,18720,42120,94770,213408,480285,1080612,2250550]
     user_id = request.data.get('user_id')
     print(user_id)
     user = TelegramUser.objects.get(user_id=user_id)
     num = request.data.get('num')
-    if(num==1):
-        cost = upcost[user.enery_lvl]
-        if(user.balance>cost):
-            user.balance-=cost
-            user.enery_lvl+=1
-    else:
-        cost = upcost[user.tap_lvl]
-        if(user.balance>cost):
-            user.balance-=cost
-            user.tap_lvl+=1
-            user.gpc+=1
+    cost = upcost[user.video_lvl]
+    if(user.balance>cost):
+        user.balance-=cost
+        user.gph+=upgph[user.video_lvl]
+        user.video_lvl+=1
+
     user.save()
-    return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
+    return Response({'balance':user.balance,'video_lvl':user.video_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

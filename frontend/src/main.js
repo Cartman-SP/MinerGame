@@ -39,7 +39,7 @@ class User {
       energysocket:NaN,
       miningsocket:NaN,
     });
-    this.loading = reactive({ status: true });
+    this.loading = reactive({ status: false });
     this.error = null;
 
     // Добавляем watcher для поля balance
@@ -175,6 +175,7 @@ class User {
         this.data.miningsocket = new WebSocket(`ws://localhost:8001/ws/mining/${this.data.user_id}/`);
         this.data.miningsocket.onmessage = this.onMiningMessage.bind(this);
         this.data.miningsocket.onopen = () => {
+          this.loading.status=true
           console.log('Mining WebSocket connection established');
         };
         this.data.miningsocket.onclose = () => {
@@ -188,9 +189,6 @@ class User {
         console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;
-        console.error('Error fetching data:', error);
-      } finally {
-        this.loading.status = false;
       }
     } else {
       console.error('Telegram WebApp is not available');

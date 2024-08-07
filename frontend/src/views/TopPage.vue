@@ -3,43 +3,43 @@
     <div class="main_top">
       <div class="container">
         <div class="image-container">
-          <img src="" alt="" class="img_small">
+          <img :src="top2.photo_url" alt="" class="img_small">
           <div class="num">
               <p>2</p>
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">UserName</p>
+          <p class="wrapper_text">{{top2.username}}</p>
           <div class="quantity">
-            <p class="quantity_text">480M</p>
+            <p class="quantity_text">{{formatNumber(Math.floor(top2.balance))}}</p>
           </div>
         </div>
       </div>
       <div class="container">
         <div class="image-container">
-          <img src="" alt="" class="img_big">
+          <img :src="top1.photo_url" alt="" class="img_big">
           <div class="num">
               <p>1</p>
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text"></p>
+          <p class="wrapper_text">{{top1.username}}</p>
           <div class="quantity">
-            <p class="quantity_text">480M</p>
+            <p class="quantity_text">{{formatNumber(Math.floor(top1.balance))}}</p>
           </div>
         </div>
       </div>
       <div class="container">
         <div class="image-container">
-          <img src="" alt="" class="img_smallest">
+          <img :src="top3.photo_url" alt="" class="img_smallest">
           <div class="num">
               <p>3</p>
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">UserName</p>
+          <p class="wrapper_text">{{top3.username}}</p>
           <div class="quantity">
-            <p class="quantity_text">480M</p>
+            <p class="quantity_text">{{formatNumber(Math.floor(top3.balance))}}</p>
           </div>
         </div>
       </div>
@@ -47,28 +47,28 @@
     <div class="center">
       <div class="center_container">
         <div class="ramka">
-          <p class="ramka_text">45.6M</p>
+          <p class="ramka_text">{{ your_balance }}</p>
         </div>
         <p class="center_text">YOUR BALANCE</p>
       </div>
       <div class="center_container">
         <div class="ramka">
-          <p class="ramka_text">23</p>
+          <p class="ramka_text">{{ user_position }}</p>
         </div>
         <p class="center_text">YOUR RANK</p>
       </div>
     </div>
     <div class="bottom">
-      <div class="bottom_card" v-for="i in top" :key="i">
-        <img :src="top[i].photo_url" alt="" >
+      <div class="bottom_card" v-for="(user, index) in top" :key="index">
+        <img :src="user.photo_url" alt="" >
         <div class="name_container">
-          <p class="name">{{top[i].username}}</p>
+          <p class="name">{{user.username}}</p>
           <div class="divider"></div>
         </div>
         <div class="amount">
-          <p class="amount_text"> {{top[i].balance}} </p>
+          <p class="amount_text"> {{formatNumber(Math.floor(user.balance))}} </p>
           <div class="number">
-            <p class="number_text">{{i}} 1</p>
+            <p class="number_text">{{4 + index}}</p>
           </div>
         </div>
       </div>
@@ -82,24 +82,43 @@ export default {
     return {
       top:[],
       user_position: 0,
-      numbers: [0,1]
+      top1:NaN,
+      top2:NaN,
+      top3:NaN,
     };
   },
-  mounted(){
+   mounted(){
     this.get_top()
   },
+
   methods:{
-    get_top(){
+    formatNumber(num) {
+    return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
+           num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
+           num.toString();
+  },
+
+    async get_top(){
       try{
             console.log(this.$user.data.user_id)
-            const response = this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
+            const response = await this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
             console.log(response.data, '----------')
-            this.top = response.data.top_users
+            const top = response.data.top_users
+            this.top1 = top[0]
+            this.top2 = top[1]
+            this.top3 = top[2]
+            this.top = top.slice(3);
             this.user_position = response.data.user_position
             
         }catch(error){
             console.log(error)
         }
+    }
+  },
+
+  computed:{
+    your_balance(){
+      return this.formatNumber(this.$user.data.balance)
     }
   }
 }

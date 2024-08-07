@@ -1,8 +1,8 @@
 <template>
   <div :class="['spinner', `level-${level}`]">
     <div class="spinners-block">
-      <img v-if="isMining" class="spinner-img" :src="gifPath" alt="Spinner GIF" style="user-select: none;">
-      <img v-else class="spinner-img" :src="staticPath" alt="Spinner GIF" style="user-select: none;">
+      <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
+      <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
     </div>
   </div>
 </template>
@@ -10,6 +10,12 @@
 <script>
 export default {
   props: ['isMining', 'level'],
+  data() {
+    return {
+      preloadedGifPath: '',
+      preloadedStaticPath: ''
+    };
+  },
   computed: {
     gifPath() {
       return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}.gif`);
@@ -17,9 +23,25 @@ export default {
     staticPath() {
       return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
     }
+  },
+  mounted() {
+    this.preloadImages();
+  },
+  methods: {
+    preloadImages() {
+      this.preloadedGifPath = this.gifPath;
+      this.preloadedStaticPath = this.staticPath;
+      
+      const gifImage = new Image();
+      gifImage.src = this.preloadedGifPath;
+
+      const staticImage = new Image();
+      staticImage.src = this.preloadedStaticPath;
+    }
   }
 };
 </script>
+
 
 <style scoped>
 .spinner {

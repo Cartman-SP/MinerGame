@@ -5,12 +5,12 @@
 
     <div class="stats-block">
       <div class="energy-block" @click="this.$router.push('/boost')">
-        <p>{{ energy }}/{{ max_energy }}</p>
+        <p>{{ formatNumber(energy) }}/{{ formatNumber(max_energy) }}</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
       <div class="timer-block" @click="start_mining" :style="getStyle">
-        <p v-if="formattedRemainingTime === '00:00:00'" style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
-        <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
+        <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
+        <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
       </div>
       <div class="upgrade-block" @click="this.$router.push('/upgrade')">
         <p style="font-size: 8px;">UPGRADE</p>
@@ -36,7 +36,9 @@ export default {
     };
   },
   methods: {
-    
+    formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    },
     async start_mining() {
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");

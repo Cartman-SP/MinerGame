@@ -5,12 +5,12 @@
         </div> -->
 
         <div class="blocks">
-            <div class="block">
+            <div class="block" @click="upgrade">
                 <div class="photo">
                     <img class="spinner" :src="staticPath" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">12 500</p>
+                    <p class="price">{{costs[level]}}</p>
                     <div class="logo-background">
                         <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
@@ -62,13 +62,33 @@
 export default {
     data(){
         return{
-            level: 1,
+            costs:[0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,350000000,'MAX LVL']
         }
     },
+    methods:{
+        async upgrade(){
+            let data = {'user_id':this.$user.data.user_id}
+            try {
+                const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
+                console.log(response.data);
+                this.$user.data.balance = response.data.balance
+                this.$user.data.gph = response.data.gph
+                this.$user.data.video_lvl = response.data.video_lvl
+            }
+            catch (error) {
+                this.error = error;
+                console.error('Error fetching data:', error);
+            }
+        },
+    },
     computed: {
+        level(){
+            return this.$user.data.video_lvl
+        },
         staticPath() {
         return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
         }
+
     }
 }
 </script>

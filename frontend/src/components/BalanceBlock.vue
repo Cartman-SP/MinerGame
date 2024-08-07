@@ -6,13 +6,13 @@
         <div class="logo-background">
           <img class="logoSmall" src="../assets/logo-small.png" alt="">
         </div>
-        <h1 class="balNum">{{ Math.floor(balance) }}</h1>
+        <h1 class="balNum">{{ formatNumber(Math.floor(balance)) }}</h1>
       </div>
     </div>
     <div style="display: flex; align-items: center; margin-top: 10px; gap: 10px;" >
       <p class="subtitle">ПРИБЫЛЬ В ЧАС:</p>
       <div class="earning">
-        {{ gph }} YL
+        {{ formatNumber(gph) }} YL
       </div>
       <div class="earning" id="multiplier">
         x{{ modifier }}
@@ -24,6 +24,12 @@
 
 <script>
 export default {
+  methods:{
+    formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+  },
+
   computed:{
     balance() {
       return this.$user.data.balance;
