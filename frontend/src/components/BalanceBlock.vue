@@ -6,15 +6,18 @@
         <div class="logo-background">
           <img class="logoSmall" src="../assets/logo-small.png" alt="">
         </div>
-        <div>
+        <div style="width: 100%;">
           <h1 class="balNum">{{ Math.floor(balance) }}</h1>
-          <p class="subtitle">ПРИБЫЛЬ В ЧАС</p>
         </div>
       </div>
     </div>
-    <div class="earning">
-      {{ gph*modifier }} YL
+    <div style="display: flex; align-items: center; margin-top: 10px; gap: 10px;" >
+      <p class="subtitle">ПРИБЫЛЬ В ЧАС:</p>
+      <div class="earning">
+        {{ gph*modifier }} YL
     </div>
+    </div>
+    
   </div>
 </template>
 
@@ -43,7 +46,7 @@ export default {
   margin-bottom: 10px;
 }
 .earning{
-  margin-top: 7px;
+
   width: fit-content;
   padding: 3px 10px;
   background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
@@ -61,8 +64,8 @@ export default {
   margin: 0;
 }
 .balance{
+  width: 100%;
   display: flex;
-  justify-content: space-between;
 }
 .logo-background{
   width: 50px;
@@ -86,18 +89,19 @@ export default {
   margin-top: 10px;
 }
 .balance-block{
-  padding: 5px 30px 5px 5px;
+  width: 80%;
+  padding: 5px;
   height: 50px;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
   border-radius: 35px;
-  width: fit-content;
   filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
 }
 .balNum{
+  width: 100%;
+  text-align: center;
   margin: 0;
   margin-top: 15px;
   margin-bottom: 5px;
-  margin-left: 20px;
   color: white;
   font-family: "Druk Wide";
   font-size: 18px;

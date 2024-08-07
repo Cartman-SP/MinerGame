@@ -60,6 +60,17 @@ export default {
   color: #2c3e50;
 }
 
+* {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+img{
+  pointer-events: none;
+}
+
 body{
   height: 100vh;
   overflow: hidden;

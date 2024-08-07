@@ -1,7 +1,7 @@
 <template>
   <div class="spinner">
     <div class="spinners-block" >
-      <img class="spinner" src="../assets/test.gif" alt="">
+      <img class="spinner" src="../assets/test.gif" alt="" style="user-select: none;">
     </div>
   </div>
 </template>
@@ -13,14 +13,25 @@ export default {
 </script>
 
 <style scoped>
-/* @keyframes rotate {
-from {
-    transform: rotate(360deg);
+
+.spinner {
+  user-select: none;
+  width: 450px;
+  height: 450px;
+  margin: -40px 0 -30px 0;
+  filter: drop-shadow(0 0 20px rgba(0, 192, 255, 1));
+  animation: pulseGlow 2s infinite;
 }
-} */
-.spinner{
-  width: 300px;
-  height: 300px;
-  margin: -30px 0;
+
+@keyframes pulseGlow {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(0, 192, 255, 1));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(0, 192, 255, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(0, 192, 255, 1));
+  }
 }
 </style>
