@@ -10,11 +10,11 @@
         </div>
         
         <div class="level">
-            <p class="levelName">WHALE</p>
-            <div class="lineContainer">
+            <p class="levelName">{{ranks[lvl]}}</p>
+            <div class="lineContainer" v-if="lvl<10">
               <div class="line" :style="lineStyle" ></div>
             </div>
-            <p class="goals">{{ lvl }}/10</p>
+            <p v-if="lvl<10" class="goals">{{ lvl }}/10</p>
         </div>
     </div>
     <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/profile'">
@@ -46,7 +46,8 @@
   export default {
     data(){
       return{
-        next_lvl: [0,17500,90000,400000 ,5000000,650000,100000000 ,510000000 ,1600000000,3800000000]
+        next_lvl: [0,17500,90000,400000 ,5000000,650000,100000000 ,510000000 ,1600000000,3800000000],
+        ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE']
       }
     },
 

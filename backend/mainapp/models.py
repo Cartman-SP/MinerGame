@@ -35,7 +35,8 @@ class TelegramUser(models.Model):
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()
-
+    def __str__(self):
+        return self.usertag
 class Referal(models.Model):
     inviter = models.ForeignKey(TelegramUser, related_name='invitations', on_delete=models.CASCADE)
     user = models.ForeignKey(TelegramUser, related_name='referrals', on_delete=models.CASCADE)
@@ -48,5 +49,5 @@ class Room(models.Model):
     micro_lvl = models.IntegerField(default=1)
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
     
-admin.register(TelegramUser)
+admin.site.register(TelegramUser)
 
