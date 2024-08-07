@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">{{top2.username}}</p>
+          <p class="wrapper_text">{{top2.username || 'fjeiojseofj'}}</p>
           <div class="quantity">
             <p class="quantity_text">{{formatNumber(Math.floor(top2.balance))}}</p>
           </div>
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">{{top1.username}}</p>
+          <p class="wrapper_text">{{top1.username || '234'}}</p>
           <div class="quantity">
             <p class="quantity_text">{{formatNumber(Math.floor(top1.balance))}}</p>
           </div>
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">{{top3.username}}</p>
+          <p class="wrapper_text">{{top3.username || 'fjeioj123131123seofj'}}</p>
           <div class="quantity">
             <p class="quantity_text">{{formatNumber(Math.floor(top3.balance))}}</p>
           </div>
@@ -168,6 +168,10 @@ p{
 .wrapper_text{
   color: #FFFFFF;
   font-size: 12px;
+  width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .quantity{
   background: #00E6FF;
