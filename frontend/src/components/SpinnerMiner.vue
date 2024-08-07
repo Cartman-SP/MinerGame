@@ -52,7 +52,22 @@ export default {
 }
 
 .level-6 {
-  --glow-color: rgba(255, 255, 255, 1);
+  --glow-color: rgba(0, 255, 0, 1);
+}
+.level-7 {
+  --glow-color: rgb(245, 245, 29);
+}
+.level-8 {
+  --glow-color: rgba(0, 255, 0, 1);
+}
+.level-9 {
+  --glow-color: rgba(0, 255, 0, 1);
+}
+.level-10 {
+  --glow-color: rgb(245, 245, 29);
+}
+.level-11 {
+  --glow-color: rgb(255, 111, 0);
 }
 
 .spinner-img {
