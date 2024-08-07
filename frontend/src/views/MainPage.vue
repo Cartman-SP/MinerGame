@@ -1,7 +1,7 @@
 <template>
   <div class="mainpage">
 
-    <Spinner @click="tap()"/>
+    <Spinner @click="tap()" :level="lvl" :isMining="true"/>
 
     <div class="stats-block">
       <div class="energy-block" @click="this.$router.push('/boost')">
@@ -27,7 +27,7 @@ export default {
   components: { Spinner } ,
   data() {
     return {
-      
+      lvl: 1,
       socket: null,
       miningSocket: null,
       energySocket: null,
@@ -283,7 +283,7 @@ export default {
   justify-content: center;
   gap: 10px;
   align-items: center;
-  margin-top: -60px;
+  margin-top: 0;
 }
 
 
