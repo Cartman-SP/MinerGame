@@ -6,16 +6,17 @@
         <div class="logo-background">
           <img class="logoSmall" src="../assets/logo-small.png" alt="">
         </div>
-        <div style="width: 100%;">
-          <h1 class="balNum">{{ Math.floor(balance) }}</h1>
-        </div>
+        <h1 class="balNum">{{ Math.floor(balance) }}</h1>
       </div>
     </div>
     <div style="display: flex; align-items: center; margin-top: 10px; gap: 10px;" >
       <p class="subtitle">ПРИБЫЛЬ В ЧАС:</p>
       <div class="earning">
         {{ gph*modifier }} YL
-    </div>
+      </div>
+      <div class="earning" id="multiplier">
+        x20
+      </div>
     </div>
     
   </div>
@@ -45,11 +46,15 @@ export default {
   flex-direction: column;
   margin-bottom: 10px;
 }
+#multiplier{
+  background: linear-gradient(0deg, rgb(233, 80, 80) 0%, rgb(220, 40, 40) 100%);
+  margin-left: -5px;
+}
 .earning{
 
   width: fit-content;
   padding: 3px 10px;
-  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+  background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
   color: white;
   font-family: "Druk Wide";
   font-size: 8px;
@@ -66,6 +71,7 @@ export default {
 .balance{
   width: 100%;
   display: flex;
+  align-items: center;
 }
 .logo-background{
   width: 50px;
@@ -89,7 +95,7 @@ export default {
   margin-top: 10px;
 }
 .balance-block{
-  width: 80%;
+  width: fit-content;
   padding: 5px;
   height: 50px;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
@@ -97,13 +103,14 @@ export default {
   filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
 }
 .balNum{
-  width: 100%;
   text-align: center;
   margin: 0;
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-right: 40px;
+  margin-left: 40px;
   margin-bottom: 5px;
   color: white;
   font-family: "Druk Wide";
-  font-size: 18px;
+  font-size: 22px;
 }
 </style>

@@ -1,27 +1,32 @@
 <template>
   <div :class="['spinner', `level-${level}`]">
     <div class="spinners-block">
-      <img class="spinner-img" src="../assets/test.gif" alt="" style="user-select: none;">
+      <img v-if="isMining" class="spinner-img" :src="gifPath" alt="Spinner GIF" style="user-select: none;">
+      <img v-else class="spinner-img" :src="staticPath" alt="Spinner GIF" style="user-select: none;">
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      level: 1,
-    };
-  },
+  props: ['isMining', 'level'],
+  computed: {
+    gifPath() {
+      return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}.gif`);
+    },
+    staticPath() {
+      return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
+    }
+  }
 };
 </script>
 
 <style scoped>
 .spinner {
   user-select: none;
-  width: 450px;
-  height: 450px;
-  margin: -70px 0 10px 0;
+  width: 350px;
+  height: 350px;
+  margin: -20px 0 10px 0;
   animation: pulseGlow 2s infinite;
   --glow-color: rgba(0, 192, 255, 1); /* Default color for level 1 */
 }
@@ -31,7 +36,7 @@ export default {
 }
 
 .level-2 {
-  --glow-color: rgba(255, 0, 0, 1);
+  --glow-color: rgba(0, 192, 255, 1);
 }
 
 .level-3 {
@@ -39,7 +44,7 @@ export default {
 }
 
 .level-4 {
-  --glow-color: rgba(255, 105, 180, 1);
+  --glow-color: rgba(0, 255, 0, 1);
 }
 
 .level-5 {
@@ -47,7 +52,22 @@ export default {
 }
 
 .level-6 {
-  --glow-color: rgba(255, 255, 255, 1);
+  --glow-color: rgba(0, 255, 0, 1);
+}
+.level-7 {
+  --glow-color: rgb(245, 245, 29);
+}
+.level-8 {
+  --glow-color: rgba(0, 255, 0, 1);
+}
+.level-9 {
+  --glow-color: rgba(0, 255, 0, 1);
+}
+.level-10 {
+  --glow-color: rgb(245, 245, 29);
+}
+.level-11 {
+  --glow-color: rgb(255, 111, 0);
 }
 
 .spinner-img {
