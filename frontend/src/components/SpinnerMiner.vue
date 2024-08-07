@@ -24,9 +24,9 @@ export default {
 <style scoped>
 .spinner {
   user-select: none;
-  width: 400px;
-  height: 400px;
-  margin: -40px 0 10px 0;
+  width: 350px;
+  height: 350px;
+  margin: -20px 0 10px 0;
   animation: pulseGlow 2s infinite;
   --glow-color: rgba(0, 192, 255, 1); /* Default color for level 1 */
 }

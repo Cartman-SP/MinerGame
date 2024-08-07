@@ -27,7 +27,7 @@ export default {
   components: { Spinner } ,
   data() {
     return {
-      lvl: 1,
+      lvl: 11,
       socket: null,
       miningSocket: null,
       energySocket: null,
