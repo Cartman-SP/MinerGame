@@ -2,8 +2,9 @@
   <div>
     <div class="statusBar" v-if="this.$route.path === '/'">
         <div class="profile"  @click="this.$router.push('/profile')">
-            <img class="avatar" :src="avatar" alt="Avatar">
-            <p class="name">{{username}}</p>
+          <img v-if="avatar" class="avatar" :src="avatar" alt="Avatar">
+          <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
+          <p class="name">{{username || 'MINER'}}</p>
         </div>
         <div style="width: 120px;">
             <img class="logo" src="../assets/logo.png" alt="logo">

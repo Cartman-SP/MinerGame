@@ -18,10 +18,58 @@ export default {
   },
   computed: {
     gifPath() {
-      return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}.gif`);
+      switch (this.level) {
+        case 1:
+          return require(`../assets/gpu1.gif`);
+        case 2:
+          return require(`../assets/gpu1.gif`);
+        case 3:
+          return require(`../assets/gpu1.gif`);
+        case 4:
+          return require(`../assets/gpu4.gif`);
+        case 5:
+          return require(`../assets/gpu4.gif`);
+        case 6:
+          return require(`../assets/gpu6.gif`);
+        case 7:
+          return require(`../assets/gpu6.gif`);
+        case 8:
+          return require(`../assets/gpu8.gif`);
+        case 9:
+          return require(`../assets/gpu8.gif`);
+        case 10:
+          return require(`../assets/gpu10.gif`);
+        case 11:
+          return require(`../assets/gpu11.gif`);
+      }
+      return 1
     },
     staticPath() {
-      return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
+      switch (this.level) {
+        case 1:
+          return require(`../assets/gpu1-static.png`);
+        case 2:
+          return require(`../assets/gpu1-static.png`);
+        case 3:
+          return require(`../assets/gpu1-static.png`);
+        case 4:
+          return require(`../assets/gpu4-static.png`);
+        case 5:
+          return require(`../assets/gpu4-static.png`);
+        case 6:
+          return require(`../assets/gpu6-static.png`);
+        case 7:
+          return require(`../assets/gpu6-static.png`);
+        case 8:
+          return require(`../assets/gpu8-static.png`);
+        case 9:
+          return require(`../assets/gpu8-static.png`);
+        case 10:
+          return require(`../assets/gpu10-static.png`);
+        case 11:
+          return require(`../assets/gpu11-static.png`);
+      }
+      return 1
     }
   },
   mounted() {
@@ -50,7 +98,6 @@ export default {
   height: 350px;
   margin: -20px 0 10px 0;
   animation: pulseGlow 2s infinite;
-  --glow-color: rgba(0, 192, 255, 1); /* Default color for level 1 */
 }
 
 .level-1 {
@@ -62,7 +109,7 @@ export default {
 }
 
 .level-3 {
-  --glow-color: rgba(0, 255, 0, 1);
+  --glow-color: rgba(0, 192, 255, 1);
 }
 
 .level-4 {
@@ -70,26 +117,26 @@ export default {
 }
 
 .level-5 {
-  --glow-color: rgba(255, 255, 0, 1);
+  --glow-color: rgba(0, 255, 0, 1);
 }
 
 .level-6 {
-  --glow-color: rgba(0, 255, 0, 1);
+  --glow-color: rgba(255, 255, 0, 1);
 }
 .level-7 {
-  --glow-color: rgb(245, 245, 29);
+  --glow-color: rgba(255, 255, 0, 1);
 }
 .level-8 {
-  --glow-color: rgba(0, 255, 0, 1);
+  --glow-color: rgb(255, 102, 0);
 }
 .level-9 {
-  --glow-color: rgba(0, 255, 0, 1);
+  --glow-color: rgb(255, 102, 0);
 }
 .level-10 {
-  --glow-color: rgb(245, 245, 29);
+  --glow-color: rgb(180, 29, 245);
 }
 .level-11 {
-  --glow-color: rgb(255, 111, 0);
+  --glow-color: rgb(54, 120, 225);
 }
 
 .spinner-img {
