@@ -31,7 +31,7 @@ export default {
     load() {
       setTimeout(() => {
         this.loaded = true;
-      }, 5000); // 5 seconds delay
+      }, 2000); // 5 seconds delay
     }
   },
   mounted() {
@@ -78,7 +78,7 @@ body{
   margin: 0;
   padding: 0;
   touch-action: manipulation;
-  background: linear-gradient(0deg, rgba(155,155,155,1) 0%, rgba(1,0,1,1) 30%, rgba(1,0,1,1) 50%, rgba(155,155,155,1) 100%);
+  background: linear-gradient(0deg, rgba(155,155,155,1) 0%, rgba(1,0,1,1) 40%, rgba(1,0,1,1) 70%, rgba(155,155,155,1) 100%);
   background-position-y: 30px;
 }
 </style>
