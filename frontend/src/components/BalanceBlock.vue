@@ -12,10 +12,10 @@
     <div style="display: flex; align-items: center; margin-top: 10px; gap: 10px;" >
       <p class="subtitle">ПРИБЫЛЬ В ЧАС:</p>
       <div class="earning">
-        {{ gph*modifier }} YL
+        {{ gph }} YL
       </div>
       <div class="earning" id="multiplier">
-        x20
+        x{{ modifier }}
       </div>
     </div>
     

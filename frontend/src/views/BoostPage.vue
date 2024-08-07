@@ -103,7 +103,7 @@ export default {
     },
     methods:{
         async give_energy(){
-            if(this.$user.data.refresh_energy>1 && this.$user.data.energy<this.$user.data.max_energy){
+            if(this.$user.data.refresh_energy>0 && this.$user.data.energy<this.$user.data.max_energy){
                 let data = {'user_id':this.$user.data.user_id}
             try {
                 const response = await this.$axios.post('/set_max_energy/', data, {withCredentials: true});

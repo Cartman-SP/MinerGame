@@ -1,7 +1,7 @@
 <template>
   <div class="mainpage">
 
-    <Spinner @click="tap()" :level="lvl" :isMining="true"/>
+    <Spinner @click="tap()" :level="video_lvl" :isMining="remainingTime>0"/>
 
     <div class="stats-block">
       <div class="energy-block" @click="this.$router.push('/boost')">
@@ -27,7 +27,6 @@ export default {
   components: { Spinner } ,
   data() {
     return {
-      lvl: 11,
       socket: null,
       miningSocket: null,
       energySocket: null,
@@ -187,6 +186,9 @@ export default {
       return this.formattedRemainingTime === '00:00:00'
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
         : 'filter: drop-shadow(0 0 3px rgb(0, 0, 0))';
+    },
+    video_lvl(){
+      return this.$user.data.video_lvl
     },
     balance() {
       return this.$user.data.balance;
