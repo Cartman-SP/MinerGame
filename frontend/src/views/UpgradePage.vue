@@ -7,7 +7,7 @@
         <div class="blocks">
             <div class="block">
                 <div class="photo">
-                    <img class="spinner" src="../assets/spinner-icon.png" alt="">
+                    <img class="spinner" :src="staticPath" alt="">
                 </div>
                 <div class="cost">
                     <p class="price">12 500</p>
@@ -60,7 +60,16 @@
 
 <script>
 export default {
-
+    data(){
+        return{
+            level: 1,
+        }
+    },
+    computed: {
+        staticPath() {
+        return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
+        }
+    }
 }
 </script>
 
