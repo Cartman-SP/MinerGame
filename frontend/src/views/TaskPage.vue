@@ -64,7 +64,7 @@
     <div class="other">
         <p class="naming" style="margin-top: 30px;">ЗАДАНИЯ</p>
         <div class="other-tasks">
-            <div class="other-task">
+            <div class="other-task" @click="open_link">
                 <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
                 <div class="other-logo-background">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -186,6 +186,12 @@ computed:{
     }
 },
 methods:{
+
+    open_link(){
+      const url = 'https://vk.com/';
+      window.open(url, '_blank');
+    },
+
     async claim_reward(){
         try {
         const response = await this.$axios.post('/claim_reward/', {user_id: this.$user.data.user_id,}, {withCredentials: true});

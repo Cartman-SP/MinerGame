@@ -22,12 +22,21 @@
                     </div>
                 </div>
             </div>
-            <div class="block" @click="toggleModal(2)">
+            <div class="block" @click="toggleModal(2)" v-if="tap_lvl<15">
                 <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">MULTITAP<br> <span>{{upcost[tap_lvl]}}</span></p>
                     <div class="logo-background">
                         <span style="font-size: 26px;">{{tap_lvl}}</span>LVL
+                    </div>
+                </div>
+            </div>
+            <div class="block" v-else>
+                <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
+                <div class="statement">
+                    <p class="price-locked">MULTITAP<br> <span>{{upcost[tap_lvl]}}</span></p>
+                    <div class="logo-background">
+                        <span style="font-size: 26px;">MAX LVL</span>LVL
                     </div>
                 </div>
             </div>
@@ -43,7 +52,9 @@
         </div>
         <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
-            <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
+            <img class="icon" src="../assets/icon-multitap-boost.png" alt="" v-if="upimg">
+            <img class="icon" src="../assets/icon-battery-boost.png" alt="" v-else>
+
             <h3>{{ name }}</h3>
             <div class="info">
                 <p class="level">{{ lvl }} LVL</p>
@@ -73,7 +84,9 @@ export default {
             up: '',
             cost: 0,
             num:1,
-            upcost: [0,65,140,350,750,1600,3600,10000,22000,55000,90000,130000,160000,200000,250000,350000]
+            upcost:[0,1400,3500,7500,10600,30600,100000,220000,550000,900000,1300000,1600000,2000000,2500000,3500000],
+            uptap: [0,2,2,4,4,6,6,7,7,8,8,10,10,15,15],        
+            upimg: 0
         }
     },
 
@@ -113,12 +126,21 @@ export default {
                 this.$user.data.gpc = response.data.gpc
                 this.$user.data.max_energy = response.data.max_energy
                 this.$user.data.tap_lvl = response.data.tap_lvl
+
                 if(this.num==1){
-                    this.lvl = response.data.energy_lvl
+
+                    this.lvl = response.data.energy_lvl+1
                     this.cost = this.upcost[response.data.energy_lvl]
+                    if(this.lvl==16){
+                            this.toggleModal(1)
+                    }
                 }else{
-                    this.lvl = response.data.tap_lvl
-                    this.cost = this.upcost[response.data.tap_lvl]        
+                    this.lvl = response.data.tap_lvl+1
+                    this.cost = this.upcost[response.data.tap_lvl]
+                    if(this.lvl==16){
+                            this.toggleModal(2)
+                    }        
+                    this.up = '+'+ this.uptap[this.lvl-1] +' TAP'
                 }
             }
             catch (error) {
@@ -129,16 +151,18 @@ export default {
 
         toggleModal(num){
             if(num==1){
+                this.upimg = 0
                 this.num = num
                 this.name = 'ENERGY LIMIT'
-                this.lvl = this.enery_lvl
+                this.lvl = this.enery_lvl + 1
                 this.up = '+250 ENERGY'
                 this.cost = this.upcost[this.enery_lvl] > 1000 ? (this.upcost[this.enery_lvl] / 1000) + 'K' : this.upcost[this.enery_lvl]
             }else{
+                this.upimg = 1
                 this.num = num
                 this.name = 'MULTITAP'
-                this.lvl = this.tap_lvl
-                this.up = '+1 TAP'
+                this.lvl = this.tap_lvl + 1
+                this.up = '+'+ this.uptap[this.lvl-1] +' TAP'
                 this.cost = this.upcost[this.tap_lvl] > 1000 ? (this.upcost[this.tap_lvl] / 1000) + 'K' : this.upcost[this.tap_lvl]
  
             }

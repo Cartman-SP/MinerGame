@@ -128,11 +128,12 @@ def set_max_energy(request):
 @api_view(['POST'])
 def lvlup(request):
     multiples = [0, 1, 1.3, 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 3]
+    uptap = [0,0,1,3,5,7,10,13,17,20,35]
     user_id = request.data.get('user_id')
     lvl = request.data.get('lvl')
-    user = TelegramUser.objects.get(user_id=user_id)
+    user = TelegramUser.objects.get(user_id=user_id)    
     user.lvl = lvl
-    user.gpc +=1
+    user.gpc +=uptap[int(lvl)]
     user.modifier = multiples[int(lvl)]
     user.max_energy+=250
     user.save()
@@ -142,7 +143,8 @@ def lvlup(request):
 
 @api_view(['POST'])
 def upgrade(request):
-    upcost = [0,65,140,350,750,1600,3600,10000,22000,55000,90000,130000,160000,200000,250000,350000]
+    upcost = [0,1400,3500,7500,10600,30600,100000,220000,550000,900000,1300000,1600000,2000000,2500000,3500000]
+    uptap = [0,2,2,4,4,6,6,7,7,8,8,10,10,15,15]
     user_id = request.data.get('user_id')
     print(user_id)
     user = TelegramUser.objects.get(user_id=user_id)
@@ -157,8 +159,8 @@ def upgrade(request):
         cost = upcost[user.tap_lvl]
         if(user.balance>cost):
             user.balance-=cost
+            user.gpc+=uptap[user.tap_lvl]
             user.tap_lvl+=1
-            user.gpc+=1
     user.save()
     return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy,'lvl':user.lvl}, status=status.HTTP_200_OK)
 

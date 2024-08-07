@@ -12,7 +12,7 @@
         <div class="level">
             <p class="levelName">WHALE</p>
             <div class="lineContainer">
-              <div class="line" style="width: 60%;"></div>
+              <div class="line" :style="lineStyle" ></div>
             </div>
             <p class="goals">{{ lvl }}/10</p>
         </div>
@@ -44,6 +44,12 @@
   
   <script>
   export default {
+    data(){
+      return{
+        next_lvl: [0,17500,90000,400000 ,5000000,650000,100000000 ,510000000 ,1600000000,3800000000]
+      }
+    },
+
     computed:{
       username(){
         return this.$user.data.username
@@ -54,6 +60,11 @@
       avatar(){
         return this.$user.data.avatar
       },
+      lineStyle() {
+      return {
+        width: (this.$user.data.balance / this.next_lvl[this.$user.data.lvl])*100 +'%'
+      }
+    }
     }
   }
   </script>

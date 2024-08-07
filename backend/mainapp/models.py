@@ -50,5 +50,3 @@ class Room(models.Model):
     
 admin.register(TelegramUser)
 
-class Task(models.Model):
-    pass
