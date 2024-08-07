@@ -4,12 +4,21 @@
             <h1 class="title">BOOST</h1>
         </div> -->
         <div class="content">
-            <div class="block" @click="toggleModal(1)">
+            <div class="block" @click="toggleModal(1)" v-if="enery_lvl<15">
                 <img class="icon" src="../assets/icon-battery-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">ENERGY LIMIT<br> <span>{{upcost[enery_lvl]}}</span></p>
                     <div class="logo-background">
                         <span style="font-size: 26px;">{{enery_lvl}}</span>LVL
+                    </div>
+                </div>
+            </div>
+            <div class="block" v-else>
+                <img class="icon" src="../assets/icon-battery-boost.png" alt="">
+                <div class="statement">
+                    <p class="price-locked">ENERGY LIMIT<br> <span>{{upcost[enery_lvl]}}</span></p>
+                    <div class="logo-background">
+                        <span style="font-size: 26px;">MAX_lvl</span>LVL
                     </div>
                 </div>
             </div>

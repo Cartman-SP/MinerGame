@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.contrib import admin
 
 class TelegramUser(models.Model):
-    user_id = models.IntegerField(unique=True)
+    user_id = models.CharField(max_length=1000,unique=True)
     username = models.CharField(max_length=128)
     usertag = models.CharField(max_length=128)
     balance = models.FloatField(default=5000)
@@ -49,3 +49,6 @@ class Room(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
     
 admin.register(TelegramUser)
+
+class Task(models.Model):
+    pass

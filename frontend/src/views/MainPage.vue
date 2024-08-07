@@ -128,7 +128,7 @@ export default {
         } else {
           clearInterval(this.miningTimer);
         }
-      }, 5000); // каждые 5 секунд
+      }, 1000); // каждую 1 секунд
     },
     initializeWebSocketConnections() {
       const userId = this.$user.data.user_id;

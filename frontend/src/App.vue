@@ -1,16 +1,11 @@
 <template>
-  <div v-if="!loaded" >
-    <img src="../src/assets/load.jpg" style="object-fit: cover; width: 100%;height: 100%;" alt="">
-  </div>
-  <div v-else>
+  <img v-if="!loaded" src="../src/assets/load.jpg" style="object-fit: cover; width: 100%;height: 100%; position:absolute; z-index: 999; left:0; top:0;" alt="">
   <StatusBar/>
   <Balance/>
   <div style="height: 100%;">
     <router-view/>
   </div>
-  
   <NavBar/>
-  </div>
 
 </template>
 
@@ -28,6 +23,15 @@ export default {
     }
   },
   methods: {
+    async copyLink() {
+      try {
+        await navigator.clipboard.writeText(this.link);
+        // Можно добавить уведомление о копировании
+        alert('Ссылка скопирована: ' + this.link);
+      } catch (err) {
+        console.error('Ошибка при копировании: ', err);
+      }
+    },
     load() {
       setTimeout(() => {
         this.loaded = true;
@@ -35,6 +39,7 @@ export default {
     }
   },
   mounted() {
+    window.Telegram.WebApp.expand();
     this.load();
   }
 }

@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">UserName</p>
+          <p class="wrapper_text"></p>
           <div class="quantity">
             <p class="quantity_text">480M</p>
           </div>
