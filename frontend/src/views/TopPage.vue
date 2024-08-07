@@ -3,13 +3,14 @@
     <div class="main_top">
       <div class="container">
         <div class="image-container">
-          <img :src="top2.photo_url" alt="" class="img_small">
+          <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
+          <img v-else src="../assets/noPhoto.png" class="img_small">
           <div class="num">
               <p>2</p>
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">{{top2.username || 'fjeiojseofj'}}</p>
+          <p class="wrapper_text">{{top2.username || 'MINER'}}</p>
           <div class="quantity">
             <p class="quantity_text">{{formatNumber(Math.floor(top2.balance))}}</p>
           </div>
@@ -17,13 +18,14 @@
       </div>
       <div class="container">
         <div class="image-container">
-          <img :src="top1.photo_url" alt="" class="img_big">
+          <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
+          <img v-else src="../assets/noPhoto.png" class="img_big">
           <div class="num">
               <p>1</p>
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">{{top1.username || '234'}}</p>
+          <p class="wrapper_text">{{top1.username || 'MINER'}}</p>
           <div class="quantity">
             <p class="quantity_text">{{formatNumber(Math.floor(top1.balance))}}</p>
           </div>
@@ -31,13 +33,14 @@
       </div>
       <div class="container">
         <div class="image-container">
-          <img :src="top3.photo_url" alt="" class="img_smallest">
+          <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
+          <img v-else src="../assets/noPhoto.png" class="img_smallest">
           <div class="num">
               <p>3</p>
           </div>
         </div>
         <div class="wrapper">
-          <p class="wrapper_text">{{top3.username || 'fjeioj123131123seofj'}}</p>
+          <p class="wrapper_text">{{top3.username || 'MINER'}}</p>
           <div class="quantity">
             <p class="quantity_text">{{formatNumber(Math.floor(top3.balance))}}</p>
           </div>
@@ -60,9 +63,10 @@
     </div>
     <div class="bottom">
       <div class="bottom_card" v-for="(user, index) in top" :key="index">
-        <img :src="user.photo_url" alt="" >
+        <img v-if="user.photo_url" :src="user.photo_url" alt="" >
+        <img v-else src="../assets/noPhoto.png">
         <div class="name_container">
-          <p class="name">{{user.username}}</p>
+          <p class="name">{{user.username || 'MINER'}}</p>
           <div class="divider"></div>
         </div>
         <div class="amount">

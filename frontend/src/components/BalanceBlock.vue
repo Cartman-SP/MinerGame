@@ -101,7 +101,7 @@ export default {
   margin-top: 10px;
 }
 .balance-block{
-  width: fit-content;
+  width: 350px;
   padding: 5px;
   height: 50px;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
@@ -118,5 +118,6 @@ export default {
   color: white;
   font-family: "Druk Wide";
   font-size: 22px;
+  width: 57%;
 }
 </style>

@@ -4,8 +4,9 @@
         <h1 class="title">PROFILE</h1>
     </div> -->
     <div class="profile"  @click="this.$router.push('/profile')">
-        <img class="avatar" :src="user.avatar" alt="Avatar">
-        <p class="profile-name">{{user.username||'no username'}}</p>
+        <img v-if="user.avatar" class="avatar" :src="user.avatar" alt="Avatar">
+        <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
+        <p class="profile-name">{{user.username||'MINER'}}</p>
     </div>
     <div class="information">
       <div class="container">

@@ -38,10 +38,11 @@
           <div class="human">
             <div class="leftPart">
               <div class="avatar">
-                <img :src="i.photo_url" alt="" srcset="">
+                <img v-if="i.photo_url" :src="i.photo_url" alt="" srcset="">
+                <img v-else src="../assets/noPhoto.png">
               </div>
               <h4 class="player">
-                {{i.username}}
+                {{i.username || 'MINER'}}
               </h4>
             </div>
             
