@@ -50,10 +50,6 @@ export default {
 :root {
     --color-gradient: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
 }
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 .spin {
     animation: spin .5s ease;
@@ -81,14 +77,13 @@ export default {
     padding: 10px;
     height: 50px;
     width: 50px;
-    filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
+    filter: drop-shadow(0 5px 10px #00E6FF);
     border-radius: 50%;
     bottom: 20px;
     position: absolute;
     
 }
 
-.fan-btn img{}
 
 .mainButton {
     width: 100%;
