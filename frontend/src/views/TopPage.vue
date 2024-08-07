@@ -113,8 +113,10 @@ p{
 .container{
   display: flex;
   flex-direction: column;
+  justify-content: end;
   gap: 20px;
   align-items: center;
+  height: 180px;
 }
 .main{
   display: flex;
@@ -125,7 +127,7 @@ p{
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
 }
 .main_top img{
   border-radius: 100px;
@@ -133,16 +135,16 @@ p{
   object-fit: cover;
 }
 .img_small{
-  width: 110px;
-  height: 110px;
+  width: 80px;
+  aspect-ratio: 1;
 }
 .img_big{
-  width: 115px;
-  height: 115px;
+  width: 100px;
+  aspect-ratio: 1;
 }
 .img_smallest{
-  width: 105px;
-  height: 105px;
+  width: 70px;
+  aspect-ratio: 1;
 }
 .wrapper_text{
   color: #FFFFFF;
@@ -155,6 +157,7 @@ p{
 }
 .quantity_text{
   color: #FFFFFF;
+  font-size: 12px;
 }
 .wrapper{
   display: flex;
@@ -173,7 +176,7 @@ p{
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 145px;
+  width: 130px;
 }
 .ramka{
   border: 1px solid #00E6FF;
@@ -182,11 +185,11 @@ p{
 }
 .ramka_text{
   color: #FFFFFF;
-  font-size: 24px;
+  font-size: 12px;
 }
 .center_text{
   color: #FFFFFF;
-  font-size: 12px;
+  font-size: 8px;
 }
 .bottom{
   display: flex;

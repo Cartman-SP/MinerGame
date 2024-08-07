@@ -11,7 +11,9 @@
         
         <div class="level">
             <p class="levelName">WHALE</p>
-            <p>20%</p>
+            <div class="lineContainer">
+              <div class="line" style="width: 60%;"></div>
+            </div>
             <p class="goals">{{ lvl }}/10</p>
         </div>
     </div>
@@ -57,11 +59,25 @@
   </script>
   
   <style scoped>
+  .lineContainer{
+    border: 1px solid #404040;
+    height: 8px;
+  }
+  .line{
+    height: 6px;
+    background-color: #00E6FF;
+  }
   .name{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow:hidden !important;
     width: 100px;
+  }
+  .levelName{
+    margin-bottom: 0;
+  }
+  .goals{
+    margin-top: 0;
   }
   .title{
     color: white;

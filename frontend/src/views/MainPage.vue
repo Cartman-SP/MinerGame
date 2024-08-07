@@ -272,19 +272,18 @@ export default {
   justify-content: center;
 }
 .energy-block, .timer-block, .upgrade-block{
-  width: 90px;
+  width: 100px;
   padding: 5px;
-  height: 30px;
+  height: 35px;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
   border-radius: 10px;
-  
 }
 .stats-block{
   display: flex;
   justify-content: center;
   gap: 10px;
   align-items: center;
-  margin-top: 0px;
+  margin-top: -60px;
 }
 
 
