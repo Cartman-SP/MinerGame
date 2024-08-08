@@ -159,8 +159,31 @@ export default {
             return this.$user.data.video_lvl
         },
         staticPath() {
+            switch (this.level) {
+                case 1:
+                return require(`../assets/gpu1-static.png`);
+                case 2:
+                return require(`../assets/gpu1-static.png`);
+                case 3:
+                return require(`../assets/gpu1-static.png`);
+                case 4:
+                return require(`../assets/gpu4-static.png`);
+                case 5:
+                return require(`../assets/gpu4-static.png`);
+                case 6:
+                return require(`../assets/gpu6-static.png`);
+                case 7:
+                return require(`../assets/gpu6-static.png`);
+                case 8:
+                return require(`../assets/gpu8-static.png`);
+                case 9:
+                return require(`../assets/gpu8-static.png`);
+                case 10:
+                return require(`../assets/gpu10-static.png`);
+                case 11:
+                return require(`../assets/gpu11-static.png`);
+            }
             return 1
-        ///return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
         }
 
     }
