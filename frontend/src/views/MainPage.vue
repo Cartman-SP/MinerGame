@@ -46,8 +46,6 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
-      this.alertMessage = 'Майнинг начат';
-      this.alertColor = '#212326';
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");
         return;
@@ -60,8 +58,6 @@ export default {
         this.calculateRemainingTime();
         this.startMiningTimer();
       } catch (error) {
-        this.alertMessage = error;
-        this.alertColor = '#212326';
         console.error('Error fetching data:', error);
       }
     },
