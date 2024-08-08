@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <div class="main_top">
-      <div class="container">
+      <Loader  v-if="!top2"/>
+      <div class="container" v-if="top2">
         <div class="image-container">
           <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
           <img v-else src="../assets/noPhoto.png" class="img_small">
@@ -16,7 +17,8 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <Loader  v-if="!top1"/>
+      <div class="container"  v-if="top1">
         <div class="image-container">
           <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
           <img v-else src="../assets/noPhoto.png" class="img_big">
@@ -31,7 +33,8 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <Loader  v-if="!top3"/>
+      <div class="container" v-if="top3">
         <div class="image-container">
           <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
           <img v-else src="../assets/noPhoto.png" class="img_smallest">
@@ -63,16 +66,19 @@
     </div>
     <div class="bottom">
       <div class="bottom_card" v-for="(user, index) in top" :key="index">
-        <img v-if="user.photo_url" :src="user.photo_url" alt="" >
-        <img v-else src="../assets/noPhoto.png">
-        <div class="name_container">
-          <p class="name">{{user.username || 'MINER'}}</p>
-          <div class="divider"></div>
-        </div>
-        <div class="amount">
-          <p class="amount_text"> {{formatNumber(Math.floor(user.balance))}} </p>
-          <div class="number">
-            <p class="number_text">{{4 + index}}</p>
+        <Loader v-if="!user"/>
+        <div v-else>
+          <img v-if="user.photo_url" :src="user.photo_url" alt="" >
+          <img v-else src="../assets/noPhoto.png">
+          <div class="name_container">
+            <p class="name">{{user.username || 'MINER'}}</p>
+            <div class="divider"></div>
+          </div>
+          <div class="amount">
+            <p class="amount_text"> {{formatNumber(Math.floor(user.balance))}} </p>
+            <div class="number">
+              <p class="number_text">{{4 + index}}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -83,8 +89,9 @@
 
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
+import Loader from "../components/LoaderSpin.vue";
 export default {
-  components: { AlertMessage } ,
+  components: { AlertMessage, Loader } ,
   data() {
     return {
       top:[
