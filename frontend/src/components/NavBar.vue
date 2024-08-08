@@ -13,7 +13,10 @@
         <p class="title">TOP</p>
     </div>
     <div class="mainButton" @click="spinImage">
-        <img ref="spinner" class="fan-btn" src="../assets/icon-spinner.png" alt="">
+        <div class="fan-btn">
+            <img ref="spinner" style="width: 100%;" src="../assets/icon-spinner.png" alt="">
+        </div>
+       
     </div>
     <div class="button" @click="moveto('/friends')">
         <div class="icon">
@@ -53,6 +56,11 @@ export default {
 <style>
 :root {
     --color-gradient: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .spin {
