@@ -99,17 +99,6 @@ export default {
     margin: 0;
     width: 70%;
 }
-.cost {
-    background-color: #535453;
-    border-radius: 10px;
-    filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-    align-items: center;
-    height: 30px;
-}
 .modal{
     background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
     border-top: 2px solid #00C5FF;
