@@ -4,7 +4,7 @@
     <Spinner @touchstart.passive.prevent="handleTouchStart" :level="video_lvl" :isMining="remainingTime>0"/>
 
     <div class="stats-block">
-      <div class="energy-block" @click="this.$router.push('/boost')">
+      <div class="energy-block" @click="moveTo('/boost')">
         <p>{{ formatNumber(energy) }}/{{ formatNumber(max_energy) }}</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
@@ -12,7 +12,7 @@
         <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
         <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
       </div>
-      <div class="upgrade-block" @click="this.$router.push('/upgrade')">
+      <div class="upgrade-block" @click="moveTo('/upgrade')">
         <p style="font-size: 8px;">UPGRADE</p>
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
@@ -42,10 +42,16 @@ export default {
     };
   },
   methods: {
+    moveTo(url){
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        this.$router.push(url)
+      },
     formatNumber(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");
         return;

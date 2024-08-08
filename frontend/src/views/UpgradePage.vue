@@ -110,6 +110,7 @@ export default {
     },
     methods:{
         async upgrade(){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             let data = {'user_id':this.$user.data.user_id}
             try {
                 const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
@@ -124,6 +125,7 @@ export default {
             }
         },
         toggleModal(){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             this.name = 'MINING TIME'
             this.lvl = this.mining_time_lvl + 1
             this.up = '+30 MINUTES'

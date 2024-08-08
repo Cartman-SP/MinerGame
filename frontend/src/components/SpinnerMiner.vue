@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     createMiniCoin(event) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,

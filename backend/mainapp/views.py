@@ -30,7 +30,9 @@ def get_user_profile_photo(bot_token, user_id):
                 file_path = file_info_data['result']['file_path']
                 file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_path}'
                 return file_url
-    return None
+            else:
+                return 'none'
+    return 'none'
 
 @api_view(['GET'])
 def get_or_create_user(request):

@@ -1,12 +1,12 @@
 <template>
   <div class="nav">
-    <div class="button" @click="this.$router.push('/wallet')">
+    <div class="button" @click="moveto('/wallet')">
         <div class="icon">
             <img src="../assets/icon-wallet.png" alt="">
         </div>
         <p class="title">WALLET</p>
     </div>
-    <div class="button" @click="this.$router.push('/top')">
+    <div class="button" @click="moveto('/top')">
         <div class="icon">
             <img src="../assets/icon-top.png" alt="">
         </div>
@@ -15,13 +15,13 @@
     <div class="mainButton" @click="spinImage">
         <img ref="spinner" class="fan-btn" src="../assets/icon-spinner.png" alt="">
     </div>
-    <div class="button" @click="this.$router.push('/friends')">
+    <div class="button" @click="moveto('/friends')">
         <div class="icon">
             <img  style="width: 25px;" src="../assets/icon-friend.png" alt="">
         </div>
         <p class="title">FRIENDS</p>
     </div>
-    <div class="button"  @click="this.$router.push('/task')">
+    <div class="button"  @click="moveto('/task')">
         <div class="icon">
             <img src="../assets/icon-task.png" alt="">
         </div>
@@ -41,6 +41,10 @@ export default {
                 spinner.classList.remove('spin');
             
             }, 500);
+        },
+        moveto(url){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$router.push(url);
         }
     }
 }

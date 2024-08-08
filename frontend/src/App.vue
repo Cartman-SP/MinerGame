@@ -35,6 +35,7 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     toggleModal(){
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
       if (this.showModal) {
           const modalwindow = this.$refs.modal;
           modalwindow.classList.remove('show');

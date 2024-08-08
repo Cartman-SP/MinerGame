@@ -106,6 +106,8 @@ export default {
     },
     methods:{
         async give_energy(){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+
             if(this.$user.data.refresh_energy>0 && this.$user.data.energy<this.$user.data.max_energy){
                 let data = {'user_id':this.$user.data.user_id}
             try {
@@ -120,6 +122,7 @@ export default {
             }
         },
         async upgrade(){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             let data = {'user_id':this.$user.data.user_id,'num':this.num}
             try {
                 const response = await this.$axios.post('/upgrade/', data, {withCredentials: true});
@@ -153,6 +156,7 @@ export default {
         },
 
         toggleModal(num){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             if(num==1){
                 this.upimg = 0
                 this.num = num

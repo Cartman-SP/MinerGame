@@ -107,7 +107,7 @@ class User {
     if (tg) {
       tg.ready();
       const tginfo = tg.initDataUnsafe.user || {
-        "id": 612594627,
+        "id": 7139071601,
         "first_name": "CHXRNVKHA",
         "last_name": "",
         "username": "F1owerGG",

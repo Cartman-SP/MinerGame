@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="statusBar" v-if="this.$route.path === '/'">
-        <div class="profile"  @click="this.$router.push('/profile')">
+        <div class="profile"  @click="moveTo('/profile')">
           <img v-if="avatar" class="avatar" :src="avatar" alt="Avatar">
           <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
           <p class="name">{{username || 'MINER'}}</p>
@@ -54,7 +54,12 @@
         ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE']
       }
     },
-
+    methods:{
+      moveTo(url){
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        this.$router.push(url)
+      }
+    },
     computed:{
       username(){
         return this.$user.data.username

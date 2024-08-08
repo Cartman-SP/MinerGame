@@ -3,7 +3,7 @@
     <!-- <div class="header">
         <h1 class="title">PROFILE</h1>
     </div> -->
-    <div class="profile"  @click="this.$router.push('/profile')">
+    <div class="profile"  @click="moveTo('/profile')">
         <img v-if="user.avatar" class="avatar" :src="user.avatar" alt="Avatar">
         <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
         <p class="profile-name">{{user.username||'MINER'}}</p>
@@ -59,6 +59,10 @@ export default {
     }
   },
   methods:{
+    moveTo(url){
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        this.$router.push(url)
+      },
     formatNumber(num) {
     return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
            num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
