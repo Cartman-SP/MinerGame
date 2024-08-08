@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import *
-from .serializers import TelegramUserSerializer, RoomSerializer
+from .serializers import *
 import requests 
 
 
@@ -95,11 +95,11 @@ def get_or_create_user(request):
             if date_difference > timedelta(days=1):
                 user.daily_reward_day = 0
             user.daily_reward_claimed = False
-
-        if(is_premium=='“true”'):
+        if(is_premium=='true'):
             user.ispremium = True
         else:
             user.ispremium = False
+        user.save()
         photo_url = get_user_profile_photo(BOT_TOKEN, user_id)
         if photo_url:
             user.photo_url = photo_url
@@ -227,7 +227,7 @@ def check_subscribe(request):
     response = requests.get(url, params=params)
     data = response.json()
     user = TelegramUser.objects.get(user_id=user_id)
-    tasks = Task.objects.filter(type='subscribe')
+    tasks = Task.objects.filter(typeT='subscribe')
 
     if tasks:
         for task in tasks:
@@ -336,3 +336,39 @@ def get_top(request):
     }
     
     return Response(response_data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def sitevisited(request):
+    task_id = request.data.get('task_id')
+    user_id = request.data.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    task = Task.objects.get(id=task_id)
+    try:
+        usertask = UserTask.objects.get(user=user,task=task)
+        if (not(usertask.complete)):
+            usertask.complete = True
+            user.balance+=task.reward
+    except Exception as e:
+        usertask = UserTask.objects.create(user=user,task=task)
+        if (not(usertask.complete)):
+            usertask.complete = True
+            user.balance+=task.reward
+        usertask.save()
+        user.save()
+        return Response({"usetask":usertask,'balance':user.balance}, status=status.HTTP_200_OK)
+    
+@api_view(['GET'])
+def gettasks(request):
+    user_id = request.query_params.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    tasks = Task.objects.filter()
+    serializer = TaskSerializer(tasks, many=True)
+    for i in serializer:
+        try:
+            usertask = UserTask.objects.get(task=i['id'],user=user)
+            complete = usertask.complete
+        except Exception as e:
+            complete = False
+        i['complete'] = complete
+    print(serializer)
+    return Response(serializer, status=status.HTTP_200_OK)

@@ -189,7 +189,14 @@ computed:{
     }
 },
 methods:{
-
+  async gettasks(){
+        try{
+            const response = await this.$axios.get('/gettasks/', {params:{user_id: this.$user.data.user_id}})
+            console.log(response.data)
+          }catch(error){
+            console.log(error)
+        }
+    },
     open_link(){
       const url = 'https://vk.com/';
       window.open(url, '_blank');
@@ -212,7 +219,7 @@ methods:{
     async check_subscribe(){
         try{
             console.log(this.$user.data.user_id)
-            const response = this.$axios.get('/check_subscribe/', {params:{user_id: this.$user.data.user_id}})
+            const response = await this.$axios.get('/check_subscribe/', {params:{user_id: this.$user.data.user_id}})
             this.$user.data.balance = response.data.balance
             this.$user.data.subscribed = response.data.subscribed
             this.$user.data.subscribed_money_gived = response.data.subscribed_money_gived
@@ -259,6 +266,7 @@ methods:{
 
 mounted(){
     this.check_subscribe()
+    this.gettasks()
 }
 }
 </script>

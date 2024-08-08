@@ -6,6 +6,12 @@ class TelegramUserSerializer(serializers.ModelSerializer):
         model = TelegramUser
         fields = '__all__'
 
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+
+
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room

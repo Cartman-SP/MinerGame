@@ -11,5 +11,6 @@ urlpatterns = [
     path('get_friends/',get_friends,name='get_friends'),
     path('claim_reward/',claim_reward,name='claim_reward'),
     path('get_top/',get_top,name='get_top'),
-    path('upgrade_mining/',upgrade_mining)
+    path('upgrade_mining/',upgrade_mining),
+    path('sitevisited/',sitevisited)
 ]

@@ -15,6 +15,9 @@
             <div class="lineContainer" v-if="lvl<10">
               <div class="line" :style="lineStyle" ></div>
             </div>
+            <div class="lineContainer" v-else>
+              <div class="line" style="width:100%;" ></div>
+            </div>
             <p v-if="lvl<10" class="goals">{{ lvl }}/10</p>
         </div>
     </div>
