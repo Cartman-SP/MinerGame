@@ -187,7 +187,7 @@
           </div>
         </div>
         <div @click="toggleModal" class="collect" style="font-size: 10px; background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%)" v-if="this.$user.data.daily_reward_claimed">
-          БУДЕТ ДОСТУПНО ЧЕРЕЗ: {{ '00:00' }}
+          БУДЕТ ДОСТУПНО ЧЕРЕЗ: {{ countdown }}
         </div>
         <div v-else class="collect" @click="toggleModal">
           ЗАБРАТЬ ПРИЗ
@@ -199,147 +199,196 @@
 
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
+
 export default {
-  components: { AlertMessage } ,
-data(){
-    return{
-        showModal: false,
-        tasks: [],
-        alertMessage: '',
-        alertColor: '',
-    }
-},
-computed:{
-    days(){
-        return this.$user.data.daily_reward_day
+  components: { AlertMessage },
+  data() {
+    return {
+      showModal: false,
+      tasks: [],
+      alertMessage: '',
+      alertColor: '',
+      countdown: '',
+      timer: null,
+      resetTimer: null, // Таймер для сброса claimed
+    };
+  },
+  computed: {
+    days() {
+      return this.$user.data.daily_reward_day;
     },
-    invite(){
-        return 'https://t.me/ylionminerbot/ylionminer?startapp='+this.$user.data.user_id
+    invite() {
+      return 'https://t.me/ylionminerbot/ylionminer?startapp=' + this.$user.data.user_id;
     },
-    claimed(){
-        return this.$user.data.daily_reward_claimed
+    claimed() {
+      return this.$user.data.daily_reward_claimed;
     },
-    friends_invited(){
-        return this.$user.data.friends_invited
+    friends_invited() {
+      return this.$user.data.friends_invited;
     },
-    subscribed(){
-      return this.$user.data.subscribed
-    }
-
-},
-methods:{
-
-  async visit_site(task_id, link) {
-    window.open(link, '_blank');
-    try {
+    subscribed() {
+      return this.$user.data.subscribed;
+    },
+  },
+  methods: {
+    async fetchDailyRewardStatus() {
+      try {
+        const response = await this.$axios.get('/check_daily_reward_status/', {
+          params: { user_id: this.$user.data.user_id }
+        });
+        this.$user.data.daily_reward_claimed = response.data.daily_reward_claimed;
+      } catch (error) {
+        console.error('Error fetching daily reward status:', error);
+      }
+    },
+    calculateRemainingTime() {
+      const nowUTC = new Date();
+      const endOfDayUTC = new Date(Date.UTC(nowUTC.getUTCFullYear(), nowUTC.getUTCMonth(), nowUTC.getUTCDate(), 23, 59, 59));
+      const timeDiff = endOfDayUTC - nowUTC;
+      const remainingHours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const remainingMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const remainingSeconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+      this.countdown = `${String(remainingHours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    },
+    startCountdown() {
+      this.calculateRemainingTime();
+      this.timer = setInterval(this.calculateRemainingTime, 1000);
+    },
+    stopCountdown() {
+      clearInterval(this.timer);
+    },
+    startResetTimer() {
+      this.resetTimer = setInterval(() => {
+        const nowUTC = new Date();
+        if (nowUTC.getUTCHours() === 0 && nowUTC.getUTCMinutes() === 0 && nowUTC.getUTCSeconds() === 0) {
+          this.resetDailyRewardClaimed();
+        }
+      }, 1000); // Проверяем каждую секунду
+    },
+    stopResetTimer() {
+      clearInterval(this.resetTimer);
+    },
+    async resetDailyRewardClaimed() {
+      try {
+        this.$user.data.daily_reward_claimed = false;
+        console.log('Daily reward status reset at midnight UTC.');
+      } catch (error) {
+        console.error('Error resetting daily reward status:', error);
+      }
+    },
+    async visit_site(task_id, link) {
+      window.open(link, '_blank');
+      try {
         const response = await this.$axios.post('/sitevisited/', {
-            user_id: this.$user.data.user_id,
-            task_id: task_id
+          user_id: this.$user.data.user_id,
+          task_id: task_id
         }, { withCredentials: true });
-        this.$user.data.balance = response.data.balance
-        // Если запрос прошел успешно, находим объект в массиве и обновляем его
+        this.$user.data.balance = response.data.balance;
         const task = this.tasks.find(task => task.id === task_id);
         if (task) {
-            task.complete = true;
+          task.complete = true;
         }
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-},
-
-  formatNumber(number) {
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    },
-  async gettasks(){
-        try{
-            const response = await this.$axios.get('/get_task/', {params:{user_id: this.$user.data.user_id}})
-            this.tasks = response.data
-            console.log(this.tasks)
-          }catch(error){
-            console.log(error)
-        }
-    },
-    open_link(){
-      const url = 'https://vk.com/';
-      window.open(url, '_blank');
-    },
-
-    async claim_reward(){
-        try {
-        const response = await this.$axios.post('/claim_reward/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
-        this.$user.data.balance = response.data.balance;
-        this.$user.data.daily_reward_claimed = response.data.daily_reward_claimed
-        this.$user.data.daily_reward_day = response.data.daily_reward_day
-        console.log("Mining end time set to:", this.$user.data.mining_end);
-        this.calculateRemainingTime();
-        this.startMiningTimer();
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
-
-    async check_subscribe(){
-        try{
-            console.log(this.$user.data.user_id)
-            const response = await this.$axios.get('/check_subscribe/', {params:{user_id: this.$user.data.user_id}})
-            this.$user.data.balance = response.data.balance
-            this.$user.data.subscribed = response.data.subscribed
-            this.$user.data.subscribed_money_gived = response.data.subscribed_money_gived
-        }catch(error){
-            console.log(error)
-        }
+    formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    },
+    async gettasks() {
+      try {
+        const response = await this.$axios.get('/get_task/', { params: { user_id: this.$user.data.user_id } });
+        this.tasks = response.data;
+        console.log(this.tasks);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    open_link() {
+      const url = 'https://vk.com/';
+      window.open(url, '_blank');
+    },
+    async claim_reward() {
+      try {
+        const response = await this.$axios.post('/claim_reward/', { user_id: this.$user.data.user_id, }, { withCredentials: true });
+        this.$user.data.balance = response.data.balance;
+        this.$user.data.daily_reward_claimed = response.data.daily_reward_claimed;
+        this.$user.data.daily_reward_day = response.data.daily_reward_day;
+        console.log("Mining end time set to:", this.$user.data.mining_end);
+        this.calculateRemainingTime();
+        this.startCountdown();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async check_subscribe() {
+      try {
+        console.log(this.$user.data.user_id);
+        const response = await this.$axios.get('/check_subscribe/', { params: { user_id: this.$user.data.user_id } });
+        this.$user.data.balance = response.data.balance;
+        this.$user.data.subscribed = response.data.subscribed;
+        this.$user.data.subscribed_money_gived = response.data.subscribed_money_gived;
+      } catch (error) {
+        console.log(error);
+      }
     },
     redirectToTelegram() {
-        window.location.href = 'https://t.me/ylionminer';
-        this.check_subscribe()
+      window.location.href = 'https://t.me/ylionminer';
+      this.check_subscribe();
     },
-    redirectToTelegram2(tag){
-      const url = tag.slice(1); 
+    redirectToTelegram2(tag) {
+      const url = tag.slice(1);
       window.location.href = `https://t.me/${url}`;
-      this.check_subscribe()
+      this.check_subscribe();
     },
-    shareLink(){
-        const url = this.invite;
-        const text = '\nПривет! Хочу пригласить тебя поиграть в классную игру, где ты сможешь создать свою собственную майнинг ферму прямо на телефоне! Развивай свою империю, добывай криптовалюту и зарабатывай вместе со мной! \nА в качестве бонуса при запуске игры тебя ждет приятное вознаграждение 💸';
-        window.location.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    shareLink() {
+      const url = this.invite;
+      const text = '\nПривет! Хочу пригласить тебя поиграть в классную игру, где ты сможешь создать свою собственную майнинг ферму прямо на телефоне! Развивай свою империю, добывай криптовалюту и зарабатывай вместе со мной! \nА в качестве бонуса при запуске игры тебя ждет приятное вознаграждение 💸';
+      window.location.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
     },
-    toggleModal(){
-        if (this.showModal) {
-            if(this.$user.data.daily_reward_claimed){
-                console.log('already claimed')
-            }else{
-                this.claim_reward()   
-                
-            }
-            const modalwindow = this.$refs.modal;
-            modalwindow.classList.remove('show');
-            const modaloverlay = this.$refs.overlay;
-            modaloverlay.classList.remove('showOverlay');
-
-            setTimeout(() => {
-                this.showModal = false
-            }, 400);
-            
-
+    toggleModal() {
+      if (this.showModal) {
+        if (this.$user.data.daily_reward_claimed) {
+          console.log('already claimed');
         } else {
-            this.showModal = true
-            setTimeout(() => {
-                const modalwindow = this.$refs.modal;
-                modalwindow.classList.add('show');
-                const modaloverlay = this.$refs.overlay;
-                modaloverlay.classList.add('showOverlay');
-            }, 10);
+          this.claim_reward();
         }
-    },
-},
+        const modalwindow = this.$refs.modal;
+        modalwindow.classList.remove('show');
+        const modaloverlay = this.$refs.overlay;
+        modaloverlay.classList.remove('showOverlay');
 
-mounted(){
-    this.check_subscribe()
-    this.gettasks()
-}
-}
+        setTimeout(() => {
+          this.showModal = false;
+        }, 400);
+      } else {
+        this.showModal = true;
+        setTimeout(() => {
+          const modalwindow = this.$refs.modal;
+          modalwindow.classList.add('show');
+          const modaloverlay = this.$refs.overlay;
+          modaloverlay.classList.add('showOverlay');
+        }, 10);
+      }
+    },
+  },
+  mounted() {
+    this.check_subscribe();
+    this.gettasks();
+    this.startCountdown();
+    this.startResetTimer();
+  },
+  beforeUnmount() {
+    this.stopCountdown();
+    this.stopResetTimer();
+  }
+};
 </script>
+
+
+
+
+
 
 <style scoped>
 .logo-background{
