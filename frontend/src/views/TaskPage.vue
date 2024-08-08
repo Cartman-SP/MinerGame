@@ -467,9 +467,9 @@ mounted(){
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 10px;
+    grid-column-gap: 1%;
     grid-row-gap: 10px;
-    padding: 0 15px;
+    padding: 0 4%;
     margin-bottom: 150px;
 }
 .task:hover{
