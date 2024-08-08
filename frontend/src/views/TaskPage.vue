@@ -175,6 +175,8 @@ export default {
 data(){
     return{
         showModal: false,
+        alertMessage: '',
+        alertColor: '',
     }
 },
 computed:{
@@ -237,6 +239,7 @@ methods:{
                 console.log('already claimed')
             }else{
                 this.claim_reward()   
+                
             }
             const modalwindow = this.$refs.modal;
             modalwindow.classList.remove('show');

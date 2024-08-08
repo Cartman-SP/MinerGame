@@ -58,13 +58,14 @@
   <style scoped>
   .show {
     opacity: 100%;
-    top: 20px;
+    bottom: 20px;
     transition: all .2s ease;
+    filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
   }
   
   .hide {
     opacity: 0;
-    top: 0px;
+    bottom: 0px;
     transition: all .2s ease;
   }
   
