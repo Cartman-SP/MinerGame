@@ -93,6 +93,7 @@ class EnergyConsumer(AsyncWebsocketConsumer):
         else:
             telegram_user.energy += 5
         telegram_user.secs_in_game +=5
+        telegram_user.last_login = timezone.now()
         telegram_user.save()
         return telegram_user.energy
 
