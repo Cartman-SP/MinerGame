@@ -58,13 +58,13 @@
   <style scoped>
   .show {
     opacity: 100%;
-    bottom: 20px;
+    top: 20px;
     transition: all .2s ease;
   }
   
   .hide {
     opacity: 0;
-    bottom: 0px;
+    top: 0px;
     transition: all .2s ease;
   }
   

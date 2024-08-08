@@ -101,7 +101,7 @@ export default {
   margin-top: 10px;
 }
 .balance-block{
-  width: 350px;
+  width: 80vw;
   padding: 5px;
   height: 50px;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);

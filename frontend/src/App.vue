@@ -1,9 +1,16 @@
 <template>
-  <img v-if="!loaded" src="../src/assets/load.jpg" style="object-fit: cover; width: 100%;height: 100%; position:absolute; z-index: 999; left:0; top:0;" alt="">
+  <img v-if="!loaded" src="../src/assets/load.gif" style="object-fit: cover; width: 100%;height: 100%; position:absolute; z-index: 999; left:0; top:0;" alt="">
   <StatusBar/>
   <Balance/>
   <div style="height: 100%;">
     <router-view/>
+  </div>
+  <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
+  <div class="modal" v-if="showModal" ref="modal">
+      <p  class="price">ПОКА ТЕБЯ <br> НЕ БЫЛО В ИГРЕ</p>
+      <img style="margin-top: 20px; scale: .6;" src="../src/assets/logo-small-blue.png" alt="">
+      <h3 class="collected">+{{ this.$user.data.mined_while_of }}</h3>
+      <button class="ok" @click="toggleModal">ЗАБРАТЬ</button>
   </div>
   <NavBar/>
 
@@ -20,9 +27,32 @@ export default {
     return {
       logs: '',
       loaded: false,
+      showModal: false,
     }
   },
   methods: {
+    toggleModal(){
+      if (this.showModal) {
+          const modalwindow = this.$refs.modal;
+          modalwindow.classList.remove('show');
+          const modaloverlay = this.$refs.overlay;
+          modaloverlay.classList.remove('showOverlay');
+
+          setTimeout(() => {
+              this.showModal = false
+          }, 400);
+          
+
+      } else {
+          this.showModal = true
+          setTimeout(() => {
+              const modalwindow = this.$refs.modal;
+              modalwindow.classList.add('show');
+              const modaloverlay = this.$refs.overlay;
+              modaloverlay.classList.add('showOverlay');
+          }, 10);
+      }
+    },
     async copyLink() {
       try {
         await navigator.clipboard.writeText(this.link);
@@ -35,6 +65,7 @@ export default {
     load() {
       setTimeout(() => {
         this.loaded = true;
+        this.toggleModal()
       }, 2000); // 5 seconds delay
     }
   },
@@ -47,6 +78,75 @@ export default {
 
 
 <style>
+.ok{
+  background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+  border-radius: 10px;
+  padding: 10px 30px;
+  border: none;
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.price{
+    color: white;
+    font-family: "Druk Wide";
+    font-size: 12px;
+    margin: 0;
+    width: 70%;
+}
+.cost {
+    background-color: #535453;
+    border-radius: 10px;
+    filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    align-items: center;
+    height: 30px;
+}
+.modal{
+    background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
+    border-top: 2px solid #00C5FF;
+    filter: drop-shadow(0 -5px 5px #00c3ff8d);
+    border-radius: 10px 10px 0 0;
+    padding: 20px 0;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 280px;
+    bottom: -500px;
+    z-index: 10;
+    transition: all .4s ease;
+}
+.show{
+    bottom: 0;
+    transition: all .4s ease;
+}
+.showOverlay{
+    opacity: 1 !important;
+    transition: all .4s ease;
+}
+.overlay{
+    opacity: 0;
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.551);
+    height: 100vh;
+    width: 100vw;
+    transition: all .4s ease;
+}
+.modal h3{
+    color: white;
+    font-family: "Druk Wide";
+    font-size: 20px;
+    margin: 0;
+}
 @font-face {
     font-family: "Druk Wide";
     src: url("https://db.onlinewebfonts.com/t/11289a678c4607112a7ffdb6b86812c8.eot");
@@ -67,6 +167,8 @@ export default {
 }
 
 * {
+  -webkit-tap-highlight-color: transparent; /* отключает подсветку при клике */
+  -webkit-appearance: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -83,7 +185,7 @@ body{
   margin: 0;
   padding: 0;
   touch-action: manipulation;
-  background: linear-gradient(0deg, rgba(155,155,155,1) 0%, rgba(1,0,1,1) 40%, rgba(1,0,1,1) 70%, rgba(155,155,155,1) 100%);
+  background: linear-gradient(180deg, rgba(155,155,155,1) 0%, rgba(1,0,1,1) 40%, rgba(1,0,1,1) 50%, rgba(155,155,155,1) 100%);
   background-position-y: 30px;
 }
 </style>

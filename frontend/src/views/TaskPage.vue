@@ -186,7 +186,10 @@
             <p class="amount">100 000</p>
           </div>
         </div>
-        <div class="collect" @click="toggleModal">
+        <div @click="toggleModal" class="collect" style="font-size: 10px; background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%)" v-if="this.$user.data.daily_reward_claimed">
+          БУДЕТ ДОСТУПНО ЧЕРЕЗ: {{ '00:00' }}
+        </div>
+        <div v-else class="collect" @click="toggleModal">
           ЗАБРАТЬ ПРИЗ
         </div>
     </div>
@@ -463,7 +466,7 @@ mounted(){
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-    padding: 0 10px;
+    padding: 0 15px;
     margin-bottom: 150px;
 }
 .taskpage{

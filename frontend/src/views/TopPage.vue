@@ -87,7 +87,8 @@ export default {
   components: { AlertMessage } ,
   data() {
     return {
-      top:[],
+      top:[
+],
       user_position: 0,
       top1:NaN,
       top2:NaN,
@@ -148,6 +149,8 @@ p{
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 60vh;
+  overflow-y: scroll;
 }
 .main_top{
   display: flex;
@@ -227,12 +230,11 @@ p{
   gap: 10px;
   border-top: 1px solid #00E6FF;
   margin-top: 20px;
-  height: 100vh;
   background: rgb(85, 85, 85);
   border-radius: 7px 7px 0 0;
   box-shadow: 0 -5px 10px rgba(0, 230, 255, 0.3);
   padding: 20px;
-
+  min-height: 100px;
 }
 .bottom_card img{
   height: 65px;

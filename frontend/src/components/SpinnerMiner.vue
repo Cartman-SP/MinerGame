@@ -1,12 +1,12 @@
 <template>
-  <div :class="['spinner', `level-${level}`]" @click="createMiniCoin()">
+  <div :class="['spinner', `level-${level}`]" @click="createMiniCoin($event)">
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
     </div>
 
     <transition-group name="coin-fall" tag="div" class="mini-coins-container">
-      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top, left: coin.left }" class="mini-coin">
+      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
         <span class="coin-value">+{{ coin.value }}</span>
       </div>
     </transition-group>
@@ -84,12 +84,12 @@ export default {
     this.preloadImages();
   },
   methods: {
-    createMiniCoin() {
+    createMiniCoin(event) {
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,
-        top: Math.random() * 100 + '%',
-        left: Math.random() * 100 + '%',
+        top: event.clientY-200, // Используем координаты клика
+        left: event.clientX-30, // Используем координаты клика
       };
       this.miniCoins.push(newCoin);
       setTimeout(() => {
@@ -156,9 +156,9 @@ export default {
 }
 .spinner {
   user-select: none;
-  width: 350px;
-  height: 350px;
-  margin: -20px 0 10px 0;
+  width: 50vh;
+  height: 50vh;
+  margin: -5vh 0 1vh 0;
   animation: pulseGlow 2s infinite;
 }
 
