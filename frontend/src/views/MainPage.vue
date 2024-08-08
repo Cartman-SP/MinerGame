@@ -17,16 +17,22 @@
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
     </div>
+    <AlertMessage :message="alertMessage" :color="alertColor"/>
   </div>
 </template>
 
 <script>
 import Spinner from '../components/SpinnerMiner.vue';
 
+import AlertMessage from "../components/AlertMessage.vue";
+
 export default {
-  components: { Spinner } ,
+  components: { Spinner, AlertMessage } ,
   data() {
     return {
+      alertColor: '',
+      alertMessage: '',
+
       socket: null,
       miningSocket: null,
       energySocket: null,
@@ -40,6 +46,8 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
+      this.alertMessage = 'Майнинг начат';
+      this.alertColor = '#212326';
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");
         return;
