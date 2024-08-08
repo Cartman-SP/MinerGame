@@ -88,13 +88,15 @@
                 </div>
             </div>
         </div>
-
+        <AlertMessage :message="alertMessage" :color="alertColor"/>
     </div>
   
 </template>
 
 <script>
+import AlertMessage from "../components/AlertMessage.vue";
 export default {
+    components: { AlertMessage } ,
     data(){
         return{
             costs:[0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,350000000,'MAX LVL'],

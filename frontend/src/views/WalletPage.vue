@@ -19,10 +19,13 @@
                 <p class="name" style="font-size: 12px;">ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
             </div>
         </div>
+        <AlertMessage :message="alertMessage" :color="alertColor"/>
     </div>
 </template>
 <script>
+import AlertMessage from "../components/AlertMessage.vue";
 export default {
+    components: { AlertMessage } ,
     
 }
 </script>
