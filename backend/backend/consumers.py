@@ -8,12 +8,6 @@ from django.utils import timezone
 class MiningConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
-        self.mining_task = asyncio.create_task(self.mine_resources())
-
-    async def disconnect(self, close_code):
-        if hasattr(self, 'mining_task') and self.mining_task:
-            self.mining_task.cancel()
-        await self.update_last_login()
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -31,23 +25,6 @@ class MiningConsumer(AsyncWebsocketConsumer):
                 'energy': telegram_user.energy,
             }))
 
-    async def mine_resources(self):
-        while True:
-            await asyncio.sleep(5)
-            await self.send_mining_data()
-
-    async def send_mining_data(self):
-        user_id = self.scope["user"].id
-        telegram_user = await self.get_or_create_telegram_user(user_id)
-        if telegram_user:
-            increment = telegram_user.gph / 3600 * telegram_user.modifier
-            telegram_user.balance += increment
-            await self.update_telegram_user(telegram_user)
-
-            await self.send(text_data=json.dumps({
-                'balance': telegram_user.balance,
-                'energy': telegram_user.energy,
-            }))
 
     @database_sync_to_async
     def get_or_create_telegram_user(self, user_id):
@@ -57,23 +34,14 @@ class MiningConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def update_telegram_user(self, telegram_user):
-        telegram_user.save()
-
-    @database_sync_to_async
-    def update_last_login(self):
-        user_id = self.scope["user"].id
-        TelegramUser = apps.get_model('mainapp', 'TelegramUser')
-        telegram_user = TelegramUser.objects.get(user_id=user_id)
         telegram_user.last_login = timezone.now()
         telegram_user.save()
+
 
 
 class TapConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
-
-    async def disconnect(self, close_code):
-        await self.update_last_login()
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -102,24 +70,12 @@ class TapConsumer(AsyncWebsocketConsumer):
     def update_telegram_user(self, telegram_user):
         telegram_user.save()
 
-    @database_sync_to_async
-    def update_last_login(self):
-        user_id = self.scope["user"].id
-        TelegramUser = apps.get_model('mainapp', 'TelegramUser')
-        try:
-            telegram_user = TelegramUser.objects.get(user_id=user_id)
-            telegram_user.last_login = timezone.now()
-            telegram_user.save()
-        except TelegramUser.DoesNotExist:
-            print(f"TelegramUser with user_id {user_id} does not exist.")
+
 
 
 class EnergyConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
-
-    async def disconnect(self, close_code):
-        await self.update_last_login()
 
     async def receive(self, text_data):
         user_id = json.loads(text_data).get('user_id')
@@ -147,14 +103,3 @@ class EnergyConsumer(AsyncWebsocketConsumer):
             return TelegramUser.objects.get(user_id=user_id)
         except TelegramUser.DoesNotExist:
             return None
-
-    @database_sync_to_async
-    def update_last_login(self):
-        user_id = self.scope["user"].id
-        TelegramUser = apps.get_model('mainapp', 'TelegramUser')
-        try:
-            telegram_user = TelegramUser.objects.get(user_id=user_id)
-            telegram_user.last_login = timezone.now()
-            telegram_user.save()
-        except TelegramUser.DoesNotExist:
-            print(f"TelegramUser with user_id {user_id} does not exist.")

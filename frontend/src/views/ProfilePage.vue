@@ -12,13 +12,13 @@
       <div class="container">
         <p class="name">БАЛАНС</p>
         <div class="info">
-          <p class="value">{{ Math.floor(user.balance) }}</p>
+          <p class="value">{{ formatNumber(user.balance) }}</p>
         </div>
       </div>
       <div class="container">
         <p class="name">РАНГ</p>
         <div class="info">
-          <p class="value">{{ user.lvl }}</p>
+          <p class="value">{{ ranks[user.lvl] }}</p>
         </div>
       </div>
       <div class="container">
@@ -36,7 +36,7 @@
       <div class="container">
         <p class="name">ПРИБЫЛЬ В ЧАС</p>
         <div class="info">
-          <p class="value">{{ user.gph }}</p>
+          <p class="value">{{ formatNumber(user.gph) }}</p>
         </div>
       </div>
     </div>
@@ -48,11 +48,22 @@
 import AlertMessage from "../components/AlertMessage.vue";
 export default {
   components: { AlertMessage } ,
+  data(){
+    return {
+      ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE']
+    }
+  },
   computed:{
     user(){
         return this.$user.data
     }
-
+  },
+  methods:{
+    formatNumber(num) {
+    return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
+           num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
+           num.toString();
+  },
   }
 }
 </script>

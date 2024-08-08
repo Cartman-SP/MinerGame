@@ -53,7 +53,7 @@ class Task(models.Model):
     reward = models.IntegerField()
     typeT = models.CharField(max_length=128)
     channel_id = models.CharField(max_length=256)
-    group_link = models.CharField(max_length=256)
+    site_link = models.CharField(max_length=256)
     friends_toAdd = models.IntegerField()
 
 class UserTask(models.Model):

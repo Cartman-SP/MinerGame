@@ -40,7 +40,7 @@
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
                 <p class="name">ПРИГЛАСИТЬ 12 ДРУЗЕЙ <br>+ 12 000</p>
-                <div class="logo-background" style="background: #a0a0a0;">
+                <div class="logo-background">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
                 <p class="name">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
-                <div class="logo-background" v-if="this.$user.data.subscribed">
+                <div class="logo-background" v-if="subscribed">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
                 <div class="logo-background" style="background: #a0a0a0;" v-else>
@@ -64,14 +64,43 @@
     <div class="other">
         <p class="naming" style="margin-top: 30px;">ЗАДАНИЯ</p>
         <div class="other-tasks">
-            <div class="other-task" @click="open_link">
-                <p class="other-name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 4 000</p>
-                <div class="other-logo-background">
+          <div v-for="i in tasks" :key="i">
+
+
+            <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='visit'">
+                <p class="other-name">ПЕРЕЙТИ ПО ССЫЛКЕ <br>+ {{formatNumber(i.reward)}}</p>
+                <div class="other-logo-background" v-if="i.complete">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
+                <div class="other-logo-background" style="background: #a0a0a0;" v-else>
+                  <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+              </div>
             </div>
+            <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='invite'">
+              <p class="other-name">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
+              <div class="other-logo-background" v-if="i.complete">
+                  <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+              </div>
+              <div class="other-logo-background" style="background: #a0a0a0;" v-else>
+                <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+            </div>
+          </div>
+          <div class="other-task" @click="redirectToTelegram2(i.channel_id)" v-if="i.typeT=='join'">
+            <p class="other-name">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ {{formatNumber(i.reward)}}</p>
+            <div class="other-logo-background" v-if="i.complete">
+                <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+            </div>
+            <div class="other-logo-background" style="background: #a0a0a0;" v-else>
+              <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+          </div>
+        </div>
+
+
+          </div>
         </div>
     </div>
+    
+    
 
 
     <div class="overlay" ref="overlay" @click="toggleModal" v-if="showModal"></div>
@@ -172,6 +201,7 @@ export default {
 data(){
     return{
         showModal: false,
+        tasks: [],
     }
 },
 computed:{
@@ -179,20 +209,48 @@ computed:{
         return this.$user.data.daily_reward_day
     },
     invite(){
-        return 'https://t.me/M1nerGamebot/Miner?startapp='+this.$user.data.user_id
+        return 'https://t.me/ylionminerbot/ylionminer?startapp='+this.$user.data.user_id
     },
     claimed(){
         return this.$user.data.daily_reward_claimed
     },
     friends_invited(){
         return this.$user.data.friends_invited
+    },
+    subscribed(){
+      return this.$user.data.subscribed
     }
+
 },
 methods:{
+
+  async visit_site(task_id, link) {
+    window.open(link, '_blank');
+    try {
+        const response = await this.$axios.post('/sitevisited/', {
+            user_id: this.$user.data.user_id,
+            task_id: task_id
+        }, { withCredentials: true });
+        this.$user.data.balance = response.data.balance
+        // Если запрос прошел успешно, находим объект в массиве и обновляем его
+        const task = this.tasks.find(task => task.id === task_id);
+        if (task) {
+            task.complete = true;
+        }
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+},
+
+  formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    },
   async gettasks(){
         try{
-            const response = await this.$axios.get('/gettasks/', {params:{user_id: this.$user.data.user_id}})
-            console.log(response.data)
+            const response = await this.$axios.get('/get_task/', {params:{user_id: this.$user.data.user_id}})
+            this.tasks = response.data
+            console.log(this.tasks)
           }catch(error){
             console.log(error)
         }
@@ -228,7 +286,13 @@ methods:{
         }
     },
     redirectToTelegram() {
-        window.location.href = 'https://t.me/MinerGam3';
+        window.location.href = 'https://t.me/ylionminer';
+        this.check_subscribe()
+    },
+    redirectToTelegram2(tag){
+      const url = tag.slice(1); 
+      window.location.href = `https://t.me/${url}`;
+      this.check_subscribe()
     },
     shareLink(){
         const url = this.invite;

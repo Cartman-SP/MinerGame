@@ -88,7 +88,7 @@ def get_or_create_user(request):
             referal.save()
         except:
             pass
-
+    mined_while_of = 0
     if user:
         date_difference = timezone.now().date() - user.daily_reward_date
         if user.daily_reward_date<timezone.now().date():
@@ -104,25 +104,28 @@ def get_or_create_user(request):
         if photo_url:
             user.photo_url = photo_url
             user.save()
-        
-        # Если last_login не Null, обновляем баланс и энергию
-        if user.last_login:
-            time_diff = timezone.now() - user.last_login
-            hours_diff = time_diff.total_seconds() / 3600
 
-            # Обновляем баланс и энергию
-            user.balance += user.gph * hours_diff
-            user.energy = min(user.max_energy, user.energy + 1800 * hours_diff)
+        if user.last_login:
+            if(user.mining_end>timezone.now()):
+                time_diff=timezone.now()-user.last_login
+            else:
+                time_diff = user.mining_end - user.last_login
+            if(time_diff>timedelta(seconds=0)):
+                hours_diff = time_diff.total_seconds() / 3600
+                mined_while_of = user.gph * hours_diff
+                user.balance += user.gph * hours_diff
+                user.energy = min(user.max_energy, user.energy + 1800 * hours_diff)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()
-        # Обновляем last_login
+
         user.last_login = timezone.now()
         user.save()
 
     user_serializer = TelegramUserSerializer(user)
     response_data = {
         "user": user_serializer.data,
+        "mined_while_of": mined_while_of
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
@@ -228,7 +231,7 @@ def check_subscribe(request):
     data = response.json()
     user = TelegramUser.objects.get(user_id=user_id)
     tasks = Task.objects.filter(typeT='subscribe')
-
+    print(data)
     if tasks:
         for task in tasks:
             try:
@@ -264,20 +267,20 @@ def check_subscribe(request):
                 print(321)
                 user.subscribed=True
                 user.save()
-                return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
+                return Response({'subscribed':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
             else:
                 print(123)
                 user.subscribed=True
                 user.balance+=5000
                 user.subscribe_money_gived=True
                 user.save()
-                return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
+                return Response({'subscribed':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
         else:
             user.subscribed = False
             user.save()
-            return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
+            return Response({'subscribed':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
     else:
-        return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
+        return Response({'subscribed':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
 
 
 
@@ -321,7 +324,7 @@ def get_top(request):
     user = TelegramUser.objects.get(user_id=user_id)
     
     # Получаем первых 7 пользователей, отсортированных по balance
-    top = TelegramUser.objects.order_by('-balance')[:7]
+    top = TelegramUser.objects.order_by('-balance')[:100]
     
     # Определяем позицию текущего пользователя
     user_position = TelegramUser.objects.filter(balance__gt=user.balance).count() + 1
@@ -353,22 +356,29 @@ def sitevisited(request):
         if (not(usertask.complete)):
             usertask.complete = True
             user.balance+=task.reward
-        usertask.save()
-        user.save()
-        return Response({"usetask":usertask,'balance':user.balance}, status=status.HTTP_200_OK)
+    usertask.save()
+    user.save()
+    return Response({'balance':user.balance}, status=status.HTTP_200_OK)
     
 @api_view(['GET'])
 def gettasks(request):
     user_id = request.query_params.get('user_id')
-    user = TelegramUser.objects.get(user_id=user_id)
-    tasks = Task.objects.filter()
+    try:
+        print(user_id)
+        user = TelegramUser.objects.get(user_id=user_id)
+    except TelegramUser.DoesNotExist:
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    tasks = Task.objects.all()
     serializer = TaskSerializer(tasks, many=True)
-    for i in serializer:
+    serialized_data = serializer.data
+    
+    for i in serialized_data:
         try:
-            usertask = UserTask.objects.get(task=i['id'],user=user)
+            usertask = UserTask.objects.get(task_id=i['id'], user=user)
             complete = usertask.complete
-        except Exception as e:
+        except UserTask.DoesNotExist:
             complete = False
         i['complete'] = complete
-    print(serializer)
-    return Response(serializer, status=status.HTTP_200_OK)
+    print(serialized_data)
+    return Response(serialized_data, status=status.HTTP_200_OK)

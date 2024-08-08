@@ -107,20 +107,24 @@ export default {
     },
     startMiningTimer() {
       if (this.miningTimer) {
-        clearInterval(this.miningTimer);
+        clearInterval(this.miningTimer);  // Clear any existing timer to avoid multiple intervals running simultaneously.
       }
+
       this.miningTimer = setInterval(() => {
         if (this.remainingTime > 0) {
-            const message = {
-              user_id: this.$user.data.user_id,
-              gph: this.$user.data.gph,
-            };
-            this.$user.data.miningsocket.send(JSON.stringify(message));
+          const message = {
+            user_id: this.$user.data.user_id,
+            gph: this.$user.data.gph,
+          };
+          this.$user.data.miningsocket.send(JSON.stringify(message));
+
+          this.remainingTime -= 1;  // Decrement remaining time after each second.
         } else {
-          clearInterval(this.miningTimer);
+          clearInterval(this.miningTimer);  // Stop the interval when remainingTime reaches 0.
         }
-      }, 1000); // каждую 1 секунд
+      }, 1000);  // Send a message every second (1000 milliseconds).
     },
+
     startEnergyUpdate() {
       setInterval(() => {
           const message = {

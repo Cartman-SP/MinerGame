@@ -38,6 +38,7 @@ class User {
       tapsocket: NaN,
       energysocket:NaN,
       miningsocket:NaN,
+      mined_while_of: 0,
     });
     this.loading = reactive({ status: false });
     this.error = null;
@@ -147,6 +148,7 @@ class User {
         this.data.daily_reward_date = response.data.user.daily_reward_date
         this.data.secs_in_game = response.data.user.secs_in_game
         this.data.video_lvl = response.data.user.video_lvl
+        this.data.mined_while_of = response.data.mined_while_of
         this.data.tapsocket = new WebSocket(`ws://localhost:8001/ws/some_path/${this.data.user_id}/`);
         this.data.tapsocket.onmessage = this.onMessage.bind(this);
         this.data.tapsocket.onopen = () => {
