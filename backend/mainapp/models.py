@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.contrib import admin
 
 class TelegramUser(models.Model):
-    user_id = models.CharField(max_length=1000,unique=True)
+    user_id = models.CharField(max_length=254,unique=True)
     username = models.CharField(max_length=128)
     usertag = models.CharField(max_length=128)
     balance = models.FloatField(default=5000)
@@ -14,7 +14,8 @@ class TelegramUser(models.Model):
     gph = models.FloatField(default=731)
     gpc = models.IntegerField(default=1)
     mining_end = models.DateTimeField(auto_now_add=True)
-    mining_duration = models.DurationField(default=timedelta(minutes=30))
+    mining_duration = models.DurationField(default=timedelta(minutes=60))
+    mining_time_lvl = models.IntegerField(default=1)
     last_login = models.DateTimeField(null=True, blank=True)
     max_energy = models.IntegerField(default=2000)
     enery_lvl = models.IntegerField(default=1)
@@ -52,8 +53,8 @@ class Room(models.Model):
 class Task(models.Model):
     reward = models.IntegerField()
     typeT = models.CharField(max_length=128)
-    channel_id = models.CharField(max_length=256)
-    site_link = models.CharField(max_length=256)
+    channel_id = models.CharField(max_length=254)
+    site_link = models.CharField(max_length=254)
     friends_toAdd = models.IntegerField()
 
 class UserTask(models.Model):

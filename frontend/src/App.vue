@@ -9,7 +9,7 @@
   <div class="modal" v-if="showModal" ref="modal">
       <p  class="price">ПОКА ТЕБЯ <br> НЕ БЫЛО В ИГРЕ</p>
       <img style="margin-top: 20px; scale: .6;" src="../src/assets/logo-small-blue.png" alt="">
-      <h3 class="collected">+{{ this.$user.data.mined_while_of }}</h3>
+      <h3 class="collected">+{{ formatNumber(Math.floor(this.$user.data.mined_while_of)) }}</h3>
       <button class="ok" @click="toggleModal">ЗАБРАТЬ</button>
   </div>
   <NavBar/>
@@ -31,6 +31,9 @@ export default {
     }
   },
   methods: {
+    formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    },
     toggleModal(){
       if (this.showModal) {
           const modalwindow = this.$refs.modal;

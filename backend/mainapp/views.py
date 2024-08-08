@@ -130,7 +130,17 @@ def get_or_create_user(request):
 
     return Response(response_data, status=status.HTTP_200_OK)
 
-
+@api_view(['POST'])
+def uptime(request):
+    user_id = request.data.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    upcost = [0,6500,45000,150000,500000]
+    if(user.balance>upcost[user.mining_time_lvl]):
+        user.mining_time_lvl+=1
+        user.balance-=upcost[user.mining_time_lvl]
+        user.mining_duration+=timedelta(minutes=30)
+    user.save()
+    return Response({'balance':user.balance,'mining_time_lvl':user.mining_time_lvl}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def set_max_energy(request):

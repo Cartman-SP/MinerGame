@@ -62,13 +62,13 @@
             <div class="statement">
                 <p class="price-locked-mining">MINING TIME<br> </p>
                 <div class="logo-background">
-                    <span style="font-size: 18px;">{{ refresh_energy }}/5</span>
+                    <span style="font-size: 18px;">{{ mining_time_lvl }} <br> <span style="font-size: 18px;">lvl</span></span>
                 </div>
             </div>
         </div>
+        
 
-
-        <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
+        <div class="overlay" ref="overlay" @click="toggleModal()" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
             <img class="icon" src="../assets/icon-miningTime-boost.png" alt="">
 
@@ -105,13 +105,14 @@ export default {
             up: '',
             cost: 0,
             num:1,
+            upcost: [0,6500,45000,150000,500000]
         }
     },
     methods:{
         async upgrade(){
             let data = {'user_id':this.$user.data.user_id}
             try {
-                const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
+                const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
                 console.log(response.data);
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
@@ -122,15 +123,11 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
-        toggleModal(num){
-            if(num===1){
-                this.upimg = 0
-                this.num = num
-                this.name = 'MINING TIME'
-                this.lvl = this.enery_lvl + 1
-                this.up = '+250 ENERGY'
-                this.cost = '100'
-            }
+        toggleModal(){
+            this.name = 'MINING TIME'
+            this.lvl = this.mining_time_lvl + 1
+            this.up = '+30 MINUTES'
+            this.cost = this.upcost[this.mining_time_lvl]
             if (this.showModal) {
                 const modalwindow = this.$refs.modal;
                 modalwindow.classList.remove('show');
@@ -156,6 +153,9 @@ export default {
     computed: {
         level(){
             return this.$user.data.video_lvl
+        },
+        mining_time_lvl(){
+            return this.$user.data.mining_time_lvl
         },
         staticPath() {
             switch (this.level) {

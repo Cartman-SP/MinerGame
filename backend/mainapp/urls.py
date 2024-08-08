@@ -14,4 +14,5 @@ urlpatterns = [
     path('upgrade_mining/',upgrade_mining),
     path('sitevisited/',sitevisited),
     path('get_task/',gettasks),
+    path('uptime/',uptime),
 ]
