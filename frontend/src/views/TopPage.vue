@@ -2,16 +2,13 @@
   <div class="main">
     <div class="main_top">
       <div class="container">
-
         <div class="image-container">
-          <img v-if="top2.photo_url==='none'" src="../assets/noPhoto.png" class="img_smaller">
-          <img v-else-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_smaller">
-          <Loader v-else/>
+          <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
+          <img v-else src="../assets/noPhoto.png" class="img_small">
           <div class="num">
               <p>2</p>
           </div>
         </div>
-
         <div class="wrapper">
           <p class="wrapper_text">{{top2.username || 'MINER'}}</p>
           <div class="quantity">
@@ -21,9 +18,8 @@
       </div>
       <div class="container">
         <div class="image-container">
-          <img v-if="top1.photo_url==='none'" src="../assets/noPhoto.png" class="img_small">
-          <img v-else-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_small">
-          <Loader v-else/>
+          <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
+          <img v-else src="../assets/noPhoto.png" class="img_big">
           <div class="num">
               <p>1</p>
           </div>
@@ -37,9 +33,8 @@
       </div>
       <div class="container">
         <div class="image-container">
-          <img v-if="top3.photo_url==='none'" src="../assets/noPhoto.png" class="img_smallest">
-          <img v-else-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
-          <Loader v-else/>
+          <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
+          <img v-else src="../assets/noPhoto.png" class="img_smallest">
           <div class="num">
               <p>3</p>
           </div>
@@ -68,11 +63,8 @@
     </div>
     <div class="bottom">
       <div class="bottom_card" v-for="(user, index) in top" :key="index">
-        <div v-if="user.photo_url!=='none'">
-          <img v-if="user.photo_url" :src="user.photo_url" alt="" >
-          <img v-else src="../assets/noPhoto.png">
-        </div>
-        <Loader v-else/>
+        <img v-if="user.photo_url" :src="user.photo_url" alt="" >
+        <img v-else src="../assets/noPhoto.png">
         <div class="name_container">
           <p class="name">{{user.username || 'MINER'}}</p>
           <div class="divider"></div>
@@ -91,9 +83,9 @@
 
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
-import Loader from "../components/LoaderSpin.vue";
+// import Loader from "../components/LoaderSpin.vue";
 export default {
-  components: { AlertMessage, Loader } ,
+  components: { AlertMessage } ,
   data() {
     return {
       top:[
