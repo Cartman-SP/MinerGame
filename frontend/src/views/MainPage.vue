@@ -245,7 +245,7 @@ export default {
   margin-top: 0;
 }
 
-.energy-block:active, .upgrade-block:active{
+.energy-block:hover, .upgrade-block:hover{
   background: linear-gradient(0deg, rgb(44, 42, 41) 0%, rgb(69, 69, 70) 100%);
 }
 
