@@ -60,6 +60,8 @@ export default {
         this.calculateRemainingTime();
         this.startMiningTimer();
       } catch (error) {
+        this.alertMessage = error;
+        this.alertColor = '#212326';
         console.error('Error fetching data:', error);
       }
     },

@@ -67,6 +67,8 @@ export default {
 }
 
 * {
+  -webkit-tap-highlight-color: transparent; /* отключает подсветку при клике */
+  -webkit-appearance: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;

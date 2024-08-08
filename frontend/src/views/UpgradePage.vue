@@ -70,8 +70,7 @@
 
         <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
-            <img class="icon" src="../assets/icon-multitap-boost.png" alt="" v-if="upimg">
-            <img class="icon" src="../assets/icon-battery-boost.png" alt="" v-else>
+            <img class="icon" src="../assets/icon-miningTime-boost.png" alt="" v-if="upimg">
 
             <h3>{{ name }}</h3>
             <div class="info">
@@ -270,6 +269,7 @@ hr{
     box-sizing: border-box;
     margin: 0 30px;
     margin-top: 20px;
+    margin-bottom: 100px;
 }
 .logo-background{
   width: 60px;
