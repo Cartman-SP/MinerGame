@@ -521,6 +521,13 @@ export default {
     padding: 0 15px;
     margin-bottom: 150px;
 }
+.task:hover{
+  background: linear-gradient(0deg, rgb(44, 42, 41) 0%, rgb(69, 69, 70) 100%);
+}
+
+.other-task:hover{
+  background: linear-gradient(0deg, rgb(44, 42, 41) 0%, rgb(69, 69, 70) 100%);
+}
 .taskpage{
     overflow-y: scroll;
     height: 70vh;

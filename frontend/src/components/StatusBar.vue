@@ -11,7 +11,7 @@
         </div>
         
         <div class="level">
-            <p class="levelName">{{ranks[lvl]}}</p>
+            <p class="levelName">{{ranks[lvl] || 'RANK'}}</p>
             <div class="lineContainer" v-if="lvl<10">
               <div class="line" :style="lineStyle" ></div>
             </div>

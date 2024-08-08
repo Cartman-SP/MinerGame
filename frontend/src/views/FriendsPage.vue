@@ -260,4 +260,7 @@ export default {
     border-radius: 15px;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
 }
+.invite:hover, .link:hover{
+  background: linear-gradient(0deg, rgb(44, 42, 41) 0%, rgb(69, 69, 70) 100%);
+}
 </style>
