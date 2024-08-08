@@ -1,15 +1,17 @@
 <template>
   <div class="main">
     <div class="main_top">
-      <Loader  v-if="!top2"/>
-      <div class="container" v-if="top2">
+      <div class="container">
+
         <div class="image-container">
-          <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
-          <img v-else src="../assets/noPhoto.png" class="img_small">
+          <img v-if="top2.photo_url==='none'" src="../assets/noPhoto.png" class="img_smaller">
+          <img v-else-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_smaller">
+          <Loader v-else/>
           <div class="num">
               <p>2</p>
           </div>
         </div>
+
         <div class="wrapper">
           <p class="wrapper_text">{{top2.username || 'MINER'}}</p>
           <div class="quantity">
@@ -17,11 +19,11 @@
           </div>
         </div>
       </div>
-      <Loader  v-if="!top1"/>
-      <div class="container"  v-if="top1">
+      <div class="container">
         <div class="image-container">
-          <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
-          <img v-else src="../assets/noPhoto.png" class="img_big">
+          <img v-if="top1.photo_url==='none'" src="../assets/noPhoto.png" class="img_small">
+          <img v-else-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_small">
+          <Loader v-else/>
           <div class="num">
               <p>1</p>
           </div>
@@ -33,11 +35,11 @@
           </div>
         </div>
       </div>
-      <Loader  v-if="!top3"/>
-      <div class="container" v-if="top3">
+      <div class="container">
         <div class="image-container">
-          <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
-          <img v-else src="../assets/noPhoto.png" class="img_smallest">
+          <img v-if="top3.photo_url==='none'" src="../assets/noPhoto.png" class="img_smallest">
+          <img v-else-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
+          <Loader v-else/>
           <div class="num">
               <p>3</p>
           </div>
@@ -66,19 +68,19 @@
     </div>
     <div class="bottom">
       <div class="bottom_card" v-for="(user, index) in top" :key="index">
-        <Loader v-if="!user"/>
-        <div v-else>
+        <div v-if="user.photo_url!=='none'">
           <img v-if="user.photo_url" :src="user.photo_url" alt="" >
           <img v-else src="../assets/noPhoto.png">
-          <div class="name_container">
-            <p class="name">{{user.username || 'MINER'}}</p>
-            <div class="divider"></div>
-          </div>
-          <div class="amount">
-            <p class="amount_text"> {{formatNumber(Math.floor(user.balance))}} </p>
-            <div class="number">
-              <p class="number_text">{{4 + index}}</p>
-            </div>
+        </div>
+        <Loader v-else/>
+        <div class="name_container">
+          <p class="name">{{user.username || 'MINER'}}</p>
+          <div class="divider"></div>
+        </div>
+        <div class="amount">
+          <p class="amount_text"> {{formatNumber(Math.floor(user.balance))}} </p>
+          <div class="number">
+            <p class="number_text">{{4 + index}}</p>
           </div>
         </div>
       </div>
