@@ -137,7 +137,7 @@ export default {
     getStyle() {
       return this.formattedRemainingTime === '00:00:00'
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
-        : 'filter: drop-shadow(0 5px 5px rgb(23, 23, 23));';
+        : 'filter: drop-shadow(0 10px 10px rgb(0, 0, 0))';
     },
     video_lvl(){
       return this.$user.data.video_lvl
@@ -207,6 +207,7 @@ export default {
 <style scoped>
 
 
+
 .energy-block, .upgrade-block{
   display: flex;
   align-items: center;
@@ -232,7 +233,7 @@ export default {
   height: 10vw;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
   border-radius: 10px;
-  filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+  filter: drop-shadow(0 10px 10px rgb(0, 0, 0));
 }
 .stats-block{
   display: flex;

@@ -394,7 +394,7 @@ mounted(){
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-    padding: 0 10px;
+    padding: 0 15px;
     margin-bottom: 150px;
 }
 .taskpage{
