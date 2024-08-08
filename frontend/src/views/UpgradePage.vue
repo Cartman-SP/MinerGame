@@ -70,7 +70,7 @@
 
         <div class="overlay" ref="overlay" @click="toggleModal()" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
-            <img class="icon" src="../assets/icon-miningTime-boost.png" alt="">
+            <img style="width: 60px;" class="icon" src="../assets/icon-miningTime-boost.png" alt="">
 
             <h3>{{ name }}</h3>
             <div class="info">
