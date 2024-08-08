@@ -70,7 +70,7 @@
 
         <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
-            <img style="width: 60px;" class="icon" src="../assets/icon-miningTime-boost.png" alt="">
+            <img style="width: 120px;" class="icon" src="../assets/icon-miningTime-boost.png" alt="">
 
             <h3>{{ name }}</h3>
             <div class="info">
@@ -168,15 +168,15 @@ export default {
                 case 4:
                 return require(`../assets/gpu4-static.png`);
                 case 5:
-                return require(`../assets/gpu4-static.png`);
+                return require(`../assets/gpu5-static.png`);
                 case 6:
                 return require(`../assets/gpu6-static.png`);
                 case 7:
-                return require(`../assets/gpu6-static.png`);
+                return require(`../assets/gpu7-static.png`);
                 case 8:
                 return require(`../assets/gpu8-static.png`);
                 case 9:
-                return require(`../assets/gpu8-static.png`);
+                return require(`../assets/gpu9-static.png`);
                 case 10:
                 return require(`../assets/gpu10-static.png`);
                 case 11:
@@ -268,7 +268,7 @@ hr{
     padding:  5px 0;
 }
 .upgrade{
-    height: 60vh;
+    height: 70vh;
     overflow: scroll;
 }
 .price-locked-mining{
@@ -308,7 +308,7 @@ hr{
   font-size: 14px;
 }
 .icon{
-    width: 35px;
+    width: 55px;
     margin: 0 15px;
 }
 .statement{
@@ -359,7 +359,7 @@ hr{
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
     padding: 5px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 5px;
     align-items: center;
     height: 30px;

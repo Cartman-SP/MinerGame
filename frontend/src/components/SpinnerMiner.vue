@@ -36,15 +36,15 @@ export default {
         case 4:
           return require(`../assets/gpu4.gif`);
         case 5:
-          return require(`../assets/gpu4.gif`);
+          return require(`../assets/gpu5.gif`);
         case 6:
           return require(`../assets/gpu6.gif`);
         case 7:
-          return require(`../assets/gpu6.gif`);
+          return require(`../assets/gpu7.gif`);
         case 8:
           return require(`../assets/gpu8.gif`);
         case 9:
-          return require(`../assets/gpu8.gif`);
+          return require(`../assets/gpu9.gif`);
         case 10:
           return require(`../assets/gpu10.gif`);
         case 11:
@@ -63,15 +63,15 @@ export default {
         case 4:
           return require(`../assets/gpu4-static.png`);
         case 5:
-          return require(`../assets/gpu4-static.png`);
+          return require(`../assets/gpu5-static.png`);
         case 6:
           return require(`../assets/gpu6-static.png`);
         case 7:
-          return require(`../assets/gpu6-static.png`);
+          return require(`../assets/gpu7-static.png`);
         case 8:
           return require(`../assets/gpu8-static.png`);
         case 9:
-          return require(`../assets/gpu8-static.png`);
+          return require(`../assets/gpu9-static.png`);
         case 10:
           return require(`../assets/gpu10-static.png`);
         case 11:
@@ -183,7 +183,7 @@ export default {
 }
 
 .level-6 {
-  --glow-color: rgba(255, 255, 0, 1);
+  --glow-color: rgba(0, 255, 0, 1);
 }
 .level-7 {
   --glow-color: rgba(255, 255, 0, 1);
@@ -192,13 +192,13 @@ export default {
   --glow-color: rgb(255, 102, 0);
 }
 .level-9 {
-  --glow-color: rgb(255, 102, 0);
+  --glow-color: rgb(255, 183, 0);
 }
 .level-10 {
   --glow-color: rgb(180, 29, 245);
 }
 .level-11 {
-  --glow-color: rgb(54, 120, 225);
+  --glow-color: rgb(56, 123, 231);
 }
 
 .spinner-img {

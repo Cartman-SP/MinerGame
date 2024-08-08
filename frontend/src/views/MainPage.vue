@@ -1,7 +1,7 @@
 <template>
   <div class="mainpage">
 
-    <Spinner @click="tap()" :level="video_lvl" :isMining="remainingTime>0"/>
+    <Spinner @touchstart.passive.prevent="handleTouchStart" :level="video_lvl" :isMining="remainingTime>0"/>
 
     <div class="stats-block">
       <div class="energy-block" @click="this.$router.push('/boost')">
@@ -61,13 +61,15 @@ export default {
         console.error('Error fetching data:', error);
       }
     },
-    tap() {
-      if (this.$user.data.energy > 0) {
+    handleTouchStart(event) {
+      for (let i = 0; i < event.touches.length; i++) {
+        if (this.$user.data.energy > 0) {
           const message = {
             user_id: this.$user.data.user_id,
             increment: this.$user.data.gpc,
           };
           this.$user.data.tapsocket.send(JSON.stringify(message));
+        }
       }
     },
     formatTime(duration) {
@@ -241,6 +243,10 @@ export default {
   gap: 10px;
   align-items: center;
   margin-top: 0;
+}
+
+.energy-block:active, .upgrade-block:active{
+  background: linear-gradient(0deg, rgb(44, 42, 41) 0%, rgb(69, 69, 70) 100%);
 }
 
 
