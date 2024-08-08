@@ -17,16 +17,22 @@
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
     </div>
+    <AlertMessage :message="alertMessage" :color="alertColor"/>
   </div>
 </template>
 
 <script>
 import Spinner from '../components/SpinnerMiner.vue';
 
+import AlertMessage from "../components/AlertMessage.vue";
+
 export default {
-  components: { Spinner } ,
+  components: { Spinner, AlertMessage } ,
   data() {
     return {
+      alertColor: '',
+      alertMessage: '',
+
       socket: null,
       miningSocket: null,
       energySocket: null,
@@ -40,6 +46,8 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
+      this.alertMessage = 'Майнинг начат';
+      this.alertColor = '#212326';
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");
         return;
@@ -127,7 +135,7 @@ export default {
     getStyle() {
       return this.formattedRemainingTime === '00:00:00'
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
-        : 'filter: drop-shadow(0 0 3px rgb(0, 0, 0))';
+        : 'filter: drop-shadow(0 5px 5px rgb(23, 23, 23));';
     },
     video_lvl(){
       return this.$user.data.video_lvl
@@ -217,11 +225,12 @@ export default {
   justify-content: center;
 }
 .energy-block, .timer-block, .upgrade-block{
-  width: 100px;
+  width: 25vw;
   padding: 5px;
-  height: 35px;
+  height: 10vw;
   background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
   border-radius: 10px;
+  filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
 }
 .stats-block{
   display: flex;

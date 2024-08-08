@@ -1,9 +1,15 @@
 <template>
-  <div :class="['spinner', `level-${level}`]">
+  <div :class="['spinner', `level-${level}`]" @click="createMiniCoin()">
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
     </div>
+
+    <transition-group name="coin-fall" tag="div" class="mini-coins-container">
+      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top, left: coin.left }" class="mini-coin">
+        <span class="coin-value">+{{ coin.value }}</span>
+      </div>
+    </transition-group>
   </div>
 </template>
 
@@ -13,7 +19,9 @@ export default {
   data() {
     return {
       preloadedGifPath: '',
-      preloadedStaticPath: ''
+      preloadedStaticPath: '',
+      miniCoins: [],
+      coinId: 0,
     };
   },
   computed: {
@@ -76,6 +84,21 @@ export default {
     this.preloadImages();
   },
   methods: {
+    createMiniCoin() {
+      const newCoin = {
+        id: this.coinId++,
+        value: this.$user.data.gpc,
+        top: Math.random() * 100 + '%',
+        left: Math.random() * 100 + '%',
+      };
+      this.miniCoins.push(newCoin);
+      setTimeout(() => {
+        this.removeMiniCoin(newCoin.id);
+      }, 1000); // Adjust the time to remove the coin as needed
+    },
+    removeMiniCoin(id) {
+      this.miniCoins = this.miniCoins.filter(coin => coin.id !== id);
+    },
     preloadImages() {
       this.preloadedGifPath = this.gifPath;
       this.preloadedStaticPath = this.staticPath;
@@ -92,6 +115,45 @@ export default {
 
 
 <style scoped>
+.mini-coins-container {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 20%;
+  overflow: visible;
+}
+
+.mini-coin {
+  position: absolute;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  animation: coin-fall 1s ease forwards;
+}
+
+.mini-coin-img {
+  width: 30px;
+  height: 30px;
+}
+
+.coin-value {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  color: white;
+  font-size: 20px;
+  font-family: "Druk Wide";
+}
+
+@keyframes coin-fall {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10%, -50%) scale(0.5);
+  }
+}
 .spinner {
   user-select: none;
   width: 350px;

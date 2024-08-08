@@ -70,12 +70,15 @@
                 </div>
             </div>
         </div>
+        <AlertMessage :message="alertMessage" :color="alertColor"/>
     </div>
   
 </template>
 
 <script>
+import AlertMessage from "../components/AlertMessage.vue";
 export default {
+    components: { AlertMessage } ,
     data(){
         return{
             showModal: false,

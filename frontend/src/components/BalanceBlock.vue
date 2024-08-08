@@ -112,12 +112,10 @@ export default {
   text-align: center;
   margin: 0;
   margin-top: 10px;
-  margin-right: 40px;
-  margin-left: 40px;
   margin-bottom: 5px;
   color: white;
   font-family: "Druk Wide";
   font-size: 22px;
-  width: 57%;
+  width: 80%;
 }
 </style>
