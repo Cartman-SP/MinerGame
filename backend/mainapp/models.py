@@ -52,9 +52,9 @@ class Room(models.Model):
 class Task(models.Model):
     reward = models.IntegerField()
     typeT = models.CharField(max_length=128)
-    channel_id = models.CharField(max_length=256)
-    group_link = models.CharField(max_length=256)
-    friends_toAdd = models.IntegerField()
+    channel_id = models.CharField(max_length=256,required=False)
+    group_link = models.CharField(max_length=256,required=False)
+    friends_toAdd = models.IntegerField(required=False)
 
 class UserTask(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
