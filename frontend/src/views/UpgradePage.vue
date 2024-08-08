@@ -86,7 +86,8 @@ export default {
             return this.$user.data.video_lvl
         },
         staticPath() {
-        return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
+            return 1
+        ///return require(`../assets/GPUs/lvl${this.level}/gpu${this.level}-static.png`);
         }
 
     }

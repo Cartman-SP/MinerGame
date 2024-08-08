@@ -29,7 +29,7 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name">ПРИГЛАСИТЬ ДРУГА <br>+ 4 000</p>
+                <p class="name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
                 <div class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -39,7 +39,7 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name">ПРИГЛАСИТЬ ДРУГА <br>+ 4 000</p>
+                <p class="name">ПРИГЛАСИТЬ 12 ДРУЗЕЙ <br>+ 12 000</p>
                 <div class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>

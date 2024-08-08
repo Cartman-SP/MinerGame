@@ -15,14 +15,14 @@
       <div class="card">
         <p class="subtitle">БЕЗ PREMIUM</p>
         <div class="money">
-          <p class="money-amount">+ 2 000</p>
+          <p class="money-amount">+ 1 500</p>
           <img src="../assets/logo-small-blue.png" alt="">
         </div>
       </div>
       <div class="card">
         <p class="subtitle">С PREMIUM</p>
         <div class="money">
-          <p class="money-amount">+ 7 000</p>
+          <p class="money-amount">+ 4 000</p>
           <img src="../assets/logo-small-blue.png" alt="">
         </div>
       </div>

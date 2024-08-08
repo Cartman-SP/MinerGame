@@ -49,5 +49,19 @@ class Room(models.Model):
     micro_lvl = models.IntegerField(default=1)
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
     
+class Task(models.Model):
+    reward = models.IntegerField()
+    typeT = models.CharField(max_length=128)
+    channel_id = models.CharField(max_length=256)
+    group_link = models.CharField(max_length=256)
+    friends_toAdd = models.IntegerField()
+
+class UserTask(models.Model):
+    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    complete = models.BooleanField(default=False)
+    friends_invited = models.IntegerField(default=0)
+
+
 admin.site.register(TelegramUser)
 

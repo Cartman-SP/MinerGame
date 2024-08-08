@@ -60,8 +60,29 @@ def get_or_create_user(request):
                 inviter=inviter,
                 user=user
             )
-            if(inviter.friends_invited<3):
-                inviter.balance += 4000
+            if(inviter.friends_invited==3):
+                inviter.balance+=12000
+            if(user.ispremium):
+                inviter.balance+=4000
+            else:
+                inviter.balance+=1500
+            task = Task.objects.get(typeT='invite')
+            if task:
+                try:
+                    usertask = UserTask.objects.get(task=task,user=inviter)
+                    usertask.friends_invited+=1
+                    if(usertask.friends_invited>=task.friends_toAdd and not(usertask.complete)):
+                        usertask.complete = True
+                        inviter.balance+=task.reward
+                    usertask.save()
+                except Exception as e:
+                    usertask = UserTask.objects.create(task=task,user=inviter)
+                    usertask.friends_invited+=1
+                    if(usertask.friends_invited>=task.friends_toAdd and not(usertask.complete)):
+                        usertask.complete = True
+                        inviter.balance+=task.reward
+                    usertask.save()
+
             inviter.friends_invited+=1
             inviter.save()
             referal.save()
@@ -105,12 +126,6 @@ def get_or_create_user(request):
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
-
-
-
-
-
-
 
 
 
@@ -200,8 +215,8 @@ def upgrade_mining(request):
 
 @api_view(['GET'])
 def check_subscribe(request):
-    bot_token = '6705532890:AAG7x2iBNy9GdCLZWqqNF1LunZtev7_yOmA'
-    channel_id = '@MinerGam3'
+    bot_token = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
+    channel_id = '@ylionminer'
     user_id = request.query_params.get('user_id')
     print(user_id)
     url = f'https://api.telegram.org/bot{bot_token}/getChatMember'
@@ -211,8 +226,37 @@ def check_subscribe(request):
     }
     response = requests.get(url, params=params)
     data = response.json()
-    print(data)
     user = TelegramUser.objects.get(user_id=user_id)
+    tasks = Task.objects.filter(type='subscribe')
+
+    if tasks:
+        for task in tasks:
+            try:
+                usertask = UserTask.objects.get(task=task, user=user)
+            except UserTask.DoesNotExist:
+                usertask = UserTask.objects.create(task=task, user=user)
+
+            if not usertask.complete:
+                params['chat_id'] = task.channel_id
+                response = requests.get(url, params=params)
+                bufftaskdata = response.json()
+                if bufftaskdata.get('ok'):
+                    state = bufftaskdata['result']['status']
+                    if state in ['member', 'administrator', 'creator']:
+                        usertask.complete = True
+                        user.balance += task.reward
+                    usertask.save()
+                    user.save()
+
+    taskdata = []
+    if tasks:
+        for task in tasks:
+            taskdata.append({
+                'task_id': task.id,
+                'complete': UserTask.objects.get(task=task, user=user).complete
+            })
+
+
     if data['ok']:
         state = data['result']['status']
         if state in ['member', 'administrator', 'creator']:
@@ -220,20 +264,20 @@ def check_subscribe(request):
                 print(321)
                 user.subscribed=True
                 user.save()
-                return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+                return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
             else:
                 print(123)
                 user.subscribed=True
                 user.balance+=5000
                 user.subscribe_money_gived=True
                 user.save()
-                return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+                return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
         else:
             user.subscribed = False
             user.save()
-            return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+            return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
     else:
-        return Response({'status':user.subscribed,'balance':user.balance}, status=status.HTTP_200_OK)
+        return Response({'status':user.subscribed,'balance':user.balance,'taskdata':taskdata}, status=status.HTTP_200_OK)
 
 
 
