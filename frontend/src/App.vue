@@ -2,6 +2,9 @@
   <img v-if="!loaded" src="../src/assets/load.gif" style="object-fit: cover; width: 100%;height: 100%; position:absolute; z-index: 999; left:0; top:0;" alt="">
   <StatusBar/>
   <Balance/>
+  <div class="loading" v-if="isLoading">
+      <Loader/>
+    </div>
   <div style="height: 100%;">
     <router-view/>
   </div>
@@ -12,7 +15,8 @@
       <h3 class="collected">+{{ this.$user.data.mined_while_of }}</h3>
       <button class="ok" @click="toggleModal">ЗАБРАТЬ</button>
   </div>
-  <NavBar/>
+  
+  <NavBar style="z-index: 100;"/>
 
 </template>
 
@@ -20,14 +24,16 @@
 import Balance from '../src/components/BalanceBlock.vue';
 import StatusBar from '../src/components/StatusBar.vue';
 import NavBar from '../src/components/NavBar.vue';
+import Loader from "../src/components/LoaderSpin.vue";
 
 export default {
-  components: { NavBar, StatusBar, Balance },
+  components: { NavBar, StatusBar, Balance, Loader },
   data() {
     return {
       logs: '',
       loaded: false,
       showModal: false,
+      isLoading: 'false',
     }
   },
   methods: {
@@ -78,6 +84,19 @@ export default {
 
 
 <style>
+.loading{
+  background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .ok{
   background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
   border-radius: 10px;

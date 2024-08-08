@@ -33,8 +33,7 @@
         <span>FRIENDS</span>
         <span>ДОХОД ОТ <br>РЕФЕРАЛОВ</span>
       </div>
-      <Loader/>
-      <div class="table" v-if="friends.length>0">
+      <div class="table">
         <div v-for="i in friends" :key="i" >
           <div class="human">
             <div class="leftPart">
@@ -78,9 +77,8 @@
 
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
-import Loader from "../components/LoaderSpin.vue";
 export default {
-  components: { AlertMessage, Loader } ,
+  components: { AlertMessage } ,
   data() {
     return {
       friends: [],

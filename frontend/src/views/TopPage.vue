@@ -83,13 +83,11 @@
 
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
-// import Loader from "../components/LoaderSpin.vue";
 export default {
   components: { AlertMessage } ,
   data() {
     return {
-      top:[
-],
+      top:[],
       user_position: 0,
       top1:NaN,
       top2:NaN,
@@ -134,6 +132,7 @@ export default {
 </script>
 
 <style scoped>
+
 p{
   margin: 0;
   font-family: "Druk Wide";
@@ -150,7 +149,7 @@ p{
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 60vh;
+  height: 70vh;
   overflow-y: scroll;
 }
 .main_top{
@@ -308,7 +307,7 @@ p{
   border-radius: 10px; 
   color: white;
   background: #00E6FF;
-  z-index: 9999;
+  z-index: 10;
 }
 img{
   object-fit: cover;
