@@ -107,7 +107,7 @@ export default {
     },
     methods:{
         async give_energy(){
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$user.playTap()
 
             if(this.$user.data.refresh_energy>0 && this.$user.data.energy<this.$user.data.max_energy){
                 let data = {'user_id':this.$user.data.user_id}
@@ -123,7 +123,7 @@ export default {
             }
         },
         async upgrade(){
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$user.playTap()
             let data = {'user_id':this.$user.data.user_id,'num':this.num}
             try {
                 const response = await this.$axios.post('/upgrade/', data, {withCredentials: true});
@@ -149,19 +149,18 @@ export default {
                     }        
                     this.up = '+'+ this.uptap[this.lvl-1] +' TAP'
                 }
-                var audio = new Audio(require('../assets/buy.mp3'));
-                audio.volume = 1
-                audio.play()
+                this.$user.playBuy()
             }
             catch (error) {
                 this.alertMessage = 'Недостаточно баланса'
+                this.$user.playError()
                 this.error = error;
                 console.error('Error fetching data:', error);
             }
         },
 
         toggleModal(num){
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$user.playTap()
             if(num==1){
                 this.upimg = 0
                 this.num = num
@@ -190,9 +189,7 @@ export default {
                 
 
             } else {
-                var audio = new Audio(require('../assets/tap.mp3'));
-                audio.volume = 1
-                audio.play()
+                
                 this.showModal = true
                 setTimeout(() => {
                     const modalwindow = this.$refs.modal;

@@ -353,9 +353,11 @@ export default {
     },
     toggleModal() {
       this.$user.playTap()
+      this.alertMessage = ''
       if (this.showModal) {
         if (this.$user.data.daily_reward_claimed) {
           console.log('already claimed');
+          this.alertMessage = 'Награда уже получена'
           this.$user.playError()
         } else {
           this.claim_reward();
