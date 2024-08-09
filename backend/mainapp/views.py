@@ -51,6 +51,8 @@ def get_or_create_user(request):
 
     try:
         user = TelegramUser.objects.get(user_id=user_id)
+        user.ispremium = is_premium == 'true'
+        user.save()
         logger.debug(f"User {user_id} found in database")
     except TelegramUser.DoesNotExist:
         logger.info(f"User {user_id} not found, creating new user")
@@ -59,6 +61,8 @@ def get_or_create_user(request):
             username=username,
             usertag=usertag
         )
+        user.ispremium = is_premium == 'true'
+        user.save()
         if start:
             try:
                 inviter = TelegramUser.objects.get(user_id=start)
@@ -98,8 +102,8 @@ def get_or_create_user(request):
             user.daily_reward_day = 0
             user.daily_reward_claimed = False
 
-        user.ispremium = is_premium == 'true'
-        user.save()
+        
+        
 
         photo_url = get_user_profile_photo(BOT_TOKEN, user_id)
         if photo_url:
