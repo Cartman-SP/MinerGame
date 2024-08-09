@@ -187,7 +187,6 @@ export default {
 .spinner {
   user-select: none;
   width: 50vh;
-  height: 50vh;
   margin: -5vh 0 1vh 0;
   animation: pulseGlow 2s infinite;
 }

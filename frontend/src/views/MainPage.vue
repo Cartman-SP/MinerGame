@@ -44,7 +44,7 @@ export default {
       miningTimer: null,
       remainingTime: 0,
 
-      spinnerCount: 2,
+      spinnerCount: 3,
     };
   },
   methods: {
@@ -233,6 +233,9 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.spinner-double > *{
+  width: 50%;
+}
 
 .spinner-triple {
   display: grid;
@@ -240,9 +243,14 @@ export default {
   grid-template-rows: auto;
 }
 
+.spinner-triple > *{
+  width: 100%;
+}
+
 .spinner-triple > :nth-child(3) {
   grid-column: span 2;
   justify-self: center;
+  width: 50%;
 }
 
 .spinner-grid {
@@ -250,6 +258,10 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
 }
+.spinner-grid > *{
+  width: 100%;
+}
+
 
 .energy-block, .upgrade-block{
   display: flex;
