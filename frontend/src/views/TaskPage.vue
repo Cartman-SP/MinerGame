@@ -473,7 +473,7 @@ export default {
 .modal p{
     color: white;
     font-family: "Druk Wide";
-    font-size: 10px;
+    font-size: 8px;
     margin: 5px 0;
 }
 .awards{
@@ -492,6 +492,7 @@ export default {
   padding: 5px;
   border-radius: 15px;
   filter: drop-shadow(0 5px 3px rgba(21, 21, 21, 0.566));
+  height: fit-content;
 }
 .day-num{
   color: white;

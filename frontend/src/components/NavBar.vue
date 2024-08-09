@@ -1,13 +1,13 @@
 <template>
   <div class="nav">
     <div class="button" @click="moveto('/wallet')">
-        <div class="icon">
+        <div class="icon-nav">
             <img src="../assets/icon-wallet.png" alt="">
         </div>
         <p class="title">WALLET</p>
     </div>
     <div class="button" @click="moveto('/top')">
-        <div class="icon">
+        <div class="icon-nav">
             <img src="../assets/icon-top.png" alt="">
         </div>
         <p class="title">TOP</p>
@@ -19,13 +19,13 @@
        
     </div>
     <div class="button" @click="moveto('/friends')">
-        <div class="icon">
+        <div class="icon-nav">
             <img  style="width: 25px;" src="../assets/icon-friend.png" alt="">
         </div>
         <p class="title">FRIENDS</p>
     </div>
     <div class="button"  @click="moveto('/task')">
-        <div class="icon">
+        <div class="icon-nav">
             <img src="../assets/icon-task.png" alt="">
         </div>
         <p class="title">TASKS</p>
@@ -62,6 +62,9 @@ export default {
 </script>
 
 <style>
+.icon-nav{
+    scale: 1.5;
+}
 :root {
     --color-gradient: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
 }
@@ -90,25 +93,25 @@ export default {
 .button {
     background: var(--color-gradient);
     width: 100%;
-    height: 60px;
+    height: 15vh;
 }
 .fan-btn{
     background: var(--color-gradient);
     padding: 10px;
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     /* filter: drop-shadow(0 5px 10px #00E6FF); */
     border-radius: 50%;
     border: solid 2px #00E6FF;
     bottom: 20px;
     position: absolute;
-    
+    top: -3vh;
 }
 
 
 .mainButton {
     width: 100%;
-    height: 60px;
+    height: 19vh;
     display: flex;
     justify-content: center;
     background: var(--color-gradient);
@@ -119,7 +122,8 @@ export default {
 .button{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
+    padding-top: 4vh;
     align-items: center;
 }
 .button img {

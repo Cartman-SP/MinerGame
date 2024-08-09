@@ -237,6 +237,7 @@ p{
   box-shadow: 0 -5px 10px rgba(0, 230, 255, 0.3);
   padding: 20px;
   min-height: 100px;
+  padding-bottom: 100px;
 }
 .bottom_card img{
   height: 65px;

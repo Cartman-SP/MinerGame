@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="buy" @click="upgrade">
-                    ПОЛУЧИТЬ ЗА
+                    УЛУЧШИТЬ ЗА
                     <div class="cost-modal">
                         {{ cost }}
 
@@ -209,7 +209,7 @@ export default {
             }else{
             this.name = 'MINING TIME'
             this.lvl = this.video_lvl
-            this.up = 'ПРИБЫЛЬ В ЧАС: ' + this.upgph[this.video_lvl]
+            this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video_lvl] + '/час'
             if (this.video_lvl<11){
                 this.cost = this.formatNumber(this.costs[this.video_lvl])
             }else{
@@ -311,7 +311,7 @@ export default {
 }
 .info{
     background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
-    width: 400px;
+    width: 340px;
     border-radius: 10px;
     filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
 }
@@ -378,7 +378,7 @@ hr{
     font-size: 14px;
     margin-top: 10px;
     background: linear-gradient(180deg, rgb(0, 166, 255) 0%, rgba(0,230,255,1) 100%);
-    width: 400px;
+    width: 340px;
     border-radius: 10px;
     filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
     display: flex;

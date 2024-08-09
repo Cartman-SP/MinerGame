@@ -143,7 +143,7 @@ export default {
 <style scoped>
 .bright {
   filter: brightness(80%); /* Увеличиваем яркость */
-  scale: 0.98;
+  /* scale: 0.98; */
 }
 .mini-coins-container {
   position: absolute;
