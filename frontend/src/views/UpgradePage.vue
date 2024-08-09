@@ -375,7 +375,7 @@ hr{
     font-size: 14px;
     margin-top: 10px;
     background: linear-gradient(180deg, rgb(0, 166, 255) 0%, rgba(0,230,255,1) 100%);
-    width: 300px;
+    width: 400px;
     border-radius: 10px;
     filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
     display: flex;

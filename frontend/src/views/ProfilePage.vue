@@ -39,6 +39,12 @@
           <p class="value">{{ formatNumber(user.gph) }}</p>
         </div>
       </div>
+
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
+        <button @click="isVolume = !isVolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
+        <button @click="isVibro = !isVibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button>
+      </div>
+      
     </div>
     <AlertMessage :message="alertMessage" style="z-index: 200;"/>
   </div>
@@ -50,7 +56,9 @@ export default {
   components: { AlertMessage } ,
   data(){
     return {
-      ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE']
+      ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE'],
+      isVolume: false,
+      isVibro: true,
     }
   },
   computed:{
@@ -73,6 +81,26 @@ export default {
 </script>
 
 <style scoped>
+.active{
+  background: rgb(117, 182, 77);
+  border-radius: 10px;
+  border: 1px solid #00E6FF;
+  padding: 10px 15px;
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 12px;
+  margin: 0;
+}
+.disabled{
+  background: rgb(226, 55, 55);
+  border-radius: 10px;
+  border: 1px solid #00E6FF;
+  padding: 10px 15px;
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 12px;
+  margin: 0;
+}
 .profilepage{
   overflow-y: scroll;
   height: 70vh;
