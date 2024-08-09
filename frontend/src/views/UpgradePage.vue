@@ -7,7 +7,7 @@
         <div class="blocks">
             <div class="block" @click="upgrade">
                 <div class="photo">
-                    <img class="spinner" :src="staticPath(1)" alt="">
+                    <img class="spinner" :src="staticPath(level)" alt="">
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[level]}}</p>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div v-if="modalType == 2">
-                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(1)" alt="">
+                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(level)" alt="">
                 <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧИНА ДО {{ gph }}</h3>
             </div>
         </div>
