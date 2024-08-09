@@ -277,7 +277,7 @@ export default {
       }
     },
     async visit_site(task_id, link) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      this.$user.playTap()
       window.open(link, '_blank');
       try {
         const response = await this.$axios.post('/sitevisited/', {
@@ -318,6 +318,7 @@ export default {
         console.log("Mining end time set to:", this.$user.data.mining_end);
         this.calculateRemainingTime();
         this.startCountdown();
+        this.$user.playTap()
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -334,27 +335,28 @@ export default {
       }
     },
     redirectToTelegram() {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      this.$user.playTap()
       window.location.href = 'https://t.me/ylionminer';
       this.check_subscribe();
     },
     redirectToTelegram2(tag) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      this.$user.playTap()
       const url = tag.slice(1);
       window.location.href = `https://t.me/${url}`;
       this.check_subscribe();
     },
     shareLink() {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      this.$user.playTap()
       const url = this.invite;
       const text = '\nПривет! Хочу пригласить тебя поиграть в классную игру, где ты сможешь создать свою собственную майнинг ферму прямо на телефоне! Развивай свою империю, добывай криптовалюту и зарабатывай вместе со мной! \nА в качестве бонуса при запуске игры тебя ждет приятное вознаграждение 💸';
       window.location.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
     },
     toggleModal() {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      this.$user.playTap()
       if (this.showModal) {
         if (this.$user.data.daily_reward_claimed) {
           console.log('already claimed');
+          this.$user.playError()
         } else {
           this.claim_reward();
         }
@@ -367,9 +369,6 @@ export default {
           this.showModal = false;
         }, 400);
       } else {
-        var audio = new Audio(require('../assets/tap.mp3'));
-        audio.volume = 1
-        audio.play()
         this.showModal = true;
         setTimeout(() => {
           const modalwindow = this.$refs.modal;

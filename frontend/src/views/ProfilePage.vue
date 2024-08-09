@@ -40,9 +40,19 @@
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
-        <button @click="switchvolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
-        <button @click="switchvibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button>
+      <div class="switches">
+        <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
+          <img src="../assets/icon-sound.png" alt="" style="width: 50px;">
+          <Switch v-model="isVolume"/>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
+          <img src="../assets/icon-vibration.png" alt="" style="width: 50px;">
+          <Switch v-model="isVibro"/>
+        </div>
+        
+        
+        <!-- <button @click="switchvolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
+        <button @click="switchvibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button> -->
       </div>
       
     </div>
@@ -52,8 +62,9 @@
 
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
+import Switch from "../components/IphoneSwitch.vue";
 export default {
-  components: { AlertMessage } ,
+  components: { AlertMessage, Switch } ,
   data(){
     return {
       ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE'],
@@ -86,6 +97,20 @@ export default {
 </script>
 
 <style scoped>
+.switches{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  background: rgb(37, 37, 37);
+  border-radius: 10px;
+  border: 1px solid #00E6FF;
+  padding: 10px 15px;
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 12px;
+}
 .active{
   background: rgb(117, 182, 77);
   border-radius: 10px;

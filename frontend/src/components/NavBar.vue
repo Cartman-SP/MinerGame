@@ -41,11 +41,8 @@ export default {
             spinner.classList.add('spin');
             this.$router.push('/');
 
-            var audio = new Audio(require('../assets/tap.mp3'));
-            audio.volume = 1
-            audio.play()
+            this.$user.playTap()
 
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
             setTimeout(() => {
                 spinner.classList.remove('spin');
             
@@ -53,11 +50,8 @@ export default {
         },
         moveto(url){
             
-            var audio = new Audio(require('../assets/tap.mp3'));
-            audio.volume = 1
-            audio.play()
+            this.$user.playTap()
 
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             if(url=='/top' || url=='/friends'){
                 this.$user.data.toppage = true
             }

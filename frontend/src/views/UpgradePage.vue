@@ -139,7 +139,7 @@ export default {
         },
         async upgrade(){
             this.alertMessage = '';
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$user.playTap()
             let data = {'user_id':this.$user.data.user_id}
             try {
                 const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
@@ -149,12 +149,10 @@ export default {
                 this.$user.data.video_lvl = response.data.video_lvl
                 this.toggleModal();
                 this.modalType = 2
-                var audio = new Audio(require('../assets/buy.mp3'));
-                audio.volume = 1
-                audio.play()
+                this.$user.playBuy()
             }
             catch (error) {
-                window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+                this.$user.playError()
                 this.alertMessage = 'Недостаточно баланса'
                 this.error = error;
                 console.error('Error fetching data:', error);
@@ -163,7 +161,7 @@ export default {
 
         async uptime() {
             this.alertMessage = '';
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$user.playTap()
             let data = {'user_id': this.$user.data.user_id};
             try {
                 const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
@@ -172,16 +170,15 @@ export default {
                 this.$user.data.mining_time_lvl = response.data.mining_time_lvl;
                 this.lvl = this.mining_time_lvl
                 this.cost = this.upcost[this.mining_time_lvl]
-                var audio = new Audio(require('../assets/buy.mp3'));
-                audio.volume = 1
-                audio.play()
+                this.$user.playBuy()
             } catch (error) {
+                this.$user.playError()
                 this.alertMessage = 'Недостаточно баланса';
                 this.error = error;
             }
         },
         toggleModal(num){
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            this.$user.playTap()
             if(num==1){
                 this.name = 'MINING TIME'
             this.lvl = this.mining_time_lvl + 1
@@ -199,9 +196,7 @@ export default {
                 
 
             } else {
-                var audio = new Audio(require('../assets/tap.mp3'));
-                audio.volume = 1
-                audio.play()
+                this.$user.playTap()
                 
                 this.showModal = true
                 setTimeout(() => {
@@ -233,9 +228,7 @@ export default {
                 
 
             } else {
-                var audio1 = new Audio(require('../assets/tap.mp3'));
-                audio1.volume = 1
-                audio1.play()
+                this.$user.playTap()
                 
                 this.showModal = true
                 setTimeout(() => {
