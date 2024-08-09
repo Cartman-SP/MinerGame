@@ -40,12 +40,23 @@ export default {
             const spinner = this.$refs.spinner;
             spinner.classList.add('spin');
             this.$router.push('/');
+
+            var audio = new Audio(require('../assets/tap.mp3'));
+            audio.volume = 1
+            audio.play()
+
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
             setTimeout(() => {
                 spinner.classList.remove('spin');
             
             }, 500);
         },
         moveto(url){
+            
+            var audio = new Audio(require('../assets/tap.mp3'));
+            audio.volume = 1
+            audio.play()
+
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             if(url=='/top' || url=='/friends'){
                 this.$user.data.toppage = true
@@ -92,8 +103,9 @@ export default {
     padding: 10px;
     height: 50px;
     width: 50px;
-    filter: drop-shadow(0 5px 10px #00E6FF);
+    /* filter: drop-shadow(0 5px 10px #00E6FF); */
     border-radius: 50%;
+    border: solid 2px #00E6FF;
     bottom: 20px;
     position: absolute;
     

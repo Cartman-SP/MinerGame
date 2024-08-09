@@ -1,5 +1,5 @@
 <template>
-  <div :class="['spinner', `level-${level}`]" @touchstart.passive.prevent="onTouchStart">
+  <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchstart.passive.prevent="onTouchStart">
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
@@ -91,6 +91,13 @@ export default {
     handleTouchStart(event) {
       for (let i = 0; i < event.touches.length; i++) {
         if (this.$user.data.energy > 0) {
+          var audio = new Audio(require('../assets/tap.mp3'));
+          audio.volume = 1
+          audio.play()
+          this.isBright = true;
+          setTimeout(() => {
+            this.isBright = false;
+          }, 100); 
           const message = {
             user_id: this.$user.data.user_id,
             increment: this.$user.data.gpc,
@@ -131,6 +138,9 @@ export default {
 
 
 <style scoped>
+.spinner.bright {
+  filter: brightness(120%); /* Увеличиваем яркость */
+}
 .mini-coins-container {
   position: absolute;
   width: 100%;
@@ -156,7 +166,7 @@ export default {
   top: 0px;
   left: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 30px;
   font-family: "Druk Wide";
 }
 
@@ -214,7 +224,7 @@ export default {
   --glow-color: rgb(180, 29, 245);
 }
 .level-11 {
-  --glow-color: rgb(54, 120, 225);
+  --glow-color: rgb(0, 217, 255);
 }
 
 .spinner-img {

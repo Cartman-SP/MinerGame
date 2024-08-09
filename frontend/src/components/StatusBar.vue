@@ -56,6 +56,9 @@
     },
     methods:{
       moveTo(url){
+        var audio = new Audio(require('../assets/tap.mp3'));
+        audio.volume = 1
+        audio.play()
         window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         this.$router.push(url)
       }

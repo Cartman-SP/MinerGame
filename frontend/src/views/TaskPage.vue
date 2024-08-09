@@ -367,6 +367,9 @@ export default {
           this.showModal = false;
         }, 400);
       } else {
+        var audio = new Audio(require('../assets/tap.mp3'));
+        audio.volume = 1
+        audio.play()
         this.showModal = true;
         setTimeout(() => {
           const modalwindow = this.$refs.modal;

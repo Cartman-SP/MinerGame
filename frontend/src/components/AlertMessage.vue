@@ -32,6 +32,9 @@
         this.hideNotification();
         setTimeout(() => {
           this.showNotification(newMessage);
+          var audio = new Audio(require('../assets/error.mp3'));
+          audio.volume = 0.2
+          audio.play()
         }, 300); // Небольшая задержка для плавного скрытия и показа
       },
       showNotification(newMessage) {
@@ -69,6 +72,7 @@
     opacity: 0;
     top: 0px;
     transition: all .2s ease;
+    background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
   }
   
   svg:hover path{
