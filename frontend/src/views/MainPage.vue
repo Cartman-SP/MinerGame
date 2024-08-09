@@ -1,7 +1,11 @@
 <template>
   <div class="mainpage">
 
-    <Spinner :level="video_lvl" :isMining="remainingTime>0"/>
+
+    <div :class="spinnerClass">
+      <Spinner v-for="n in spinnerCount" :key="n" :level="video_lvl" :isMining="remainingTime > 0" />
+    </div>
+    
       
 
     <div class="stats-block">
@@ -39,6 +43,8 @@ export default {
       timer: null,
       miningTimer: null,
       remainingTime: 0,
+
+      spinnerCount: 2,
     };
   },
   methods: {
@@ -131,6 +137,20 @@ export default {
     }
   },
   computed: {
+    spinnerClass() {
+      switch (this.spinnerCount) {
+        case 1:
+          return 'spinner-single';
+        case 2:
+          return 'spinner-double';
+        case 3:
+          return 'spinner-triple';
+        case 4:
+          return 'spinner-grid';
+        default:
+          return '';
+      }
+    },
     getStyle() {
       return this.formattedRemainingTime === '00:00:00'
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
@@ -203,8 +223,33 @@ export default {
 
 
 <style scoped>
+.spinner-single {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.spinner-double {
+  display: flex;
+  justify-content: space-between;
+}
 
+.spinner-triple {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+}
+
+.spinner-triple > :nth-child(3) {
+  grid-column: span 2;
+  justify-self: center;
+}
+
+.spinner-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+}
 
 .energy-block, .upgrade-block{
   display: flex;
