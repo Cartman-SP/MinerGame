@@ -55,7 +55,7 @@
               </h2>
               
               <h2 class="percent" v-if="i.ispremium">
-                0.5
+                1
                 <br>
                 %
               </h2>
