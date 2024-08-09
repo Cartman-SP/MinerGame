@@ -105,7 +105,8 @@ export default {
             up: '',
             cost: 0,
             num:1,
-            upcost: [0,6500,45000,150000,500000]
+            upcost: [0,6500,45000,150000,500000],
+            alertMessage: '',
         }
     },
     methods:{
@@ -120,6 +121,24 @@ export default {
                 this.$user.data.video_lvl = response.data.video_lvl
             }
             catch (error) {
+                this.alertMessage = 'Недостаточно баланса'
+                this.error = error;
+                console.error('Error fetching data:', error);
+            }
+        },
+
+        async upgrade(){
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            let data = {'user_id':this.$user.data.user_id}
+            try {
+                const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
+                console.log(response.data);
+                this.$user.data.balance = response.data.balance
+                this.$user.data.gph = response.data.gph
+                this.$user.data.video_lvl = response.data.video_lvl
+            }
+            catch (error) {
+                this.alertMessage = 'Недостаточно баланса'
                 this.error = error;
                 console.error('Error fetching data:', error);
             }

@@ -139,9 +139,9 @@ def uptime(request):
         user.mining_time_lvl+=1
         user.balance-=upcost[user.mining_time_lvl]
         user.mining_duration+=timedelta(minutes=30)
-    user.save()
-    return Response({'balance':user.balance,'mining_time_lvl':user.mining_time_lvl}, status=status.HTTP_200_OK)
-
+        user.save()
+        return Response({'balance':user.balance,'mining_time_lvl':user.mining_time_lvl}, status=status.HTTP_200_OK)
+    return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['POST'])
 def set_max_energy(request):
     user_id = request.data.get('user_id')
@@ -183,15 +183,17 @@ def upgrade(request):
             user.balance-=cost
             user.enery_lvl+=1
             user.max_energy+=250
+            user.save()
+            return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy,'lvl':user.lvl}, status=status.HTTP_200_OK)
     else:
         cost = upcost[user.tap_lvl]
         if(user.balance>cost):
             user.balance-=cost
             user.gpc+=uptap[user.tap_lvl]
             user.tap_lvl+=1
-    user.save()
-    return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy,'lvl':user.lvl}, status=status.HTTP_200_OK)
-
+            user.save()
+            return Response({'balance':user.balance,'tap_lvl':user.tap_lvl,'gpc':user.gpc,'energy_lvl':user.enery_lvl,'max_energy':user.max_energy,'lvl':user.lvl}, status=status.HTTP_200_OK)
+    return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def start_mining(request):
@@ -221,9 +223,10 @@ def upgrade_mining(request):
         user.balance-=cost
         user.gph+=upgph[user.video_lvl]
         user.video_lvl+=1
+        user.save()
+        return Response({'balance':user.balance,'video_lvl':user.video_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
+    return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
-    user.save()
-    return Response({'balance':user.balance,'video_lvl':user.video_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
