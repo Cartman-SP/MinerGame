@@ -406,16 +406,18 @@ def gettasks(request):
     return Response(serialized_data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def turnsound(request):
-    user_id = request.query_params.get('user_id')
+    user_id = request.data.get('user_id')
     user = TelegramUser.objects.get(user_id=user_id)
     user.sound = not(user.sound)
+    user.save()
     return Response({'status':'ok'}, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
+@api_view(['POST'])
 def turnvibrate(request):
-    user_id = request.query_params.get('user_id')
+    user_id = request.data.get('user_id')
     user = TelegramUser.objects.get(user_id=user_id)
     user.vibrate = not(user.vibrate)
+    user.save()
     return Response({'status':'ok'}, status=status.HTTP_200_OK)
