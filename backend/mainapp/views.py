@@ -44,14 +44,15 @@ def get_or_create_user(request):
     usertag = request.query_params.get('username','Miner')
     start = request.query_params.get('start','Miner')
     is_premium = request.query_params.get('is_premium','Miner')
-
+    is_premium = is_premium=='true'
     if not user_id or not username or not usertag:
         logger.error("Missing parameters: user_id, username, or usertag")
         return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = TelegramUser.objects.get(user_id=user_id)
-        user.ispremium = is_premium == 'true'
+        user.ispremium = is_premium
+        
         user.save()
         logger.debug(f"User {user_id} found in database")
     except TelegramUser.DoesNotExist:
@@ -61,7 +62,7 @@ def get_or_create_user(request):
             username=username,
             usertag=usertag
         )
-        user.ispremium = is_premium == 'true'
+        user.ispremium = is_premium
         user.save()
         if start:
             try:
@@ -117,8 +118,9 @@ def get_or_create_user(request):
                 hours_diff = time_diff.total_seconds() / 3600
                 mined_while_of = user.gph * hours_diff
                 user.balance += mined_while_of
-                user.energy = min(user.max_energy, user.energy + 1800 * hours_diff)
-
+            time_diff = timezone.now()-user.last_login
+            if time_diff > timedelta(seconds=0):
+                user.energy = min(time_diff.total_seconds(),user.max_energy)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()

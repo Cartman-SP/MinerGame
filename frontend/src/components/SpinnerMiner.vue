@@ -86,8 +86,10 @@ export default {
   },
   methods: {
     onTouchStart(event) {
+      if(this.$user.data.energy>0){
       this.handleTouchStart(event);
       this.createMiniCoin(event);
+      }
     },
     handleTouchStart(event) {
       for (let i = 0; i < event.touches.length; i++) {

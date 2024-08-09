@@ -117,7 +117,7 @@ export default {
     components: { AlertMessage } ,
     data(){
         return{
-            costs:[0,'30 000','115 000','350 000','1 000 000','2 950 000,','8 200 000','23 400 000','58 500 000','175 500 000','350 000 000','MAX LVL'],
+            costs:[0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,350000000,'MAX LVL'],
             names: ['SM 1020','SM 1050','SM 1090','SPG 1220','iX 1300','RTG 1500','SR 1750','BP 2000','SSG 2500','DFX 3300','GM 4090'], 
             showModal: false,
             name: '',
@@ -132,6 +132,11 @@ export default {
         }
     },
     methods:{
+        formatNumber(num) {
+            return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
+                num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
+                num.toString();
+        },
         async upgrade(){
             this.alertMessage = '';
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
@@ -210,7 +215,12 @@ export default {
             this.name = 'MINING TIME'
             this.lvl = this.video_lvl
             this.up = 'ПРИБЫЛЬ В ЧАС: ' + this.upgph[this.video_lvl]
-            this.cost = this.costs[this.video_lvl]
+            if (this.video_lvl<11){
+                this.cost = this.formatNumber(this.costs[this.video_lvl])
+            }else{
+                this.cost = this.costs[this.video_lvl]
+            }
+            
             if (this.showModal) {
                 const modalwindow = this.$refs.modal;
                 modalwindow.classList.remove('show');
@@ -223,9 +233,9 @@ export default {
                 
 
             } else {
-                var audio = new Audio(require('../assets/tap.mp3'));
-                audio.volume = 1
-                audio.play()
+                var audio1 = new Audio(require('../assets/tap.mp3'));
+                audio1.volume = 1
+                audio1.play()
                 
                 this.showModal = true
                 setTimeout(() => {
