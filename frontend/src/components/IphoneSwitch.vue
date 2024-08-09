@@ -1,6 +1,6 @@
 <template>
   <label class="form-switch" @click="toggle">
-    <input type="checkbox" value="modelValue">
+    <input type="checkbox" :checked="modelValue">
     <i></i>
   </label>
 </template>
@@ -78,6 +78,7 @@ export default {
 
     async switchvolume(){
       this.$user.data.sound = !this.$user.data.sound
+      console.log(this.$user.data.sound)
       try {
         const response = await this.$axios.post('/turnsound/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
         console.log(response)
