@@ -1,40 +1,12 @@
 <template>
-    <label class="form-switch">
-      <input type="checkbox">
-      <i></i>
-    </label>
+  <label class="form-switch" @click="toggle">
+    <input type="checkbox" v-model="flag">
+    <i></i>
+  </label>
 </template>
-  
-<script>
-export default {
-  name: "CustomSwitchPage",
-  props: {
-    modelValue: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    flag: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$user.playTap()
-        this.$emit('update:modelValue', value);
-      }
-    }
-  },
-  methods: {
-    toggle() {
-      this.flag = !this.flag;
-    }
-  }
-};
-</script>
-  
+
 <style scoped>
-  .form-switch {
+.form-switch {
   display: inline-block;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -42,7 +14,6 @@ export default {
 .form-switch i {
   position: relative;
   display: inline-block;
-  /* margin-right: .5rem; */
   width: 46px;
   height: 26px;
   background-color: #e6e6e6;
@@ -83,3 +54,30 @@ export default {
 .form-switch input:checked + i::before { transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0); }
 .form-switch input:checked + i::after { transform: translate3d(22px, 2px, 0); }
 </style>
+
+<script>
+export default {
+  props: {
+    modelValue: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    flag: {
+      get() {
+        return this.modelValue;
+      },
+      set(value) {
+        this.$user.playTap(); // вызываем метод при изменении значения
+        this.$emit('update:modelValue', value); // синхронизация данных через v-model
+      }
+    }
+  },
+  methods: {
+    toggle() {
+      this.flag = !this.flag; // переключение состояния
+    }
+  }
+};
+</script>
