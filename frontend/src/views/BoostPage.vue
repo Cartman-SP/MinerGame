@@ -111,15 +111,15 @@ export default {
 
             if(this.$user.data.refresh_energy>0 && this.$user.data.energy<this.$user.data.max_energy){
                 let data = {'user_id':this.$user.data.user_id}
-            try {
-                const response = await this.$axios.post('/set_max_energy/', data, {withCredentials: true});
-                console.log(response)
-                this.$user.data.energy = this.$user.data.max_energy;
-                this.$user.data.refresh_energy -=1
-            }catch (error) {
-                this.error = error;
-                console.error('Error fetching data:', error);
-            }
+                try {
+                    const response = await this.$axios.post('/set_max_energy/', data, {withCredentials: true});
+                    console.log(response)
+                    this.$user.data.energy = this.$user.data.max_energy;
+                    this.$user.data.refresh_energy -=1
+                }catch (error) {
+                    this.error = error;
+                    console.error('Error fetching data:', error);
+                }
             }
         },
         async upgrade(){
@@ -149,6 +149,9 @@ export default {
                     }        
                     this.up = '+'+ this.uptap[this.lvl-1] +' TAP'
                 }
+                var audio = new Audio(require('../assets/buy.mp3'));
+                audio.volume = 1
+                audio.play()
             }
             catch (error) {
                 this.alertMessage = 'Недостаточно баланса'
@@ -187,6 +190,9 @@ export default {
                 
 
             } else {
+                var audio = new Audio(require('../assets/tap.mp3'));
+                audio.volume = 1
+                audio.play()
                 this.showModal = true
                 setTimeout(() => {
                     const modalwindow = this.$refs.modal;

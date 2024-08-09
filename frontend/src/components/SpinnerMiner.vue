@@ -91,6 +91,9 @@ export default {
     handleTouchStart(event) {
       for (let i = 0; i < event.touches.length; i++) {
         if (this.$user.data.energy > 0) {
+          var audio = new Audio(require('../assets/tap.mp3'));
+          audio.volume = 1
+          audio.play()
           const message = {
             user_id: this.$user.data.user_id,
             increment: this.$user.data.gpc,
