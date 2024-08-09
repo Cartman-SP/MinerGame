@@ -7,7 +7,7 @@
         <div class="blocks">
             <div class="block" @click="upgrade">
                 <div class="photo">
-                    <img class="spinner" :src="staticPath" alt="">
+                    <img class="spinner" :src="staticPath(1)" alt="">
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[level]}}</p>
@@ -57,11 +57,11 @@
             
         </div>
 
-        <div class="miningUpgrade" @click="toggleModal(1)">
+        <div class="miningUpgrade" @click="toggleModal(1), modalType = 1">
             <img class="icon" src="../assets/icon-miningTime-boost.png" alt="">
             <div class="statement">
                 <p class="price-locked-mining">MINING TIME<br> </p>
-                <div class="logo-background">
+                <div class="logo-background" style="width: 60px; height: 60px;">
                     <span style="font-size: 18px;">{{ mining_time_lvl }} <br> <span style="font-size: 18px;">lvl</span></span>
                 </div>
             </div>
@@ -70,20 +70,27 @@
 
         <div class="overlay" ref="overlay" @click="toggleModal()" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
-            <img style="width: 120px;" class="icon" src="../assets/icon-miningTime-boost.png" alt="">
+            <div v-if="modalType == 1">
+                <img style="width: 120px;" class="icon" src="../assets/icon-miningTime-boost.png" alt="">
 
-            <h3>{{ name }}</h3>
-            <div class="info">
-                <p class="level">{{ lvl }} LVL</p>
-                <hr>
-                <p class="boost">{{up}}</p>
-            </div>
-
-            <div class="buy" @click="upgrade">
-                ПОЛУЧИТЬ ЗА
-                <div class="cost-modal">
-                    {{ cost }}
+                <h3>{{ name }}</h3>
+                <div class="info">
+                    <div class="logo-background">
+                        <span style="font-size: 26px;">{{lvl}}</span>LVL
+                    </div>
                 </div>
+
+                <div class="buy" @click="upgrade">
+                    ПОЛУЧИТЬ ЗА
+                    <div class="cost-modal">
+                        {{ cost }}
+
+                    </div>
+                </div>
+            </div>
+            <div v-if="modalType == 2">
+                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(1)" alt="">
+                <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧИНА ДО {{ '293' }}</h3>
             </div>
         </div>
         <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -106,10 +113,13 @@ export default {
             num:1,
             upcost: [0,'6 500','45 000','15 0000','50 0000','1$','1,25$','1,5$','1,75$','2$'],
             alertMessage: '',
+            modalType: 0,
         }
     },
     methods:{
         async upgrade(){
+            this.toggleModal();
+            this.modalType = 2
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             let data = {'user_id':this.$user.data.user_id}
             try {
@@ -169,16 +179,8 @@ export default {
                 }, 10);
             }
         },
-    },
-    computed: {
-        level(){
-            return this.$user.data.video_lvl
-        },
-        mining_time_lvl(){
-            return this.$user.data.mining_time_lvl
-        },
-        staticPath() {
-            switch (this.level) {
+        staticPath(lvl) {
+            switch (lvl) {
                 case 1:
                 return require(`../assets/gpu1-static.png`);
                 case 2:
@@ -204,6 +206,14 @@ export default {
             }
             return 1
         }
+    },
+    computed: {
+        level(){
+            return this.$user.data.video_lvl
+        },
+        mining_time_lvl(){
+            return this.$user.data.mining_time_lvl
+        },
 
     }
 }
