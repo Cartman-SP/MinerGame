@@ -5,122 +5,123 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import *
 from .serializers import *
-import requests 
+import requests
+import logging
 
 
+BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
-BOT_TOKEN = '6705532890:AAG7x2iBNy9GdCLZWqqNF1LunZtev7_yOmA'
+logger = logging.getLogger('app_logger')
 
 def get_user_profile_photo(bot_token, user_id):
     url = f'https://api.telegram.org/bot{bot_token}/getUserProfilePhotos'
     params = {'user_id': user_id}
-    response = requests.get(url, params=params)
-    data = response.json()
-
-    if data['ok']:
-        photos = data['result']['photos']
-        if photos:
-            file_id = photos[0][0]['file_id']
-            file_info_url = f'https://api.telegram.org/bot{bot_token}/getFile'
-            file_info_params = {'file_id': file_id}
-            file_info_response = requests.get(file_info_url, params=file_info_params)
-            file_info_data = file_info_response.json()
-
-            if file_info_data['ok']:
-                file_path = file_info_data['result']['file_path']
-                file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_path}'
-                return file_url
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+        if data['ok']:
+            photos = data['result']['photos']
+            if photos:
+                file_id = photos[0][0]['file_id']
+                file_info_url = f'https://api.telegram.org/bot{bot_token}/getFile'
+                file_info_params = {'file_id': file_id}
+                file_info_response = requests.get(file_info_url, params=file_info_params)
+                file_info_data = file_info_response.json()
+                if file_info_data['ok']:
+                    file_path = file_info_data['result']['file_path']
+                    file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_path}'
+                    return file_url
+    except requests.RequestException as e:
+        logger.error(f"Error fetching user profile photo: {e}")
     return None
 
 @api_view(['GET'])
 def get_or_create_user(request):
-    print(request.query_params)
-    user_id = request.query_params.get('id')
-    username = request.query_params.get('first_name')
-    usertag = request.query_params.get('username')
-    start = request.query_params.get('start')
-    is_premium = request.query_params.get('is_premium')
+    logger.debug("Received request with params: %s", request.query_params)
 
-    print(f"user_id: {user_id}, username: {username}, usertag: {usertag}")
+    user_id = request.query_params.get('id')
+    username = request.query_params.get('first_name','Miner')
+    usertag = request.query_params.get('username','Miner')
+    start = request.query_params.get('start','Miner')
+    is_premium = request.query_params.get('is_premium','Miner')
 
     if not user_id or not username or not usertag:
+        logger.error("Missing parameters: user_id, username, or usertag")
         return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = TelegramUser.objects.get(user_id=user_id)
+        logger.debug(f"User {user_id} found in database")
     except TelegramUser.DoesNotExist:
+        logger.info(f"User {user_id} not found, creating new user")
         user = TelegramUser.objects.create(
             user_id=user_id,
             username=username,
             usertag=usertag
         )
-        try:
-            inviter = TelegramUser.objects.get(user_id=start)
-            referal = Referal.objects.create(
-                inviter=inviter,
-                user=user
-            )
-            if(inviter.friends_invited==3):
-                inviter.balance+=12000
-            if(user.ispremium):
-                inviter.balance+=4000
-            else:
-                inviter.balance+=1500
-            task = Task.objects.get(typeT='invite')
-            if task:
-                try:
-                    usertask = UserTask.objects.get(task=task,user=inviter)
-                    usertask.friends_invited+=1
-                    if(usertask.friends_invited>=task.friends_toAdd and not(usertask.complete)):
+        if start:
+            try:
+                inviter = TelegramUser.objects.get(user_id=start)
+                referal = Referal.objects.create(
+                    inviter=inviter,
+                    user=user
+                )
+                inviter.friends_invited += 1
+                if inviter.friends_invited == 3:
+                    inviter.balance += 12000
+
+                if user.ispremium:
+                    inviter.balance += 4000
+                else:
+                    inviter.balance += 1500
+
+                task = Task.objects.get(typeT='invite')
+                if task:
+                    usertask, created = UserTask.objects.get_or_create(task=task, user=inviter)
+                    usertask.friends_invited += 1
+                    if usertask.friends_invited >= task.friends_toAdd and not usertask.complete:
                         usertask.complete = True
-                        inviter.balance+=task.reward
-                    usertask.save()
-                except Exception as e:
-                    usertask = UserTask.objects.create(task=task,user=inviter)
-                    usertask.friends_invited+=1
-                    if(usertask.friends_invited>=task.friends_toAdd and not(usertask.complete)):
-                        usertask.complete = True
-                        inviter.balance+=task.reward
+                        inviter.balance += task.reward
                     usertask.save()
 
-            inviter.friends_invited+=1
-            inviter.save()
-            referal.save()
-        except:
-            pass
-    mined_while_of = 0
+                inviter.save()
+                referal.save()
+                logger.info(f"Referral and inviter updated for user {user_id}")
+            except TelegramUser.DoesNotExist:
+                logger.warning(f"Inviter {start} does not exist")
+            except Exception as e:
+                logger.error(f"Error processing referral for user {user_id}: {e}")
+
     if user:
         date_difference = timezone.now().date() - user.daily_reward_date
-        if user.daily_reward_date<timezone.now().date():
-            if date_difference > timedelta(days=1):
-                user.daily_reward_day = 0
+        if date_difference > timedelta(days=1):
+            user.daily_reward_day = 0
             user.daily_reward_claimed = False
-        if(is_premium=='true'):
-            user.ispremium = True
-        else:
-            user.ispremium = False
+
+        user.ispremium = is_premium == 'true'
         user.save()
+
         photo_url = get_user_profile_photo(BOT_TOKEN, user_id)
         if photo_url:
             user.photo_url = photo_url
             user.save()
 
+        mined_while_of = 0
         if user.last_login:
-            if(user.mining_end>timezone.now()):
-                time_diff=timezone.now()-user.last_login
-            else:
-                time_diff = user.mining_end - user.last_login
-            if(time_diff>timedelta(seconds=0)):
+            time_diff = min(user.mining_end - user.last_login, timezone.now() - user.last_login)
+            if time_diff > timedelta(seconds=0):
                 hours_diff = time_diff.total_seconds() / 3600
                 mined_while_of = user.gph * hours_diff
-                user.balance += user.gph * hours_diff
+                user.balance += mined_while_of
                 user.energy = min(user.max_energy, user.energy + 1800 * hours_diff)
+
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()
 
         user.last_login = timezone.now()
         user.save()
+        logger.debug(f"User {user_id} updated successfully")
 
     user_serializer = TelegramUserSerializer(user)
     response_data = {
@@ -128,7 +129,9 @@ def get_or_create_user(request):
         "mined_while_of": mined_while_of
     }
 
+    logger.debug(f"Returning response for user {user_id}")
     return Response(response_data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def uptime(request):

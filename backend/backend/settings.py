@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import logging
+
+LOGGING_LEVEL = logging.DEBUG
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +44,6 @@ INSTALLED_APPS = [
     'mainapp',
     'corsheaders',
     'channels',
-    
 ]
 
 
@@ -114,8 +117,32 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        # Определяем консольный вывод
+        'console': {
+            'level': LOGGING_LEVEL,
+            'class': 'logging.StreamHandler',
+        },
+        # Определяем файловый вывод
+        'file': {
+            'level': LOGGING_LEVEL,
+            'class': 'logging.FileHandler',
+            'filename': 'logs.log',  # Путь к файлу для логирования
+        },
+    },
+    'loggers': {
+        # Корневой логгер
+        '': {
+            'handlers': ['console', 'file'],  # Используем оба обработчика (консоль и файл)
+            'level': LOGGING_LEVEL,
+            'propagate': True,
+        },
+    },
+}
+
 
 LANGUAGE_CODE = 'en-us'
 

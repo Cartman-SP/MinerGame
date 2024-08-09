@@ -80,7 +80,7 @@
                     <p class="boost">{{up}}</p>
                 </div>
 
-                <div class="buy" @click="upgrade">
+                <div class="buy" @click="uptime">
                     ПОЛУЧИТЬ ЗА
                     <div class="cost-modal">
                         {{ cost }}
