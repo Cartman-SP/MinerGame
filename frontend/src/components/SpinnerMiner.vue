@@ -1,6 +1,6 @@
 <template>
-  <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchstart.passive.prevent="onTouchStart">
-    <div class="spinners-block">
+  <div :class="['spinner', `level-${level}`]" @touchstart.passive.prevent="onTouchStart">
+    <div class="spinners-block" :class="{ bright: isBright }">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
     </div>
@@ -139,8 +139,8 @@ export default {
 
 
 <style scoped>
-.spinner.bright {
-  filter: brightness(0); /* Увеличиваем яркость */
+.bright {
+  filter: brightness(150%); /* Увеличиваем яркость */
 }
 .mini-coins-container {
   position: absolute;
