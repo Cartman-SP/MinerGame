@@ -5,7 +5,7 @@
         </div> -->
 
         <div class="blocks">
-            <div class="block" @click="upgrade">
+            <div class="block"  @click="toggleModal(2), modalType = 2">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(1)" alt="">
                 </div>
@@ -80,7 +80,7 @@
                     <p class="boost">{{up}}</p>
                 </div>
 
-                <div class="buy" @click="upgrade">
+                <div class="buy" @click="uptime">
                     ПОЛУЧИТЬ ЗА
                     <div class="cost-modal">
                         {{ cost }}
@@ -90,8 +90,20 @@
             </div>
             <div v-if="modalType == 2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
                 <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(1)" alt="">
-                <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧЕНА ДО:</h3>
-                <p class="earningPerHour">{{ gph || '123123' }}</p>
+                <h3>НАЗВАНИЕ ВИДЕОКАРТЫ</h3>
+                <div class="info">
+                    <p class="level">{{ lvl }} LVL</p>
+                    <hr>
+                    <p class="boost">{{up}}</p>
+                </div>
+
+                <div class="buy" @click="upgrade">
+                    ПОЛУЧИТЬ ЗА
+                    <div class="cost-modal">
+                        {{ cost }}
+
+                    </div>
+                </div>
             </div>
         </div>
         <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -272,7 +284,8 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 350px;
+    height: fit-content;
+    padding-bottom: 130px;
     bottom: -500px;
     z-index: 10;
     transition: all .4s ease;
