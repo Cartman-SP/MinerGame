@@ -90,7 +90,7 @@
             </div>
             <div v-if="modalType == 2">
                 <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(1)" alt="">
-                <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧИНА ДО {{ '293' }}</h3>
+                <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧИНА ДО {{ gph }}</h3>
             </div>
         </div>
         <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -118,8 +118,6 @@ export default {
     },
     methods:{
         async upgrade(){
-            this.toggleModal();
-            this.modalType = 2
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             let data = {'user_id':this.$user.data.user_id}
             try {
@@ -128,6 +126,8 @@ export default {
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
                 this.$user.data.video_lvl = response.data.video_lvl
+                this.toggleModal();
+                this.modalType = 2
             }
             catch (error) {
                 this.alertMessage = 'Недостаточно баланса'
@@ -208,6 +208,10 @@ export default {
         }
     },
     computed: {
+        gph(){
+            return this.$user.data.gph;
+        },
+        
         level(){
             return this.$user.data.video_lvl
         },
