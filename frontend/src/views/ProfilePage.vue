@@ -72,6 +72,12 @@ export default {
     }
   },
   methods:{
+    switchvolume(){
+      this.$user.data.sound = !this.$user.data.sound
+    },
+    switchvibro(){
+      this.$user.data.vibrate = !this.$user.data.vibrate
+    },
     moveTo(url){
         window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         this.$router.push(url)
