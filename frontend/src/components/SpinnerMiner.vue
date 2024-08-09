@@ -1,5 +1,5 @@
 <template>
-  <div :class="['spinner', `level-${level}`]"  @touchstart.passive.prevent="handleTouchStart(), createMiniCoin()">
+  <div :class="['spinner', `level-${level}`]" @touchstart.passive.prevent="onTouchStart">
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
@@ -84,6 +84,10 @@ export default {
     this.preloadImages();
   },
   methods: {
+    onTouchStart(event) {
+      this.handleTouchStart(event);
+      this.createMiniCoin(event);
+    },
     handleTouchStart(event) {
       for (let i = 0; i < event.touches.length; i++) {
         if (this.$user.data.energy > 0) {
@@ -92,21 +96,21 @@ export default {
             increment: this.$user.data.gpc,
           };
           this.$user.data.tapsocket.send(JSON.stringify(message));
-          
         }
       }
     },
-    createMiniCoin() {
+    createMiniCoin(event) {
+      const touch = event.touches[0];
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,
-        top: 200, // Используем координаты клика
-        left: 30, // Используем координаты клика
+        top: touch.clientY - 200, // Используем координаты касания
+        left: touch.clientX - 30, // Используем координаты касания
       };
       this.miniCoins.push(newCoin);
       setTimeout(() => {
         this.removeMiniCoin(newCoin.id);
-      }, 1000); // Adjust the time to remove the coin as needed
+      }, 1000); // Время удаления монетки
     },
     removeMiniCoin(id) {
       this.miniCoins = this.miniCoins.filter(coin => coin.id !== id);
