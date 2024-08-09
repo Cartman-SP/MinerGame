@@ -1,12 +1,8 @@
 <template>
   <div class="mainpage">
 
-    <Spinner @touchstart.passive.prevent="handleTouchStart" :level="video_lvl" :isMining="remainingTime>0"/>
-    <transition-group name="coin-fall" tag="div" class="mini-coins-container">
-      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
-        <span class="coin-value">+{{ coin.value }}</span>
-      </div>
-    </transition-group>
+    <Spinner :level="video_lvl" :isMining="remainingTime>0"/>
+      
 
     <div class="stats-block">
       <div class="energy-block" @click="moveTo('/boost')">
@@ -44,9 +40,6 @@ export default {
       timer: null,
       miningTimer: null,
       remainingTime: 0,
-
-      miniCoins: [],
-      coinId: 0,
     };
   },
   methods: {
@@ -73,27 +66,6 @@ export default {
         this.startMiningTimer();
       } catch (error) {
         console.error('Error fetching data:', error);
-      }
-    },
-    handleTouchStart(event) {
-      for (let i = 0; i < event.touches.length; i++) {
-        if (this.$user.data.energy > 0) {
-          const message = {
-            user_id: this.$user.data.user_id,
-            increment: this.$user.data.gpc,
-          };
-          this.$user.data.tapsocket.send(JSON.stringify(message));
-        }
-        const newCoin = {
-          id: this.coinId++,
-          value: this.$user.data.gpc,
-          top: event.clientY-200, // Используем координаты клика
-          left: event.clientX-30, // Используем координаты клика
-        };
-        this.miniCoins.push(newCoin);
-        setTimeout(() => {
-          this.removeMiniCoin(newCoin.id);
-        }, 1000); // Adjust the time to remove the coin as needed
       }
     },
     formatTime(duration) {
@@ -231,45 +203,6 @@ export default {
 
 
 <style scoped>
-.mini-coins-container {
-  position: absolute;
-  width: 100%;
-  height: 50%;
-  top: 20%;
-  overflow: visible;
-}
-
-.mini-coin {
-  position: absolute;
-  z-index: 999;
-  transform: translate(-50%, -50%);
-  animation: coin-fall 1s ease forwards;
-}
-
-.mini-coin-img {
-  width: 30px;
-  height: 30px;
-}
-
-.coin-value {
-  position: absolute;
-  top: 0px;
-  left: 10px;
-  color: white;
-  font-size: 20px;
-  font-family: "Druk Wide";
-}
-
-@keyframes coin-fall {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-10%, -50%) scale(0.5);
-  }
-}
 
 
 
