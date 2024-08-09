@@ -1,5 +1,5 @@
 <template>
-  <label class="form-switch" @click="toggle">
+  <label class="form-switch" @change="toggle">
     <input type="checkbox" :checked="type == 1 ? isVolume : isVibro">
     <i></i>
   </label>
