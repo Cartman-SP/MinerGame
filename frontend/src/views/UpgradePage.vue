@@ -83,7 +83,6 @@
                 ПОЛУЧИТЬ ЗА
                 <div class="cost-modal">
                     {{ cost }}
-
                 </div>
             </div>
         </div>
@@ -105,7 +104,7 @@ export default {
             up: '',
             cost: 0,
             num:1,
-            upcost: [0,6500,45000,150000,500000],
+            upcost: [0,'6 500','45 000','15 0000','50 0000','1$','1,25$','1,5$','1,75$','2$'],
             alertMessage: '',
         }
     },
@@ -114,7 +113,7 @@ export default {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             let data = {'user_id':this.$user.data.user_id}
             try {
-                const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
+                const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
                 console.log(response.data);
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
@@ -127,7 +126,7 @@ export default {
             }
         },
 
-        async upgrade(){
+        async uptime(){
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             let data = {'user_id':this.$user.data.user_id}
             try {
@@ -135,7 +134,7 @@ export default {
                 console.log(response.data);
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
-                this.$user.data.video_lvl = response.data.video_lvl
+                this.$user.data.mining_time_lvl = response.data.mining_time_lvl
             }
             catch (error) {
                 this.alertMessage = 'Недостаточно баланса'
