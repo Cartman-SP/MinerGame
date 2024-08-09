@@ -164,6 +164,7 @@ export default {
     }
   },
   mounted() {
+    this.$user.data.toppage = false
     console.log("Component mounted, calculating remaining time...");
     this.calculateRemainingTime();
     this.timer = setInterval(() => {

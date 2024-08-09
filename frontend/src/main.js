@@ -105,6 +105,72 @@ class User {
     const data = JSON.parse(event.data);
     this.data.energy = data.energy;
   }
+
+  reconnectSocket(socketName) {
+    if (this.data[socketName] && this.data[socketName].readyState !== WebSocket.OPEN) {
+      console.log(`Reconnecting ${socketName}...`);
+      setTimeout(() => {
+        if (socketName === 'tapsocket') {
+          this.initTapSocket();
+        } else if (socketName === 'energysocket') {
+          this.initEnergySocket();
+        } else if (socketName === 'miningsocket') {
+          this.initMiningSocket();
+        }
+      }, this.reconnectDelay);
+    }
+  }
+
+  initTapSocket() {
+    this.data.tapsocket = new WebSocket(`ws://localhost:8001/ws/some_path/${this.data.user_id}/`);
+    this.data.tapsocket.onmessage = this.onMessage.bind(this);
+    this.data.tapsocket.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+    this.data.tapsocket.onclose = () => {
+      console.log('WebSocket connection closed');
+      this.reconnectSocket('tapsocket');
+    };
+    this.data.tapsocket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      this.reconnectSocket('tapsocket');
+    };
+  }
+
+  initEnergySocket() {
+    this.data.energysocket = new WebSocket(`ws://localhost:8001/ws/energy/${this.data.user_id}/`);
+    this.data.energysocket.onmessage = this.onEnergyMessage.bind(this);
+    this.data.energysocket.onopen = () => {
+      console.log('Energy WebSocket connection established');
+    };
+    this.data.energysocket.onclose = () => {
+      console.log('Energy WebSocket connection closed');
+      this.reconnectSocket('energysocket');
+    };
+    this.data.energysocket.onerror = (error) => {
+      console.error('Energy WebSocket error:', error);
+      this.reconnectSocket('energysocket');
+    };
+  }
+
+  initMiningSocket() {
+    this.data.miningsocket = new WebSocket(`ws://localhost:8001/ws/mining/${this.data.user_id}/`);
+    this.data.miningsocket.onmessage = this.onMiningMessage.bind(this);
+    this.data.miningsocket.onopen = () => {
+      this.loading.status = true;
+      console.log('Mining WebSocket connection established');
+    };
+    this.data.miningsocket.onclose = () => {
+      console.log('Mining WebSocket connection closed');
+      this.reconnectSocket('miningsocket');
+    };
+    this.data.miningsocket.onerror = (error) => {
+      console.error('Mining WebSocket error:', error);
+      this.reconnectSocket('miningsocket');
+    };
+  }
+
+
   playBuy(){
     if(this.data.vibrate){
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
@@ -177,43 +243,9 @@ class User {
         this.data.mined_while_of = response.data.mined_while_of
         this.data.mining_time_lvl = response.data.user.mining_time_lvl
         this.data.toppage = false
-        this.data.tapsocket = new WebSocket(`ws://localhost:8001/ws/some_path/${this.data.user_id}/`);
-        this.data.tapsocket.onmessage = this.onMessage.bind(this);
-        this.data.tapsocket.onopen = () => {
-          console.log('WebSocket connection established');
-        };
-        this.data.tapsocket.onclose = () => {
-          console.log('WebSocket connection closed');
-        };
-        this.data.tapsocket.onerror = (error) => {
-          console.error('WebSocket error:', error);
-        };       
-       
-       
-        this.data.energysocket = new WebSocket(`ws://localhost:8001/ws/energy/${this.data.user_id}/`);
-        this.data.energysocket.onmessage = this.onEnergyMessage.bind(this);
-        this.data.energysocket.onopen = () => {
-          console.log('Energy WebSocket connection established');
-        };
-        this.data.energysocket.onclose = () => {
-          console.log('Energy WebSocket connection closed');
-        };
-        this.data.energysocket.onerror = (error) => {
-          console.error('Energy WebSocket error:', error);
-        };
-
-        this.data.miningsocket = new WebSocket(`ws://localhost:8001/ws/mining/${this.data.user_id}/`);
-        this.data.miningsocket.onmessage = this.onMiningMessage.bind(this);
-        this.data.miningsocket.onopen = () => {
-          this.loading.status=true
-          console.log('Mining WebSocket connection established');
-        };
-        this.data.miningsocket.onclose = () => {
-          console.log('Mining WebSocket connection closed');
-        };
-        this.data.miningsocket.onerror = (error) => {
-          console.error('Mining WebSocket error:', error);
-        };
+        this.initTapSocket();
+        this.initEnergySocket();
+        this.initMiningSocket();
         
         
         console.log("mining_end after login:", this.data.mining_end);
