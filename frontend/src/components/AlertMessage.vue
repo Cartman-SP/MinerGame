@@ -32,6 +32,7 @@
         this.hideNotification();
         setTimeout(() => {
           this.showNotification(newMessage);
+          
           var audio = new Audio(require('../assets/error.mp3'));
           audio.volume = 0.2
           audio.play()

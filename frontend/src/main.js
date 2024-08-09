@@ -2,8 +2,10 @@ import { createApp, reactive, watch } from 'vue';
 import App from './App.vue';
 import router from './router';
 import axiosPlugin from './plugins/axios'; // Ваш плагин Axios
+
 import buymp3 from './assets/buy.mp3';
 import tapmp3 from './assets/tap.mp3';
+import errormp3 from './assets/error.mp3';
 
 const app = createApp(App);
 
@@ -177,7 +179,7 @@ class User {
     }
     if(this.data.sound){
     var audio = new Audio(buymp3);
-    audio.volume = 1
+    audio.volume = .5
     audio.play()
     }
   }
@@ -188,6 +190,16 @@ class User {
     if(this.data.sound){
     var audio = new Audio(require(tapmp3));
     audio.volume = 1
+    audio.play()
+    }
+  }
+  playError(){
+    if(this.data.vibrate){
+      window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+    }
+    if(this.data.sound){
+    var audio = new Audio(require(errormp3));
+    audio.volume = .5
     audio.play()
     }
   }

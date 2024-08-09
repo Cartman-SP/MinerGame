@@ -43,17 +43,14 @@ export default {
   },
   methods: {
     moveTo(url){
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         this.$router.push(url)
-        var audio = new Audio(require('../assets/tap.mp3'));
-        audio.volume = 1
-        audio.play()
+        this.$user.playTap()
       },
     formatNumber(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      this.$user.playTap()
 
       if (this.remainingTime > 0) {
         console.log("Mining already in progress");
