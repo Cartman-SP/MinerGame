@@ -22,6 +22,7 @@ export default {
       preloadedStaticPath: '',
       miniCoins: [],
       coinId: 0,
+      isBright: false,
     };
   },
   computed: {
@@ -139,7 +140,7 @@ export default {
 
 <style scoped>
 .spinner.bright {
-  filter: brightness(120%); /* Увеличиваем яркость */
+  filter: brightness(0); /* Увеличиваем яркость */
 }
 .mini-coins-container {
   position: absolute;
