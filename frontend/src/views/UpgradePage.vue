@@ -75,9 +75,9 @@
 
                 <h3>{{ name }}</h3>
                 <div class="info">
-                    <div class="logo-background">
-                        <span style="font-size: 26px;">{{lvl}}</span>LVL
-                    </div>
+                    <p class="level">{{ lvl }} LVL</p>
+                    <hr>
+                    <p class="boost">{{up}}</p>
                 </div>
 
                 <div class="buy" @click="upgrade">
@@ -226,6 +226,12 @@ export default {
     padding: 10px 0;
     margin-left: 20px;
     border-radius: 10px;
+}
+.info{
+    background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
+    width: 300px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
 }
 .modal{
     background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
