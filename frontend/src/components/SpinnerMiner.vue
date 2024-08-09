@@ -156,7 +156,7 @@ export default {
   top: 0px;
   left: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 30px;
   font-family: "Druk Wide";
 }
 
@@ -214,7 +214,7 @@ export default {
   --glow-color: rgb(180, 29, 245);
 }
 .level-11 {
-  --glow-color: rgb(54, 120, 225);
+  --glow-color: rgb(0, 217, 255);
 }
 
 .spinner-img {

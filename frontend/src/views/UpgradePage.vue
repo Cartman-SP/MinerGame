@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="block">
+            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="block">
+            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="block">
+            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
@@ -88,9 +88,10 @@
                     </div>
                 </div>
             </div>
-            <div v-if="modalType == 2">
+            <div v-if="modalType == 2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
                 <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(1)" alt="">
-                <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧИНА ДО {{ gph }}</h3>
+                <h3>ПРИБЫЛЬ В ЧАС УВЕЛИЧЕНА ДО:</h3>
+                <p class="earningPerHour">{{ gph || '123123' }}</p>
             </div>
         </div>
         <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -130,6 +131,7 @@ export default {
                 this.modalType = 2
             }
             catch (error) {
+                window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
                 this.alertMessage = 'Недостаточно баланса'
                 this.error = error;
                 console.error('Error fetching data:', error);
@@ -224,6 +226,17 @@ export default {
 </script>
 
 <style scoped>
+.earningPerHour{
+    background: rgba(57,54,53,1);
+    padding: 5px 15px;
+    border: 1px solid rgb(0, 166, 255);
+    width: fit-content;
+    border-radius: 10px;
+    color: white;
+    font-family: "Druk Wide";
+    font-size: 20px;
+    margin-top: -15px;
+}
 .cost-modal{
     background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
     width: 100px;
