@@ -7,7 +7,7 @@
         <div class="blocks">
             <div class="block"  @click="toggleModal(2), modalType = 2">
                 <div class="photo">
-                    <img class="spinner" :src="staticPath(1)" alt="">
+                    <img class="spinner" :src="staticPath(this.video_lvl)" alt="">
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[level]}}</p>
@@ -89,8 +89,8 @@
                 </div>
             </div>
             <div v-if="modalType == 2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(1)" alt="">
-                <h3>НАЗВАНИЕ ВИДЕОКАРТЫ</h3>
+                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(this.video_lvl+1)" alt="">
+                <h3>{{ names[video_lvl] }}</h3>
                 <div class="info">
                     <p class="level">{{ lvl }} LVL</p>
                     <hr>
@@ -118,6 +118,7 @@ export default {
     data(){
         return{
             costs:[0,'30 000','115 000','350 000','1 000 000','2 950 000,','8 200 000','23 400 000','58 500 000','175 500 000','350 000 000','MAX LVL'],
+            names: ['SM 1020','SM 1050','SM 1090','SPG 1220','iX 1300','RTG 1500','SR 1750','BP 2000','SSG 2500','DFX 3300','GM 4090'], 
             showModal: false,
             name: '',
             lvl: 0,
@@ -125,6 +126,7 @@ export default {
             cost: 0,
             num:1,
             upcost: [0,'6 500','45 000','150 000','500 000','1$','1,25$','1,5$','1,75$','2$'],
+            upgph: ['731','1 638','3 627','8 307','18 720','42 120','94 770','213 408','4 80 285','1 080 612','2 250 550'],
             alertMessage: '',
             modalType: 0,
         }
@@ -173,10 +175,10 @@ export default {
                 this.error = error;
             }
         },
-        toggleModal(){
-            
+        toggleModal(num){
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            this.name = 'MINING TIME'
+            if(num==1){
+                this.name = 'MINING TIME'
             this.lvl = this.mining_time_lvl + 1
             this.up = '+30 MINUTES'
             this.cost = this.upcost[this.mining_time_lvl]
@@ -204,6 +206,38 @@ export default {
                     modaloverlay.classList.add('showOverlay');
                 }, 10);
             }
+            }else{
+            this.name = 'MINING TIME'
+            this.lvl = this.video_lvl
+            this.up = 'ПРИБЫЛЬ В ЧАС: ' + this.upgph[this.video_lvl]
+            this.cost = this.costs[this.video_lvl]
+            if (this.showModal) {
+                const modalwindow = this.$refs.modal;
+                modalwindow.classList.remove('show');
+                const modaloverlay = this.$refs.overlay;
+                modaloverlay.classList.remove('showOverlay');
+
+                setTimeout(() => {
+                    this.showModal = false
+                }, 400);
+                
+
+            } else {
+                var audio = new Audio(require('../assets/tap.mp3'));
+                audio.volume = 1
+                audio.play()
+                
+                this.showModal = true
+                setTimeout(() => {
+                    const modalwindow = this.$refs.modal;
+                    modalwindow.classList.add('show');
+                    const modaloverlay = this.$refs.overlay;
+                    modaloverlay.classList.add('showOverlay');
+                }, 10);
+            }
+            }
+            
+           
         },
         staticPath(lvl) {
             switch (lvl) {
@@ -244,6 +278,10 @@ export default {
         mining_time_lvl(){
             return this.$user.data.mining_time_lvl
         },
+        video_lvl(){
+            return this.$user.data.video_lvl
+        },
+
 
     }
 }
