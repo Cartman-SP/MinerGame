@@ -112,7 +112,7 @@ export default {
             up: '',
             cost: 0,
             num:1,
-            upcost: [0,'6 500','45 000','15 0000','50 0000','1$','1,25$','1,5$','1,75$','2$'],
+            upcost: [0,'6 500','45 000','150 000','500 000','1$','1,25$','1,5$','1,75$','2$'],
             alertMessage: '',
             modalType: 0,
         }
@@ -150,8 +150,9 @@ export default {
                 const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
                 console.log(response.data);
                 this.$user.data.balance = response.data.balance;
-                this.$user.data.gph = response.data.gph;
                 this.$user.data.mining_time_lvl = response.data.mining_time_lvl;
+                this.lvl = this.mining_time_lvl
+                this.cost = this.upcost[this.mining_time_lvl]
                 var audio = new Audio(require('../assets/buy.mp3'));
                 audio.volume = 1
                 audio.play()
