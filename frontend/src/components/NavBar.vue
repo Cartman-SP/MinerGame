@@ -47,6 +47,9 @@ export default {
         },
         moveto(url){
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            if(url=='/top' || url=='/friends'){
+                this.$user.data.toppage = true
+            }
             this.$router.push(url);
         }
     }

@@ -116,7 +116,9 @@ export default {
             this.top3 = top[2]
             this.top = top.slice(3);
             this.user_position = response.data.user_position
-            
+            setTimeout(() => {
+              this.$user.data.toppage = false
+            }, 300);
         }catch(error){
             console.log(error)
         }

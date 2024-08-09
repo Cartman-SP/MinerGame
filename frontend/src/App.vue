@@ -33,7 +33,11 @@ export default {
       logs: '',
       loaded: false,
       showModal: false,
-      isLoading: 'false',
+    }
+  },
+  computed:{
+    isLoading(){
+      return this.$user.data.toppage
     }
   },
   methods: {

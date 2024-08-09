@@ -115,7 +115,9 @@ export default {
     try {
         const response = await this.$axios.get('/get_friends/', { params: { user_id: this.$user.data.user_id } });
         this.friends = response.data;
-        console.log(response);
+        setTimeout(() => {
+          this.$user.data.toppage = false
+        }, 300);
         console.log(this.friends);
     } catch (error) {
         console.error(error);
