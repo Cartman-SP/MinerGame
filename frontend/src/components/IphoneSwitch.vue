@@ -1,6 +1,6 @@
 <template>
   <label class="form-switch" @click="toggle">
-    <input type="checkbox" v-model="flag">
+    <input type="checkbox" value="modelValue">
     <i></i>
   </label>
 </template>
@@ -61,23 +61,39 @@ export default {
     modelValue: {
       type: Boolean,
       default: false
-    }
-  },
-  computed: {
-    flag: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$user.playTap(); // вызываем метод при изменении значения
-        this.$emit('update:modelValue', value); // синхронизация данных через v-model
-      }
+    },
+    type: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
-    toggle() {
-      this.flag = !this.flag; // переключение состояния
-    }
+    toggle(){
+      if (this.type == 1) {
+        this.switchvolume()
+      } else {
+        this.switchvibro()
+      }
+    },
+
+    async switchvolume(){
+      this.$user.data.sound = !this.$user.data.sound
+      try {
+        const response = await this.$axios.post('/turnsound/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
+        console.log(response)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    async switchvibro(){
+      this.$user.data.vibrate = !this.$user.data.vibrate
+      try {
+        const response = await this.$axios.post('/turnvibrate/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
+        console.log(response)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
   }
 };
 </script>

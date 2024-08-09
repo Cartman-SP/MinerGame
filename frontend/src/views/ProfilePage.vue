@@ -43,11 +43,11 @@
       <div class="switches">
         <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
           <img src="../assets/icon-sound.png" alt="" style="width: 50px;">
-          <Switch v-model="isVolume"/>
+          <Switch v-model="isVolume" :type="1"/>
         </div>
         <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
           <img src="../assets/icon-vibration.png" alt="" style="width: 50px;">
-          <Switch v-model="isVibro"/>
+          <Switch v-model="isVibro" :type="2"/>
         </div>
         
         
@@ -83,34 +83,7 @@ export default {
     }
   },
 
-  watch:{
-    isVolume(){
-      this.switchvolume
-    },
-    isVibro(){
-      this.switchvibro
-    }
-  },
   methods:{
-    
-    async switchvolume(){
-      this.$user.data.sound = !this.$user.data.sound
-      try {
-        const response = await this.$axios.post('/turnsound/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
-        console.log(response)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    },
-    async switchvibro(){
-      this.$user.data.vibrate = !this.$user.data.vibrate
-      try {
-        const response = await this.$axios.post('/turnvibrate/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
-        console.log(response)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    },
     moveTo(url){
         window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         this.$router.push(url)
