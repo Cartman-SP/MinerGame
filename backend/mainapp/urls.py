@@ -15,4 +15,6 @@ urlpatterns = [
     path('sitevisited/',sitevisited),
     path('get_task/',gettasks),
     path('uptime/',uptime),
+    path('turnvibrate/',turnvibrate),
+    path('turnsound/',turnsound)
 ]

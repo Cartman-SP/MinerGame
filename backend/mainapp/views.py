@@ -404,3 +404,18 @@ def gettasks(request):
         i['complete'] = complete
     print(serialized_data)
     return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def turnsound(request):
+    user_id = request.query_params.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    user.sound = not(user.sound)
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def turnvibrate(request):
+    user_id = request.query_params.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    user.vibrate = not(user.vibrate)
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)

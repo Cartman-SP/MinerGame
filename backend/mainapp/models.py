@@ -33,6 +33,8 @@ class TelegramUser(models.Model):
     daily_reward_day = models.IntegerField(default=0)
     daily_reward_date = models.DateField(auto_now_add=True)
     secs_in_game = models.IntegerField(default=0)
+    sound = models.BooleanField(default=True)
+    vibrate = models.BooleanField(default=True)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()

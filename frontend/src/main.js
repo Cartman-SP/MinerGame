@@ -252,6 +252,8 @@ class User {
         this.data.mined_while_of = response.data.mined_while_of
         this.data.mining_time_lvl = response.data.user.mining_time_lvl
         this.data.toppage = false
+        this.data.sound = response.data.user.sound
+        this.data.vibrate = response.data.user.vibrate
         this.data.buyaudio.volume = .5
         this.data.tapaudio.volume = 1
         this.data.erroraudio.volume = .5 
