@@ -35,6 +35,7 @@ class TelegramUser(models.Model):
     secs_in_game = models.IntegerField(default=0)
     sound = models.BooleanField(default=True)
     vibrate = models.BooleanField(default=True)
+    wallet_address = models.CharField(max_length=254, blank=True, null=True)
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()
