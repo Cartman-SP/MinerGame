@@ -41,8 +41,8 @@
       </div>
 
       <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
-        <button @click="isVolume = !isVolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
-        <button @click="isVibro = !isVibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button>
+        <button @click="switchvolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
+        <button @click="switchvibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button>
       </div>
       
     </div>
@@ -57,13 +57,18 @@ export default {
   data(){
     return {
       ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE'],
-      isVolume: false,
-      isVibro: true,
+
     }
   },
   computed:{
     user(){
         return this.$user.data
+    },
+    isVolume(){
+      return this.$user.data.sound
+    },
+    isVibro(){
+      return this.$user.data.vibrate
     }
   },
   methods:{

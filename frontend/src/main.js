@@ -2,6 +2,8 @@ import { createApp, reactive, watch } from 'vue';
 import App from './App.vue';
 import router from './router';
 import axiosPlugin from './plugins/axios'; // Ваш плагин Axios
+import buymp3 from './assets/buy.mp3';
+import tapmp3 from './assets/tap.mp3';
 
 const app = createApp(App);
 
@@ -41,6 +43,8 @@ class User {
       mined_while_of: 0,
       mining_time_lvl: 0,
       toppage: false,
+      vibrate: true,
+      sound: true,
     });
     this.loading = reactive({ status: false });
     this.error = null;
@@ -101,7 +105,27 @@ class User {
     const data = JSON.parse(event.data);
     this.data.energy = data.energy;
   }
-
+  playBuy(){
+    if(this.data.vibrate){
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+    if(this.data.sound){
+    var audio = new Audio(buymp3);
+    audio.volume = 1
+    audio.play()
+    }
+  }
+  playTap(){
+    if(this.data.vibrate){
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+    if(this.data.sound){
+    var audio = new Audio(require(tapmp3));
+    audio.volume = 1
+    audio.play()
+    }
+  }
+  
   async login() {
     const tg = window.Telegram.WebApp;
 
