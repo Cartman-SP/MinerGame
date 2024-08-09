@@ -153,7 +153,7 @@ class User {
         this.data.mined_while_of = response.data.mined_while_of
         this.data.mining_time_lvl = response.data.user.mining_time_lvl
         this.data.toppage = false
-        this.data.tapsocket = new WebSocket(`ws://localhost:8001/ws/some_path/${this.data.user_id}/`);
+        this.data.tapsocket = new WebSocket(`wss://ylionminer.fun/ws/some_path/${this.data.user_id}/`);
         this.data.tapsocket.onmessage = this.onMessage.bind(this);
         this.data.tapsocket.onopen = () => {
           console.log('WebSocket connection established');
@@ -166,7 +166,7 @@ class User {
         };       
        
        
-        this.data.energysocket = new WebSocket(`ws://localhost:8001/ws/energy/${this.data.user_id}/`);
+        this.data.energysocket = new WebSocket(`wss://ylionminer.fun/ws/energy/${this.data.user_id}/`);
         this.data.energysocket.onmessage = this.onEnergyMessage.bind(this);
         this.data.energysocket.onopen = () => {
           console.log('Energy WebSocket connection established');
@@ -178,7 +178,7 @@ class User {
           console.error('Energy WebSocket error:', error);
         };
 
-        this.data.miningsocket = new WebSocket(`ws://localhost:8001/ws/mining/${this.data.user_id}/`);
+        this.data.miningsocket = new WebSocket(`wss://ylionminer.fun/ws/mining/${this.data.user_id}/`);
         this.data.miningsocket.onmessage = this.onMiningMessage.bind(this);
         this.data.miningsocket.onopen = () => {
           this.loading.status=true
