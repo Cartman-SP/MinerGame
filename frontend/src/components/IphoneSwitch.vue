@@ -1,6 +1,6 @@
 <template>
   <label class="form-switch" @click="toggle">
-    <input type="checkbox" :checked="modelValue">
+    <input type="checkbox" :checked="type == 1 ? isVolume : isVibro">
     <i></i>
   </label>
 </template>
@@ -58,13 +58,17 @@
 <script>
 export default {
   props: {
-    modelValue: {
-      type: Boolean,
-      default: false
-    },
     type: {
       type: Number,
       default: 0
+    }
+  },
+  computed:{
+    isVolume(){
+      return this.$user.data.sound
+    },
+    isVibro(){
+      return this.$user.data.vibrate
     }
   },
   methods: {

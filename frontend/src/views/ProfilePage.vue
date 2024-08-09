@@ -43,11 +43,11 @@
       <div class="switches">
         <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
           <img src="../assets/icon-sound.png" alt="" style="width: 50px;">
-          <Switch v-model="isVolume" :type="1"/>
+          <Switch :type="1"/>
         </div>
         <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
           <img src="../assets/icon-vibration.png" alt="" style="width: 50px;">
-          <Switch v-model="isVibro" :type="2"/>
+          <Switch :type="2"/>
         </div>
         
         
@@ -75,12 +75,6 @@ export default {
     user(){
         return this.$user.data
     },
-    isVolume(){
-      return this.$user.data.sound
-    },
-    isVibro(){
-      return this.$user.data.vibrate
-    }
   },
 
   methods:{
