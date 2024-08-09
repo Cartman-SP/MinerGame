@@ -47,6 +47,9 @@ class User {
       toppage: false,
       vibrate: true,
       sound: true,
+      buyaudio: new Audio(buymp3),
+      tapaudio: new Audio(tapmp3),
+      erroraudio: new Audio(errormp3),
     });
     this.loading = reactive({ status: false });
     this.error = null;
@@ -178,9 +181,7 @@ class User {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
     if(this.data.sound){
-    var audio = new Audio(buymp3);
-    audio.volume = .5
-    audio.play()
+      this.data.buyaudio.play()
     }
   }
   playTap(){
@@ -188,9 +189,7 @@ class User {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
     if(this.data.sound){
-    var audio = new Audio(require(tapmp3));
-    audio.volume = 1
-    audio.play()
+      this.data.tapaudio.play()
     }
   }
   playError(){
@@ -198,9 +197,7 @@ class User {
       window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
     }
     if(this.data.sound){
-    var audio = new Audio(require(errormp3));
-    audio.volume = .5
-    audio.play()
+      this.data.erroraudio.play()
     }
   }
   
@@ -255,6 +252,9 @@ class User {
         this.data.mined_while_of = response.data.mined_while_of
         this.data.mining_time_lvl = response.data.user.mining_time_lvl
         this.data.toppage = false
+        this.data.buyaudio.volume = .5
+        this.data.tapaudio.volume = 1
+        this.data.erroraudio.volume = .5 
         this.initTapSocket();
         this.initEnergySocket();
         this.initMiningSocket();
