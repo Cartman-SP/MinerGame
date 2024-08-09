@@ -6,12 +6,10 @@ from rest_framework import status
 from .models import *
 from .serializers import *
 import requests
-import logging
 
 
 BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
-logger = logging.getLogger('app_logger')
 
 def get_user_profile_photo(bot_token, user_id):
     url = f'https://api.telegram.org/bot{bot_token}/getUserProfilePhotos'
@@ -32,31 +30,23 @@ def get_user_profile_photo(bot_token, user_id):
                     file_url = f'https://api.telegram.org/file/bot{bot_token}/{file_path}'
                     return file_url
     except requests.RequestException as e:
-        logger.error(f"Error fetching user profile photo: {e}")
+        pass
     return None
 
 @api_view(['GET'])
 def get_or_create_user(request):
-    logger.debug("Received request with params: %s", request.query_params)
-
     user_id = request.query_params.get('id')
     username = request.query_params.get('first_name','Miner')
     usertag = request.query_params.get('username','Miner')
     start = request.query_params.get('start','Miner')
     is_premium = request.query_params.get('is_premium','Miner')
     is_premium = is_premium=='true'
-    if not user_id or not username or not usertag:
-        logger.error("Missing parameters: user_id, username, or usertag")
-        return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = TelegramUser.objects.get(user_id=user_id)
         user.ispremium = is_premium
-        
         user.save()
-        logger.debug(f"User {user_id} found in database")
-    except TelegramUser.DoesNotExist:
-        logger.info(f"User {user_id} not found, creating new user")
+    except Exception as e:
         user = TelegramUser.objects.create(
             user_id=user_id,
             username=username,
@@ -91,20 +81,18 @@ def get_or_create_user(request):
 
                 inviter.save()
                 referal.save()
-                logger.info(f"Referral and inviter updated for user {user_id}")
             except TelegramUser.DoesNotExist:
-                logger.warning(f"Inviter {start} does not exist")
+                pass
             except Exception as e:
-                logger.error(f"Error processing referral for user {user_id}: {e}")
-
+                pass
     if user:
         date_difference = timezone.now().date() - user.daily_reward_date
         if date_difference > timedelta(days=1):
             user.daily_reward_day = 0
             user.daily_reward_claimed = False
 
-        
-        
+
+
 
         photo_url = get_user_profile_photo(BOT_TOKEN, user_id)
         if photo_url:
@@ -127,7 +115,6 @@ def get_or_create_user(request):
 
         user.last_login = timezone.now()
         user.save()
-        logger.debug(f"User {user_id} updated successfully")
 
     user_serializer = TelegramUserSerializer(user)
     response_data = {
@@ -135,8 +122,10 @@ def get_or_create_user(request):
         "mined_while_of": mined_while_of
     }
 
-    logger.debug(f"Returning response for user {user_id}")
     return Response(response_data, status=status.HTTP_200_OK)
+
+
+
 
 
 @api_view(['POST'])

@@ -1,21 +1,26 @@
-{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="icon" href="{% static 'viewapp/favicon.ico' %}">
-    <title>frontend</title>
-    <script defer="defer" src="{% static 'viewapp/js/chunk-vendors.cc2c2312.js' %}"></script>
-    <script defer="defer" src="{% static 'viewapp/js/app.e008dd04.js' %}"></script>
-    <link href="{% static 'viewapp/css/app.1bfaaffd.css' %}" rel="stylesheet">
+    <title>Frontend</title>
+
+    <!-- Подключаем CSS файл через Django static -->
+    <link href="{% static 'viewapp/css/app.e326bc72.css' %}" rel="stylesheet">
+
+    <!-- Подключаем JS файлы через Django static -->
+    <script defer="defer" src="{% static 'viewapp/js/chunk-vendors.76e4f8e9.js' %}"></script>
+    <script defer="defer" src="{% static 'viewapp/js/app.9034a3b3.js' %}"></script>
 </head>
 <body>
     <noscript>
         <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+
+    <!-- Дополнительный скрипт -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
