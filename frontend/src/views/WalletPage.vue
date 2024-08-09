@@ -1,8 +1,5 @@
 <template>
     <div class="wallet-page">
-        <!-- <div class="header">
-            <h1 class="title">WALLET</h1>
-        </div> -->
         <img src="../assets/logo-small-blue.png" alt="" style="width: 50px; margin-bottom: 40px;">
         <p class="unavailable">ВРЕМЕННО НЕДОСТУПНО</p>
         <div style="position: relative;">
@@ -16,19 +13,44 @@
             <img src="../assets/icon-lock.png" alt="" class="lock-icon">
             <div class="wallet">
                 <img src="../assets/icon-wallet-white.png" alt="" class="wallet-icon">
-                <p class="name" style="font-size: 12px;">ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
+                <p class="name" style="font-size: 12px;" @click="connectWallet">ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
             </div>
         </div>
         <AlertMessage :message="alertMessage" style="z-index: 200;"/>
     </div>
 </template>
+
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
+
 export default {
-    components: { AlertMessage } ,
-    
-}
+    components: { AlertMessage },
+    data() {
+        return {
+            alertMessage: '',
+        };
+    },
+    methods: {
+        async connectWallet() {
+            try {
+                const wallets = await this.$user.tonConnect.connect();
+                if (wallets && wallets.length > 0) {
+                    const wallet = wallets[0];
+                    this.$user.data.wallet_address = wallet.account.address;
+                    await this.$user.saveWalletAddress(wallet.account.address);
+                    this.alertMessage = 'Кошелек успешно подключен!';
+                } else {
+                    this.alertMessage = 'Не удалось подключить кошелек.';
+                }
+            } catch (error) {
+                console.error('Ошибка подключения к кошельку:', error);
+                this.alertMessage = 'Ошибка подключения к кошельку.';
+            }
+        }
+    }
+};
 </script>
+
 <style scoped>
 .lock-icon{
     position: absolute;
