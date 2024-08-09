@@ -41,14 +41,9 @@
       </div>
 
       <div class="switches">
-        <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
-          <img src="../assets/icon-sound.png" alt="" style="width: 50px;">
-          <Switch :type="1"/>
-        </div>
-        <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;">
-          <img src="../assets/icon-vibration.png" alt="" style="width: 50px;">
-          <Switch :type="2"/>
-        </div>
+        <button class="help">НАПИСАТЬ ПОДДЕРЖКЕ</button>
+        <Switch :type="1"/>
+        <Switch :type="2"/>
         
         
         <!-- <button @click="switchvolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
@@ -92,19 +87,25 @@ export default {
 </script>
 
 <style scoped>
+.help{
+  width: 70%;
+  height: 30px;
+  cursor: pointer;
+  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+  filter: drop-shadow(0 1px 3px rgb(23, 23, 23));
+  border-radius: 10px;
+  border: none;color: white;
+  font-family: "Druk Wide";
+  font-size: 12px;
+}
 .switches{
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
-  background: rgb(37, 37, 37);
-  border-radius: 10px;
-  border: 1px solid #00E6FF;
-  padding: 10px 15px;
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 12px;
+  margin-top: 30px;
+  width: 90%;
+  margin: 5px;
 }
 .active{
   background: rgb(117, 182, 77);

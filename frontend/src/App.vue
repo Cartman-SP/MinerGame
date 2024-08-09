@@ -134,7 +134,7 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 280px;
+    height: 350px;
     bottom: -500px;
     z-index: 10;
     transition: all .4s ease;
