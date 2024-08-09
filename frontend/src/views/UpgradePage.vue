@@ -223,7 +223,7 @@ export default {
                 
 
             } else {
-                var audio = new Audio(require('../assets/tap.mp3'));
+                let audio = new Audio(require('../assets/tap.mp3'));
                 audio.volume = 1
                 audio.play()
                 
@@ -308,7 +308,7 @@ export default {
 }
 .info{
     background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
-    width: 300px;
+    width: 400px;
     border-radius: 10px;
     filter: drop-shadow(0 0px 5px rgb(23, 23, 23));
 }
