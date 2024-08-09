@@ -1,5 +1,5 @@
 <template>
-    <div class="alert" :class="{ 'show': isVisible, 'hide': !isVisible }" :style="{ backgroundColor: color }">
+    <div class="alert" :class="{ 'show': isVisible, 'hide': !isVisible }">
       <p>{{ m }}</p>
       <!-- <div @click="hideNotification" style="display: flex; align-items: center; cursor: pointer;">
         <svg  width="8" height="8" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,7 +12,7 @@
   
   <script>
   export default {
-    props: ['message', 'color'],
+    props: ['message'],
     data() {
       return {
         isVisible: false,
@@ -58,14 +58,16 @@
   <style scoped>
   .show {
     opacity: 100%;
-    bottom: 20px;
+    top: 150px;
     transition: all .2s ease;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+    height: 20px;
   }
   
   .hide {
     opacity: 0;
-    bottom: 0px;
+    top: 0px;
     transition: all .2s ease;
   }
   

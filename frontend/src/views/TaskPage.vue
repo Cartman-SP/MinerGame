@@ -193,7 +193,7 @@
           ЗАБРАТЬ ПРИЗ
         </div>
     </div>
-    <AlertMessage :message="alertMessage" :color="alertColor"/>
+    <AlertMessage :message="alertMessage" style="z-index: 200;"/>
   </div>
 </template>
 

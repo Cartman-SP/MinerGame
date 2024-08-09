@@ -18,7 +18,9 @@
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
     </div>
-    <AlertMessage :message="alertMessage" :color="alertColor"/>
+    <button @click="alertMessage = 'Недостаточно баланса'">12</button>
+    <button @click="alertMessage = 'го2t3вно'">12</button>
+    <AlertMessage :message="alertMessage" style="z-index: 200;"/>
   </div>
 </template>
 
@@ -31,7 +33,6 @@ export default {
   components: { Spinner, AlertMessage } ,
   data() {
     return {
-      alertColor: '',
       alertMessage: '',
 
       socket: null,

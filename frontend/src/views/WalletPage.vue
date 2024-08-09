@@ -19,7 +19,7 @@
                 <p class="name" style="font-size: 12px;">ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
             </div>
         </div>
-        <AlertMessage :message="alertMessage" :color="alertColor"/>
+        <AlertMessage :message="alertMessage" style="z-index: 200;"/>
     </div>
 </template>
 <script>
