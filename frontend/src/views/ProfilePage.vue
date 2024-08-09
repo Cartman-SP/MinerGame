@@ -82,6 +82,15 @@ export default {
       return this.$user.data.vibrate
     }
   },
+
+  watch:{
+    isVolume(){
+      this.switchvolume
+    },
+    isVibro(){
+      this.switchvibro
+    }
+  },
   methods:{
     
     async switchvolume(){
