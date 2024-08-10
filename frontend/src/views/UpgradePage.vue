@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
+            <div class="block" @click="open_pay">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
+            <div class="block" @click="open_pay">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
+            <div class="block" @click="open_pay">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
@@ -132,6 +132,24 @@ export default {
         }
     },
     methods:{
+        async open_pay(){
+            try{
+                window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+                const data = {'user_id':this.$user.data.user_id}
+                const response = await this.$axios.get('/get_innovice_link/',data, {withCredentials: true})
+                const link = response.data.result
+                window.Telegram.WebApp.openInvoice(link, (status) => {
+                    if (status === "paid") {
+                        console.log('123')
+                    }
+                });
+            }catch(error){
+                console.log(error)
+            }
+
+            
+
+        },
         formatNumber(num) {
             return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
                 num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
