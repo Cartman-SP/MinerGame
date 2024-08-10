@@ -73,31 +73,6 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        # Определяем консольный вывод
-        'console': {
-            'level': LOGGING_LEVEL,
-            'class': 'logging.StreamHandler',
-        },
-        # Определяем файловый вывод
-        'file': {
-            'level': LOGGING_LEVEL,
-            'class': 'logging.FileHandler',
-            'filename': '/CODE/backend/newlogs2.log',  # Путь к файлу для логирования
-        },
-    },
-    'loggers': {
-        # Корневой логгер
-        '': {
-            'handlers': ['console', 'file'],  # Используем оба обработчика (консоль и файл)
-            'level': LOGGING_LEVEL,
-            'propagate': True,
-        },
-    },
-}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
