@@ -10,6 +10,22 @@ import requests
 
 BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
+@api_view(['GET'])
+def get_innovice_link(request):
+    url = f'https://api.telegram.org/bot{BOT_TOKEN}/createInvoiceLink'
+    params = {
+        'title':'Zhopa',
+        'description':'123',
+        'payload': '{}',
+        'provider_token': '',
+        'start_parameter': 'start_param',
+        'currency': 'XTR',
+        'prices': [{ 'amount': 1, 'label': "Test Product" }]
+    }
+    response = requests.get(url,json=params)
+    print(response.json())
+    return Response(response.json(), status=status.HTTP_200_OK)
+
 
 def get_user_profile_photo(bot_token, user_id):
     url = f'https://api.telegram.org/bot{bot_token}/getUserProfilePhotos'

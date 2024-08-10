@@ -44,7 +44,7 @@ export default {
       miningTimer: null,
       remainingTime: 0,
 
-      spinnerCount: 2,
+      spinnerCount: 1,
     };
   },
   methods: {

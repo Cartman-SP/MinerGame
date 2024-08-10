@@ -11,12 +11,16 @@
     "@babel/plugin-transform-runtime": "^7.24.7",
     "@babel/preset-env": "^7.25.0",
     "@babel/preset-react": "^7.24.7",
+    "@ton-connect/ui-vue": "^1.0.2",
     "@tonconnect/sdk": "^3.0.5",
+    "@tonconnect/ui": "^2.0.8",
     "axios": "^1.7.2",
     "core-js": "^3.8.3",
     "js-cookie": "^3.0.5",
+    "ton-ui-vue": "^0.1.2",
     "vue": "^3.2.13",
     "vue-router": "^4.4.0",
+    "vue-ts": "^1.0.11",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

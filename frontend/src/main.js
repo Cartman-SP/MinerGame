@@ -1,14 +1,15 @@
-import { createApp, reactive, watch } from 'vue';
+import { createApp, reactive, watch  } from 'vue';
 import App from './App.vue';
 import router from './router';
 import axiosPlugin from './plugins/axios'; // Ваш плагин Axios
-import { TonConnect, Transaction, TonConnectError } from '@tonconnect/sdk';
 import buymp3 from './assets/buy.mp3';
 import tapmp3 from './assets/tap.mp3';
 import errormp3 from './assets/error.mp3';
 
-const app = createApp(App);
 
+
+
+const app = createApp(App);
 
 
 app.use(axiosPlugin);
@@ -77,8 +78,6 @@ class User {
         this.lvlup(10);
       }
     });
-
-    this.tonConnect = new TonConnect();
   }
 
   async lvlup(lvl) {
@@ -97,65 +96,6 @@ class User {
     }
   }
 
-  async sendPayment(amountInTon) {
-    try {
-      // Проверка, что кошелек подключен
-      if (!this.walletAddress) {
-        console.error('Сначала подключите кошелек!');
-        return;
-      }
-
-      const amountInNanoton = amountInTon * 1e9;
-
-      const recipientAddress = 'UQD8cjkbtXNJKvl8qM6eO1LxaUNUEV2Gu7-oupHATw7AHajs';
-
-      const transaction = new Transaction({
-        to: recipientAddress,
-        value: amountInNanoton.toString(),
-        stateInit: null,
-        message: 'Payment for service',
-      });
-
-      const result = await this.tonConnect.sendTransaction(transaction);
-
-      if (result) {
-        console.log('Оплата успешно выполнена!');
-      }
-    } catch (error) {
-      if (error instanceof TonConnectError) {
-        console.error('Ошибка TonConnect:', error.message);
-      } else {
-        console.error('Неизвестная ошибка при выполнении оплаты:', error);
-      }
-    }
-  }
-
-  async connectWallet() {
-    try {
-      const wallets = await this.tonConnect.connect();
-      if (wallets && wallets.length > 0) {
-        const wallet = wallets[0];
-        this.data.wallet_address = wallet.account.address;
-        await this.saveWalletAddress(wallet.account.address);
-      }
-    } catch (error) {
-      console.error('Ошибка подключения к кошельку:', error);
-    }
-  }
-
-  async saveWalletAddress(walletAddress) {
-    try {
-      const response = await app.config.globalProperties.$axios.post('/api/save-wallet/', {
-        user_id: this.data.user_id,
-        wallet_address: walletAddress,
-      });
-      if (response.status === 200) {
-        console.log('Кошелек успешно сохранен!');
-      }
-    } catch (error) {
-      console.error('Ошибка при сохранении кошелька:', error);
-    }
-  }
   onMessage(event) {
     const data = JSON.parse(event.data);
     this.data.balance = data.balance;
@@ -320,8 +260,6 @@ class User {
         this.initTapSocket();
         this.initEnergySocket();
         this.initMiningSocket();
-        this.data.wallet_address = response.data.user.wallet_address || ''; // Восстанавливаем кошелек
-        console.log("Wallet address after login:", this.data.wallet_address);
         if (this.data.wallet_address) {
           this.tonConnect.restoreConnection(this.data.wallet_address);
         }

@@ -16,5 +16,6 @@ urlpatterns = [
     path('get_task/',gettasks),
     path('uptime/',uptime),
     path('turnvibrate/',turnvibrate),
-    path('turnsound/',turnsound)
+    path('turnsound/',turnsound),
+    path('get_innovice_link/',get_innovice_link)
 ]

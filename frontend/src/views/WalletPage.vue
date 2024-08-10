@@ -1,55 +1,60 @@
 <template>
     <div class="wallet-page">
-        <img src="../assets/logo-small-blue.png" alt="" style="width: 50px; margin-bottom: 40px;">
-        <p class="unavailable">ВРЕМЕННО НЕДОСТУПНО</p>
-        <div style="position: relative;">
-            <img src="../assets/icon-lock.png" alt="" class="lock-icon">
-            <div class="exchange">
-                <img src="../assets/icon-exchange.png" alt="" class="exchange-icon">
-                <p class="name">EXCHANGE</p>
-            </div>
+      <img src="../assets/logo-small-blue.png" alt="" style="width: 50px; margin-bottom: 40px;">
+      <p class="unavailable">ВРЕМЕННО НЕДОСТУПНО</p>
+      <div style="position: relative;">
+        <img src="../assets/icon-lock.png" alt="" class="lock-icon">
+        <div class="exchange">
+          <img src="../assets/icon-exchange.png" alt="" class="exchange-icon">
+          <p class="name">EXCHANGE</p>
         </div>
-        <div style="position: relative;">
-            <img src="../assets/icon-lock.png" alt="" class="lock-icon">
-            <div class="wallet">
-                <img src="../assets/icon-wallet-white.png" alt="" class="wallet-icon">
-                <p class="name" style="font-size: 12px;" @click="connectWallet">ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
-            </div>
+      </div>
+      <div style="position: relative;">
+        <img src="../assets/icon-lock.png" alt="" class="lock-icon">
+        <div class="wallet">
+          <img src="../assets/icon-wallet-white.png" alt="" class="wallet-icon">
+          <p class="name" style="font-size: 12px;" >ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
         </div>
-        <AlertMessage :message="alertMessage" style="z-index: 200;"/>
+      </div>
+      <AlertMessage :message="alertMessage" style="z-index: 200;"/>
     </div>
-</template>
+  </template>
+  
+  <script >
+  
+  import AlertMessage from "../components/AlertMessage.vue";
 
-<script>
-import AlertMessage from "../components/AlertMessage.vue";
-
-export default {
+  export default {
     components: { AlertMessage },
     data() {
-        return {
-            alertMessage: '',
-        };
+      return {
+        alertMessage: '',
+      };
     },
     methods: {
-        async connectWallet() {
-            try {
-                const wallets = await this.$user.tonConnect.connect();
-                if (wallets && wallets.length > 0) {
-                    const wallet = wallets[0];
-                    this.$user.data.wallet_address = wallet.account.address;
-                    await this.$user.saveWalletAddress(wallet.account.address);
-                    this.alertMessage = 'Кошелек успешно подключен!';
-                } else {
-                    this.alertMessage = 'Не удалось подключить кошелек.';
-                }
-            } catch (error) {
-                console.error('Ошибка подключения к кошельку:', error);
-                this.alertMessage = 'Ошибка подключения к кошельку.';
+        async open_pay(){
+            try{
+                const data = {'user_id':this.$user.data.user_id}
+                const response = await this.$axios.get('/get_innovice_link/',data, {withCredentials: true})
+                const link = response.data.result
+                window.Telegram.WebApp.openInvoice(link, (status) => {
+                    if (status === "paid") {
+                        console.log('123')
+                    }
+                });
+            }catch(error){
+                console.log(error)
             }
+
+            
+
         }
     }
-};
-</script>
+  };
+  </script>
+  
+
+
 
 <style scoped>
 .lock-icon{
