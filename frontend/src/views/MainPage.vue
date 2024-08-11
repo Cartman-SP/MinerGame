@@ -3,7 +3,7 @@
 
 
     <div :class="spinnerClass">
-      <Spinner v-for="n in spinnerCount" :key="n" :level="video_lvl" :isMining="remainingTime > 0" />
+      <Spinner v-for="n in [video1_lvl,video2_lvl,video3_lvl,video4_lvl]" :key="n" :level="n" :isMining="remainingTime > 0" />
     </div>
     
       
@@ -48,6 +48,7 @@ export default {
     };
   },
   methods: {
+    
     moveTo(url){
         this.$router.push(url)
         this.$user.playTap()
@@ -158,6 +159,15 @@ export default {
     },
     video_lvl(){
       return this.$user.data.video_lvl
+    },
+    video2_lvl(){
+      return this.$user.data.video2_lvl
+    },
+    video3_lvl(){
+      return this.$user.data.video3_lvl
+    },
+    video4_lvl(){
+      return this.$user.data.video4_lvl
     },
     balance() {
       return this.$user.data.balance;

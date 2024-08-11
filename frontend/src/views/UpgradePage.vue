@@ -10,45 +10,78 @@
                     <img class="spinner" :src="staticPath(this.video_lvl)" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">{{costs[level]}}</p>
+                    <p class="price">{{costs[video_lvl]}}</p>
                     <div class="logo-background">
                         <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
                 </div>
             </div>
 
-            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
+            <div class="block" @click="open_pay(2)" v-if="video2_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">2.5</p>
+                    <p class="price">{{don_costs.video2}}</p>
+                    <div class="logo-background" >
+                        <img class="logoSmall" src="../assets/stars_logo.svg" alt="" style="width:50px;">
+                    </div>
+                </div>
+            </div>
+            <div class="block"  @click="toggleModal(3), modalType = 2" v-else>
+                <div class="photo">
+                    <img class="spinner" :src="staticPath(this.video2_lvl)" alt="">
+                </div>
+                <div class="cost">
+                    <p class="price">{{costs[video2_lvl]}}</p>
                     <div class="logo-background">
-                        $
+                        <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
                 </div>
             </div>
 
-            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
+            <div class="block" @click="open_pay(3)" v-if="video3_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">2.5</p>
+                    <p class="price">{{don_costs.video3}}</p>
+                    <div class="logo-background" >
+                        <img class="logoSmall" src="../assets/stars_logo.svg" alt="" style="width:50px;">
+                    </div>
+                </div>
+            </div>
+            <div class="block"  @click="toggleModal(4), modalType = 2" v-else>
+                <div class="photo">
+                    <img class="spinner" :src="staticPath(this.video3_lvl)" alt="">
+                </div>
+                <div class="cost">
+                    <p class="price">{{costs[video3_lvl]}}</p>
                     <div class="logo-background">
-                        $
+                        <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
                 </div>
             </div>
 
-            <div class="block" @click="window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');">
+            <div class="block" @click="open_pay(4)" v-if="video4_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                 </div>
                 <div class="cost">
-                    <p class="price">2.5</p>
+                    <p class="price">{{don_costs.video4}}</p>
+                    <div class="logo-background" >
+                        <img class="logoSmall" src="../assets/stars_logo.svg" alt="" style="width:50px;">
+                    </div>
+                </div>
+            </div>
+            <div class="block"  @click="toggleModal(5), modalType = 2" v-else>
+                <div class="photo">
+                    <img class="spinner" :src="staticPath(this.video4_lvl)" alt="">
+                </div>
+                <div class="cost">
+                    <p class="price">{{costs[video4_lvl]}}</p>
                     <div class="logo-background">
-                        $
+                        <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
                 </div>
             </div>
@@ -132,24 +165,57 @@ export default {
         }
     },
     methods:{
+        async open_pay(video) {
+    window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+    try {
+        const response = await this.$axios.get('/get_invoice_link/', { params: {num: video, withCredentials: true} });
+        const link = response.data.result;
+        
+        window.Telegram.WebApp.openInvoice(link, async(status) => {
+            if (status === "paid") {
+                if (video === 2) {
+                    this.$user.data.video2_lvl = 1;
+                    this.toggleModal(3);
+                } else if (video === 3) {
+                    this.$user.data.video3_lvl = 1;
+                    this.toggleModal(4);
+                } else if (video === 4) {
+                    this.$user.data.video4_lvl = 1;
+                    this.toggleModal(5);
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error during payment:', error);
+    }
+},
         formatNumber(num) {
             return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
                 num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
                 num.toString();
         },
-        async upgrade(){
+        async upgrade(num){
             this.alertMessage = '';
             this.$user.playTap()
-            let data = {'user_id':this.$user.data.user_id}
+            let data = {'user_id':this.$user.data.user_id,'num':num}
             try {
                 const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
                 console.log(response.data);
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
-                this.$user.data.video_lvl = response.data.video_lvl
+
                 this.toggleModal();
                 this.modalType = 2
                 this.$user.playBuy()
+                if(this.num==2){
+                    this.$user.data.video_lvl = response.data.video_lvl
+                }else if(this.num==3){
+                    this.$user.data.video2_lvl = response.data.video2_lvl
+                }else if(this.num==4){
+                    this.$user.data.video3_lvl = response.data.video3_lvl
+                }else if(this.num==5){
+                    this.$user.data.video4_lvl = response.data.video4_lvl
+                }
             }
             catch (error) {
                 this.$user.playError()
@@ -206,10 +272,11 @@ export default {
                     modaloverlay.classList.add('showOverlay');
                 }, 10);
             }
-            }else{
+            }else if(num==2){
             this.name = 'MINING TIME'
             this.lvl = this.video_lvl
             this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video_lvl] + '/час'
+            this.num=num
             if (this.video_lvl<11){
                 this.cost = this.formatNumber(this.costs[this.video_lvl])
             }else{
@@ -239,6 +306,121 @@ export default {
                 }, 10);
             }
             }
+
+
+
+
+            else if(num==3){
+            this.name = 'MINING TIME'
+            this.lvl = this.video2_lvl
+            this.num=num
+            this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video2_lvl] + '/час'
+            if (this.video2_lvl<11){
+                this.cost = this.formatNumber(this.costs[this.video2_lvl])
+            }else{
+                this.cost = this.costs[this.video2_lvl]
+            }
+            
+            if (this.showModal) {
+                const modalwindow = this.$refs.modal;
+                modalwindow.classList.remove('show');
+                const modaloverlay = this.$refs.overlay;
+                modaloverlay.classList.remove('showOverlay');
+
+                setTimeout(() => {
+                    this.showModal = false
+                }, 400);
+                
+
+            } else {
+                this.$user.playTap()
+                
+                this.showModal = true
+                setTimeout(() => {
+                    const modalwindow = this.$refs.modal;
+                    modalwindow.classList.add('show');
+                    const modaloverlay = this.$refs.overlay;
+                    modaloverlay.classList.add('showOverlay');
+                }, 10);
+            }
+            }
+
+
+
+
+            else if(num==4){
+            this.num=num
+            this.name = 'MINING TIME'
+            this.lvl = this.video3_lvl
+            this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video3_lvl] + '/час'
+            if (this.video3_lvl<11){
+                this.cost = this.formatNumber(this.costs[this.video3_lvl])
+            }else{
+                this.cost = this.costs[this.video3_lvl]
+            }
+            
+            if (this.showModal) {
+                const modalwindow = this.$refs.modal;
+                modalwindow.classList.remove('show');
+                const modaloverlay = this.$refs.overlay;
+                modaloverlay.classList.remove('showOverlay');
+
+                setTimeout(() => {
+                    this.showModal = false
+                }, 400);
+                
+
+            } else {
+                this.$user.playTap()
+                
+                this.showModal = true
+                setTimeout(() => {
+                    const modalwindow = this.$refs.modal;
+                    modalwindow.classList.add('show');
+                    const modaloverlay = this.$refs.overlay;
+                    modaloverlay.classList.add('showOverlay');
+                }, 10);
+            }
+            }
+
+
+
+            else if(num==5){
+            this.num=num
+            this.name = 'MINING TIME'
+            this.lvl = this.video4_lvl
+            this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video4_lvl] + '/час'
+            if (this.video4_lvl<11){
+                this.cost = this.formatNumber(this.costs[this.video4_lvl])
+            }else{
+                this.cost = this.costs[this.video4_lvl]
+            }
+            
+            if (this.showModal) {
+                const modalwindow = this.$refs.modal;
+                modalwindow.classList.remove('show');
+                const modaloverlay = this.$refs.overlay;
+                modaloverlay.classList.remove('showOverlay');
+
+                setTimeout(() => {
+                    this.showModal = false
+                }, 400);
+                
+
+            } else {
+                this.$user.playTap()
+                
+                this.showModal = true
+                setTimeout(() => {
+                    const modalwindow = this.$refs.modal;
+                    modalwindow.classList.add('show');
+                    const modaloverlay = this.$refs.overlay;
+                    modaloverlay.classList.add('showOverlay');
+                }, 10);
+            }
+            }
+
+
             
            
         },
@@ -271,6 +453,10 @@ export default {
         }
     },
     computed: {
+        don_costs(){
+            return this.$user.data.costs
+        },
+
         gph(){
             return this.$user.data.gph;
         },
@@ -284,8 +470,15 @@ export default {
         video_lvl(){
             return this.$user.data.video_lvl
         },
-
-
+        video2_lvl(){
+            return this.$user.data.video2_lvl
+        },
+        video3_lvl(){
+            return this.$user.data.video3_lvl
+        },
+        video4_lvl(){
+            return this.$user.data.video4_lvl
+        }
     }
 }
 </script>

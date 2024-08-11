@@ -51,6 +51,10 @@ class User {
       buyaudio: new Audio(buymp3),
       tapaudio: new Audio(tapmp3),
       erroraudio: new Audio(errormp3),
+      video2_lvl: 0,
+      video3_lvl: 0,
+      video4_lvl: 0,
+      costs: {}
     });
     this.loading = reactive({ status: false });
     this.error = null;
@@ -257,6 +261,10 @@ class User {
         this.data.buyaudio.volume = .5
         this.data.tapaudio.volume = 1
         this.data.erroraudio.volume = .5 
+        this.data.video2_lvl = response.data.user.video_lvl
+        this.data.video3_lvl = response.data.user.video_lvl
+        this.data.video4_lvl = response.data.user.video_lvl
+        this.data.costs = response.data.costs
         this.initTapSocket();
         this.initEnergySocket();
         this.initMiningSocket();

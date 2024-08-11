@@ -20,3 +20,9 @@ class RoomSerializer(serializers.ModelSerializer):
     # Если вам нужно включить сериализацию связанных объектов, 
     # вы можете использовать вложенные сериализаторы или PrimaryKeyRelatedField
     user = serializers.PrimaryKeyRelatedField(queryset=TelegramUser.objects.all())
+
+
+class Payments_costSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payments_cost
+        fields = '__all__'

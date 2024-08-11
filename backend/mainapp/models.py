@@ -34,6 +34,9 @@ class TelegramUser(models.Model):
     daily_reward_date = models.DateField(auto_now_add=True)
     secs_in_game = models.IntegerField(default=0)
     sound = models.BooleanField(default=True)
+    video2_lvl = models.IntegerField(default=0)
+    video3_lvl = models.IntegerField(default=0)
+    video4_lvl = models.IntegerField(default=0)
     vibrate = models.BooleanField(default=True)
     wallet_address = models.CharField(max_length=254, blank=True, null=True)
     def update_mining_end(self):
@@ -45,6 +48,16 @@ class Referal(models.Model):
     inviter = models.ForeignKey(TelegramUser, related_name='invitations', on_delete=models.CASCADE)
     user = models.ForeignKey(TelegramUser, related_name='referrals', on_delete=models.CASCADE)
 
+
+class Payments_cost(models.Model):
+    video2 = models.IntegerField(default=150)
+    video3 = models.IntegerField(default=150)
+    video4 = models.IntegerField(default=150)
+    mining_duration6 = models.IntegerField(default=100)
+    mining_duration7 = models.IntegerField(default=100)
+    mining_duration8 = models.IntegerField(default=100)
+    mining_duration9 = models.IntegerField(default=100)
+    mining_duration10 = models.IntegerField(default=100)
 
 class Room(models.Model):
     lvl  = models.IntegerField()
@@ -68,4 +81,5 @@ class UserTask(models.Model):
 
 
 admin.site.register(TelegramUser)
-
+admin.site.register(Task)
+admin.site.register(Payments_cost)

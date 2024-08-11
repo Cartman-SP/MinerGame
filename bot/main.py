@@ -1,32 +1,45 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, CallbackContext
-import requests
-import os
+from aiogram import Router, F, Bot, types
+from aiogram.filters import Command
+from aiogram.types import Message, PreCheckoutQuery
+from aiogram import Dispatcher
+import asyncio
 
-# Получите токен вашего бота от BotFather
-TOKEN = '6705532890:AAG7x2iBNy9GdCLZWqqNF1LunZtev7_yOmA'
+import logging
 
-async def start(update: Update, context: CallbackContext) -> None:
-    # Получите параметр startapp из команды
-    args = context.args
-    if args:
-        referral_code = args[0]
+from aiogram.types.message import ContentType
+from aiogram.utils.callback_answer import CallbackAnswer, CallbackQuery
+from typing import Optional
+from aiogram.filters.callback_data import CallbackData
+from aiogram.types.message import ContentType
+from aiogram.methods.create_invoice_link import CreateInvoiceLink
+from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
-        user_id = update.message.from_user.id
-        #response = requests.post(f"http://your-django-server/api/save-referral/", data={'user_id': user_id, 'referral_code': referral_code})
-            keyboard = [[InlineKeyboardButton("Запустить WebApp", url=webapp_url)]]
-        else:
-            await update.message.reply_text("Произошла ошибка при сохранении реферального кода.")
+# Объект бота
+bot = Bot(token= '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA')
+dp = Dispatcher()
+logging.basicConfig(level=logging.INFO)
 
-def main() -> None:
-    """Start the bot."""
-    application = Application.builder().token(TOKEN).build()
-    
-    # Зарегистрируйте обработчик команды /start
-    application.add_handler(CommandHandler("start", start))
-    
-    # Запустите бота
-    application.run_polling()
+router = Router()
 
-if __name__ == '__main__':
-    main()
+
+@dp.pre_checkout_query()
+async def checkout_handler(checkout_query: PreCheckoutQuery):
+    await checkout_query.answer(ok=True)
+
+
+@dp.message(F.successful_payment)
+async def star_payment(msg: Message, bot: Bot):
+    # await bot.refund_star_payment(  # Тестирование возврата средств
+    #     msg.chat.id,
+    #     msg.successful_payment.telegram_payment_charge_id,
+    # )
+
+    await msg.answer(f"Id транзакции: {msg.successful_payment.telegram_payment_charge_id}")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    # Запуск бота
+    asyncio.run(main(), debug=True)

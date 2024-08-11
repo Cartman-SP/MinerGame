@@ -8,24 +8,65 @@ from .serializers import *
 import requests
 
 
-BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
+BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
 
 @api_view(['GET'])
 def get_innovice_link(request):
     url = f'https://api.telegram.org/bot{BOT_TOKEN}/createInvoiceLink'
-    params = {
-        'title':'Zhopa',
-        'description':'123',
-        'payload': '{}',
-        'provider_token': '',
-        'start_parameter': 'start_param',
-        'currency': 'XTR',
-        'prices': [{ 'amount': 1, 'label': "Test Product" }]
-    }
-    response = requests.get(url,json=params)
-    print(response.json())
-    return Response(response.json(), status=status.HTTP_200_OK)
-
+    num = request.query_params.get('num')
+    print(num)
+    costs = Payments_cost.objects.all().first()
+    if(int(num)==2):
+        title = '2 видеокарта'
+        description = 'Зарабатывай в разы больше за тот же промежуток времени!'
+        cost = costs.video2
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==3):
+        title = '3 видеокарта'
+        description = 'Зарабатывай в разы больше за тот же промежуток времени!'
+        cost = costs.video3
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==4):
+        title = '4 видеокарта'
+        description = 'Зарабатывай в разы больше за тот же промежуток времени!'
+        cost = costs.video4
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
 
 def get_user_profile_photo(bot_token, user_id):
     url = f'https://api.telegram.org/bot{bot_token}/getUserProfilePhotos'
@@ -124,18 +165,19 @@ def get_or_create_user(request):
                 user.balance += mined_while_of
             time_diff = timezone.now()-user.last_login
             if time_diff > timedelta(seconds=0):
-                user.energy = min(time_diff.total_seconds(),user.max_energy)
+                user.energy += min(user.energy+time_diff.total_seconds(),user.max_energy)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()
 
         user.last_login = timezone.now()
         user.save()
-
+    costs = Payments_costSerializer(Payments_cost.objects.all().first())
     user_serializer = TelegramUserSerializer(user)
     response_data = {
         "user": user_serializer.data,
-        "mined_while_of": mined_while_of
+        "mined_while_of": mined_while_of,
+        "costs": costs.data
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
@@ -229,16 +271,57 @@ def upgrade_mining(request):
     upcost = [0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,350000000]
     upgph = [731,1638,3627,8307,18720,42120,94770,213408,480285,1080612,2250550]
     user_id = request.data.get('user_id')
-    print(user_id)
     user = TelegramUser.objects.get(user_id=user_id)
     num = request.data.get('num')
-    cost = upcost[user.video_lvl]
-    if(user.balance>cost):
-        user.balance-=cost
-        user.gph+=upgph[user.video_lvl]
-        user.video_lvl+=1
-        user.save()
-        return Response({'balance':user.balance,'video_lvl':user.video_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
+    if(num==1):
+        cost = upcost[user.video_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.gph+=upgph[user.video_lvl]
+            user.video_lvl+=1
+            user.save()
+            return Response({'balance':user.balance,'video_lvl':user.video_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
+    elif(num==2):
+        cost = upcost[user.video2_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.gph+=upgph[user.video2_lvl]
+            user.video2_lvl+=1
+            user.save()
+            return Response({'balance':user.balance,'video2_lvl':user.video2_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
+    elif(num==3):
+        cost = upcost[user.video3_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.gph+=upgph[user.video3_lvl]
+            user.video3_lvl+=1
+            user.save()
+            return Response({'balance':user.balance,'video3_lvl':user.video3_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
+    elif(num==4):
+        cost = upcost[user.video4_lvl]
+        if(user.balance>cost):
+            user.balance-=cost
+            user.gph+=upgph[user.video4_lvl]
+            user.video4_lvl+=1
+            user.save()
+            return Response({'balance':user.balance,'video4_lvl':user.video4_lvl,'gph':user.gph}, status=status.HTTP_200_OK)
+
+    return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def new_card(request):
+    user_id = request.data.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    num = request.data.get('num')
+
+    if(num==2):
+        user.video2_lvl =1
+    elif(num==3):
+        user.video3_lvl =1
+    elif(num==4):
+        user.video4_lvl =1
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)
+
     return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
 
