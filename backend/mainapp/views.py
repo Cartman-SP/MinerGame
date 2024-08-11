@@ -8,7 +8,7 @@ from .serializers import *
 import requests
 
 
-BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
+BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
 
 @api_view(['GET'])
 def get_innovice_link(request):
@@ -54,6 +54,91 @@ def get_innovice_link(request):
         title = '4 видеокарта'
         description = 'Зарабатывай в разы больше за тот же промежуток времени!'
         cost = costs.video4
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==6):
+        title = '6 уровень'
+        description = 'Увеличивай время пассивного дохода!'
+        cost = costs.mining_duration6
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==7):
+        title = '7 уровень'
+        description = 'Увеличивай время пассивного дохода!'
+        cost = costs.mining_duration7
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==8):
+        title = '8 уровень'
+        description = 'Увеличивай время пассивного дохода!'
+        cost = costs.mining_duration8
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==9):
+        title = '9 уровень'
+        description = 'Увеличивай время пассивного дохода!'
+        cost = costs.mining_duration9
+        print(cost)
+        params = {
+            'title':title,
+            'description':description,
+            'payload': '{}',
+            'provider_token': '',
+            'start_parameter': 'start_param',
+            'currency': 'XTR',
+            'prices': [{ 'amount': cost, 'label': title }]
+        }
+        response = requests.get(url,json=params)
+        print(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
+    if(int(num)==10):
+        title = '10 уровень'
+        description = 'Увеличивай время пассивного дохода!'
+        cost = costs.mining_duration10
         print(cost)
         params = {
             'title':title,
@@ -192,12 +277,19 @@ def uptime(request):
     user_id = request.data.get('user_id')
     user = TelegramUser.objects.get(user_id=user_id)
     upcost = [0,6500,45000,150000,500000]
-    if(user.balance>upcost[user.mining_time_lvl]):
-        user.balance-=upcost[user.mining_time_lvl]
+    if(user.mining_time_lvl<5):
+        if(user.balance>upcost[user.mining_time_lvl]):
+            user.balance-=upcost[user.mining_time_lvl]
+            user.mining_time_lvl+=1
+            user.mining_duration+=timedelta(minutes=30)
+            user.save()
+            return Response({'balance':user.balance,'mining_time_lvl':user.mining_time_lvl}, status=status.HTTP_200_OK)
+    elif(user.mining_time_lvl>=5):
         user.mining_time_lvl+=1
         user.mining_duration+=timedelta(minutes=30)
         user.save()
-        return Response({'balance':user.balance,'mining_time_lvl':user.mining_time_lvl}, status=status.HTTP_200_OK)
+        return Response({'mining_time_lvl':user.mining_time_lvl}, status=status.HTTP_200_OK)
+
     return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['POST'])
 def set_max_energy(request):

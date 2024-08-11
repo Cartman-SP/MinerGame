@@ -13,7 +13,7 @@ from aiogram.methods.create_invoice_link import CreateInvoiceLink
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
 # Объект бота
-bot = Bot(token= '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM')
+bot = Bot(token= '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA')
 dp = Dispatcher()
 logging.basicConfig(level=logging.INFO)
 router = Router()

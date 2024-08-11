@@ -97,7 +97,7 @@
             
         </div>
 
-        <div class="miningUpgrade" @click="toggleModal(1), modalType = 1">
+        <div class="miningUpgrade" @click="toggleModal(1), modalType = 1" v-if="mining_time_lvl<10">
             <img class="icon" src="../assets/icon-miningTime-boost.png" alt="">
             <div class="statement">
                 <p class="price-locked-mining">MINING TIME<br> </p>
@@ -106,7 +106,15 @@
                 </div>
             </div>
         </div>
-        
+        <div class="miningUpgrade" v-else>
+            <img class="icon" src="../assets/icon-miningTime-boost.png" alt="">
+            <div class="statement">
+                <p class="price-locked-mining">MINING TIME<br> </p>
+                <div class="logo-background" style="width: 60px; height: 60px;">
+                    <span style="font-size: 18px;">{{ mining_time_lvl }} <br> <span style="font-size: 18px;">lvl</span></span>
+                </div>
+            </div>
+        </div>
 
         <div class="overlay" ref="overlay" @click="toggleModal()" v-if="showModal"></div>
         <div class="modal" v-if="showModal" ref="modal">
@@ -126,7 +134,7 @@
 
                     </div>
                 </div>
-                <div class="buy" @click="open_time_pay(mining_time_lvl)" v-else>
+                <div class="buy" @click="open_time_pay(mining_time_lvl+1)" v-else>
                     ПОЛУЧИТЬ ЗА
                     <div class="cost-modal" style="display:flex;justify-content: center;font-size: 16px">
                         {{ cost }}
@@ -192,14 +200,28 @@ export default {
 
         async open_time_pay(time) {
             window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+            console.log(time)
             try {
                 const response = await this.$axios.get('/get_invoice_link/', { params: {num: time, withCredentials: true} });
                 const link = response.data.result;
                 
                 window.Telegram.WebApp.openInvoice(link, async(status) => {
                     if (status === "paid") {
-                        if (time === 6) {
-                            this.$user.data.mining_time_lvl = +1;
+                        let data = {'user_id': this.$user.data.user_id};
+                        try {
+                            const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
+                            console.log(response.data);
+                            this.$user.data.mining_time_lvl = response.data.mining_time_lvl;
+                            if(this.$user.data.mining_time_lvl==10){
+                                this.toggleModal()
+                            }
+                            this.lvl = this.mining_time_lvl +1
+                            this.cost = this.upcost[this.mining_time_lvl]
+                            this.$user.playBuy()
+                        } catch (error) {
+                            this.$user.playError()
+                            this.alertMessage = 'Ошибка, Обратитесь в поддержку';
+                            this.error = error;
                         }
                     }
                 });
@@ -331,7 +353,7 @@ export default {
         toggleModal(num){
             this.$user.playTap()
             if(num==1){
-                this.name = 'MINING TIME'
+            this.name = 'MINING TIME'
             this.lvl = this.mining_time_lvl + 1
             this.up = '+30 MINUTES'
             this.cost = this.upcost[this.mining_time_lvl]
