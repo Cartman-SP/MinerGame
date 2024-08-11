@@ -1,10 +1,10 @@
 <template>
   <div class="mainpage" @touchstart.passive.prevent="onTouchStart">
     
-    <!-- <h1>{{ video_lvl + ' ' + video2_lvl + ' ' + video3_lvl + ' ' + video4_lvl}}</h1> -->
+    <!-- <h1>{{ video1_lvl + ' ' + video2_lvl + ' ' + video3_lvl + ' ' + video4_lvl}}</h1> -->
     <div>
       <div :class="[spinnerClass(), { bright: isBright }]" >
-        <Spinner v-for="n in this.spinnerCount" :key="n" :level="n" :isMining="remainingTime > 0" />
+        <Spinner v-for="n in this.spinnerCount" :key="n" :level="`video${n}_lvl`" :isMining="remainingTime > 0" />
       </div>
     </div>
     
@@ -213,7 +213,7 @@ export default {
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
         : 'filter: drop-shadow(0 10px 10px rgb(0, 0, 0))';
     },
-    video_lvl(){
+    video1_lvl(){
       return this.$user.data.video_lvl
     },
     video2_lvl(){
