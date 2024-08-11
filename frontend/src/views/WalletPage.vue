@@ -1,7 +1,8 @@
 <template>
     <div class="wallet-page">
       <img src="../assets/logo-small-blue.png" alt="" style="width: 50px; margin-bottom: 40px;">
-      <p class="unavailable">ВРЕМЕННО НЕДОСТУПНО</p>
+      <p class="unavailable" v-if="language == 'ru'">ВРЕМЕННО НЕДОСТУПНО</p>
+      <p class="unavailable" v-else>TEMPORARILY UNAVAILABLE</p>
       <div style="position: relative;">
         <img src="../assets/icon-lock.png" alt="" class="lock-icon">
         <div class="exchange">
@@ -13,7 +14,8 @@
         <img src="../assets/icon-lock.png" alt="" class="lock-icon">
         <div class="wallet">
           <img src="../assets/icon-wallet-white.png" alt="" class="wallet-icon">
-          <p class="name" style="font-size: 12px;" >ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
+          <p class="name" style="font-size: 12px;" v-if="language == 'ru'">ПОДКЛЮЧИТЬ СВОЙ<br>КОШЕЛЕК</p>
+          <p class="name" style="font-size: 12px;" v-else>CONNECT YOUR OWN<br>WALLET</p>
         </div>
       </div>
       <AlertMessage :message="alertMessage" style="z-index: 200;"/>

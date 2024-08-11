@@ -21,7 +21,8 @@
             <div class="block" @click="open_pay(2)" v-if="!video2_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
-                    <p class="gpu_name">ЗАБЛОКИРОВАНО</p>
+                    <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
+                    <p class="gpu_name" v-else>BLOCKED</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{don_costs.video2 || 'null'}}</p>
@@ -46,7 +47,8 @@
             <div class="block" @click="open_pay(3)" v-if="!video3_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
-                    <p class="gpu_name">ЗАБЛОКИРОВАНО</p>
+                    <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
+                    <p class="gpu_name" v-else>BLOCKED</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{don_costs.video3 || 'null'}}</p>
@@ -71,7 +73,8 @@
             <div class="block" @click="open_pay(4)" v-if="!video4_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
-                    <p class="gpu_name">ЗАБЛОКИРОВАНО</p>
+                    <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
+                    <p class="gpu_name" v-else>BLOCKED</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{don_costs.video4 || 'null'}}</p>
@@ -120,14 +123,25 @@
                     <p class="boost">{{up}}</p>
                 </div>
                 <div class="buy" @click="uptime" v-if="mining_time_lvl<5">
-                    ПОЛУЧИТЬ ЗА
+                    <div v-if="language == 'ru'">
+                        ПОЛУЧИТЬ ЗА
+                    </div>
+                    <div v-else>
+                        GET FOR
+                    </div>
+                    
                     <div class="cost-modal">
                         {{ cost }}
 
                     </div>
                 </div>
                 <div class="buy" @click="open_time_pay(mining_time_lvl)" v-else>
-                    ПОЛУЧИТЬ ЗА
+                    <div v-if="language == 'ru'">
+                        ПОЛУЧИТЬ ЗА
+                    </div>
+                    <div v-else>
+                        GET FOR
+                    </div>
                     <div class="cost-modal" style="display:flex;justify-content: center;font-size: 16px">
                         {{ cost }}
                     <img class="logoSmall" src="../assets/star_logo.png" alt="" style="height:20px;">
@@ -145,7 +159,12 @@
                 </div>
 
                 <div class="buy" @click="upgrade(num),toggleModal()">
-                    УЛУЧШИТЬ ЗА
+                    <div v-if="language == 'ru'">
+                        УЛУЧШИТЬ ЗА
+                    </div>
+                    <div v-else>
+                        UPGRADE FOR
+                    </div>
                     <div class="cost-modal">
                         {{ cost }}
 
