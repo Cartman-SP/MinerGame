@@ -128,10 +128,10 @@ export default {
   --glow-color: rgba(255, 255, 0, 1);
 }
 .level-8 {
-  --glow-color: rgb(255, 102, 0);
+  --glow-color: rgba(255, 255, 0, 1);
 }
 .level-9 {
-  --glow-color: rgb(255, 183, 0);
+  --glow-color: rgba(255, 255, 0, 1);
 }
 .level-10 {
   --glow-color: rgb(180, 29, 245);

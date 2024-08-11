@@ -342,6 +342,7 @@ export default {
 }
 
 .spinner-double {
+  margin: 10vh 0;
   display: flex;
   justify-content: space-between;
 }
@@ -368,10 +369,10 @@ export default {
 .spinner-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
 }
 .spinner-grid > *{
   width: 100%;
+  scale: .8;
 }
 
 

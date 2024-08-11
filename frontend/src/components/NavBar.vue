@@ -102,10 +102,10 @@ export default {
     width: 60px;
     /* filter: drop-shadow(0 5px 10px #00E6FF); */
     border-radius: 50%;
-    border: solid 2px #00E6FF;
+    border: solid 10px rgb(90, 90, 90);
     bottom: 20px;
     position: absolute;
-    top: -3vh;
+    top: -5vh;
 }
 
 
