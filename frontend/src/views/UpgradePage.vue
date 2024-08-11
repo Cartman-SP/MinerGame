@@ -129,7 +129,7 @@
                 </div>
             </div>
             <div v-if="modalType == 2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(this.video_lvl+1)" alt="">
+                <img style="width: 300px; margin-top: -150px; margin-bottom: -40px;" :src="staticPath(this.img_video_lvl+1)" alt="">
                 <h3>{{ names[video_lvl] }}</h3>
                 <div class="info">
                     <p class="level">{{ lvl }} LVL</p>
@@ -169,6 +169,7 @@ export default {
             upgph: ['731','1 638','3 627','8 307','18 720','42 120','94 770','213 408','4 80 285','1 080 612','2 250 550'],
             alertMessage: '',
             modalType: 0,
+            img_video_lvl: 1,
         }
     },
     methods:{
@@ -182,12 +183,15 @@ export default {
                     if (status === "paid") {
                         if (video === 2) {
                             this.$user.data.video2_lvl = 1;
+                            this.modalType = 2
                             this.toggleModal(3);
                         } else if (video === 3) {
                             this.$user.data.video3_lvl = 1;
+                            this.modalType = 2
                             this.toggleModal(4);
                         } else if (video === 4) {
                             this.$user.data.video4_lvl = 1;
+                            this.modalType = 2
                             this.toggleModal(5);
                         }
                     }
@@ -241,7 +245,7 @@ export default {
                 console.log(response.data);
                 this.$user.data.balance = response.data.balance;
                 this.$user.data.mining_time_lvl = response.data.mining_time_lvl;
-                this.lvl = this.mining_time_lvl
+                this.lvl = this.mining_time_lvl +1
                 this.cost = this.upcost[this.mining_time_lvl]
                 this.$user.playBuy()
             } catch (error) {
@@ -280,8 +284,9 @@ export default {
                 }, 10);
             }
             }else if(num==2){
+            this.img_video_lvl = this.video_lvl
             this.name = 'MINING TIME'
-            this.lvl = this.video_lvl
+            this.lvl = this.video_lvl+1
             this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video_lvl] + '/час'
             this.num=num
             if (this.video_lvl<11){
@@ -319,7 +324,7 @@ export default {
 
             else if(num==3){
             this.name = 'MINING TIME'
-            this.lvl = this.video2_lvl
+            this.lvl = this.video2_lvl+1
             this.num=num
             this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video2_lvl] + '/час'
             if (this.video2_lvl<11){
@@ -358,7 +363,7 @@ export default {
             else if(num==4){
             this.num=num
             this.name = 'MINING TIME'
-            this.lvl = this.video3_lvl
+            this.lvl = this.video3_lvl+1
             this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video3_lvl] + '/час'
             if (this.video3_lvl<11){
                 this.cost = this.formatNumber(this.costs[this.video3_lvl])
@@ -395,7 +400,7 @@ export default {
             else if(num==5){
             this.num=num
             this.name = 'MINING TIME'
-            this.lvl = this.video4_lvl
+            this.lvl = this.video4_lvl+1
             this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video4_lvl] + '/час'
             if (this.video4_lvl<11){
                 this.cost = this.formatNumber(this.costs[this.video4_lvl])
