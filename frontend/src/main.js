@@ -216,7 +216,7 @@ class User {
         "first_name": "CHXRNVKHA",
         "last_name": "",
         "username": "F1owerGG",
-        "language_code": "ru",
+        "language_code": "en",
         "is_premium": true,
         "allows_write_to_pm": true,
         "photo_url": "default-avatar-url" // Добавляем аватарку по умолчанию

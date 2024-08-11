@@ -1,6 +1,7 @@
 <template>
   <div class="bal">
-    <p class="title">ВАШ БАЛАНС:</p>
+    <p v-if="language = 'ru'" class="title">ВАШ БАЛАНС:</p>
+    <p v-else class="title">BALANCE:</p>
     <div class="balance-block">
       <div class="balance">
         <div class="logo-background">
@@ -10,7 +11,8 @@
       </div>
     </div>
     <div style="display: flex; align-items: center; margin-top: 10px; gap: 10px;" >
-      <p class="subtitle">ПРИБЫЛЬ В ЧАС:</p>
+      <p class="subtitle" v-if="language = 'ru'">ПРИБЫЛЬ В ЧАС:</p>
+      <p class="subtitle" v-else>PROFIT PER HOUR:</p>
       <div class="earning">
         {{ formatNumber(gph) }} YL
       </div>
@@ -39,6 +41,9 @@ export default {
     },
     modifier(){
       return this.$user.data.modifier;
+    },
+    language(){
+      return this.$user.data.lang;
     },
   }
 }

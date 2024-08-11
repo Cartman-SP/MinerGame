@@ -5,13 +5,15 @@
     </div> -->
 
     <div class="daily">
-        <p class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
+      <p v-if="language = 'ru'" class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
+      <p v-else class="naming">DAILY TASKS</p>
         <div class="daily-tasks">
             <div class="task" @click="toggleModal" v-if="claimed">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
-                <p class="name" style="font-size: 10px;">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 10px;" v-if="language = 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
                 <div class="logo-background">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -20,7 +22,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
-                <p class="name" style="font-size: 10px;">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 10px;" v-if="language = 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
                 <div class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -29,7 +32,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
+                <p class="name" v-if="language = 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
+                <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
                 <div class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -39,7 +43,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name">ПРИГЛАСИТЬ 12 ДРУЗЕЙ <br>+ 12 000</p>
+                <p class="name" v-if="language = 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
+                <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
                 <div class="logo-background">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -50,7 +55,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
-                <p class="name">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
+                <p class="name" v-if="language = 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
+                <p class="name" v-else>SUBSCRIBE TO THE CHANNEL<br>+ 4 000</p>
                 <div class="logo-background" v-if="subscribed">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -62,13 +68,15 @@
         
     </div>
     <div class="other">
-        <p class="naming" style="margin-top: 30px;">ЗАДАНИЯ</p>
+      <p class="naming" style="margin-top: 30px;" v-if="language = 'ru'">ЗАДАНИЯ</p>
+      <p class="naming" style="margin-top: 30px;" v-else>TASKS</p>
         <div class="other-tasks">
           <div v-for="i in tasks" :key="i">
 
 
             <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='visit'">
-                <p class="other-name">ПЕРЕЙТИ ПО ССЫЛКЕ <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-if="language = 'ru'">ПЕРЕЙТИ ПО ССЫЛКЕ <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-else>FOLLOW THE LINK <br>+ {{formatNumber(i.reward)}}</p>
                 <div class="other-logo-background" v-if="i.complete">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -77,7 +85,8 @@
               </div>
             </div>
             <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='invite'">
-              <p class="other-name">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-if="language = 'ru'">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-else>INVITE {{ i.friends_toAdd }} FRIENDS<br>+ {{formatNumber(i.reward)}}</p>
               <div class="other-logo-background" v-if="i.complete">
                   <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
               </div>
@@ -86,7 +95,8 @@
             </div>
           </div>
           <div class="other-task" @click="redirectToTelegram2(i.channel_id)" v-if="i.typeT=='join'">
-            <p class="other-name">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ {{formatNumber(i.reward)}}</p>
+            <p class="other-name" v-if="language = 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ {{formatNumber(i.reward)}}</p>
+            <p class="other-name" v-else>SUBSCRIBE<br>+ {{formatNumber(i.reward)}}</p>
             <div class="other-logo-background" v-if="i.complete">
                 <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
             </div>
@@ -228,6 +238,9 @@ export default {
     },
     subscribed() {
       return this.$user.data.subscribed;
+    },
+    language(){
+      return this.$user.data.lang;
     },
   },
   methods: {
