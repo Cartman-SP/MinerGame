@@ -5,14 +5,14 @@
     </div> -->
 
     <div class="daily">
-      <p v-if="language = 'ru'" class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
+      <p v-if="language == 'ru'" class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
       <p v-else class="naming">DAILY TASKS</p>
         <div class="daily-tasks">
             <div class="task" @click="toggleModal" v-if="claimed">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
-                <p class="name" style="font-size: 10px;" v-if="language = 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 10px;" v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
                 <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
                 <div class="logo-background">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -22,7 +22,7 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
-                <p class="name" style="font-size: 10px;" v-if="language = 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 10px;" v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
                 <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
                 <div class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -32,7 +32,7 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name" v-if="language = 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
+                <p class="name" v-if="language == 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
                 <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
                 <div class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -43,7 +43,7 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name" v-if="language = 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
+                <p class="name" v-if="language == 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
                 <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
                 <div class="logo-background">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -55,7 +55,7 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
-                <p class="name" v-if="language = 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
+                <p class="name" v-if="language == 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
                 <p class="name" v-else>SUBSCRIBE TO THE CHANNEL<br>+ 4 000</p>
                 <div class="logo-background" v-if="subscribed">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -68,14 +68,14 @@
         
     </div>
     <div class="other">
-      <p class="naming" style="margin-top: 30px;" v-if="language = 'ru'">ЗАДАНИЯ</p>
+      <p class="naming" style="margin-top: 30px;" v-if="language == 'ru'">ЗАДАНИЯ</p>
       <p class="naming" style="margin-top: 30px;" v-else>TASKS</p>
         <div class="other-tasks">
           <div v-for="i in tasks" :key="i">
 
 
             <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='visit'">
-              <p class="other-name" v-if="language = 'ru'">ПЕРЕЙТИ ПО ССЫЛКЕ <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-if="language == 'ru'">ПЕРЕЙТИ ПО ССЫЛКЕ <br>+ {{formatNumber(i.reward)}}</p>
               <p class="other-name" v-else>FOLLOW THE LINK <br>+ {{formatNumber(i.reward)}}</p>
                 <div class="other-logo-background" v-if="i.complete">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -85,7 +85,7 @@
               </div>
             </div>
             <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='invite'">
-              <p class="other-name" v-if="language = 'ru'">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-if="language == 'ru'">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
               <p class="other-name" v-else>INVITE {{ i.friends_toAdd }} FRIENDS<br>+ {{formatNumber(i.reward)}}</p>
               <div class="other-logo-background" v-if="i.complete">
                   <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -95,7 +95,7 @@
             </div>
           </div>
           <div class="other-task" @click="redirectToTelegram2(i.channel_id)" v-if="i.typeT=='join'">
-            <p class="other-name" v-if="language = 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ {{formatNumber(i.reward)}}</p>
+            <p class="other-name" v-if="language == 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ {{formatNumber(i.reward)}}</p>
             <p class="other-name" v-else>SUBSCRIBE<br>+ {{formatNumber(i.reward)}}</p>
             <div class="other-logo-background" v-if="i.complete">
                 <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
@@ -116,92 +116,105 @@
     <div class="overlay" ref="overlay" @click="toggleModal" v-if="showModal"></div>
     <div class="modal" v-if="showModal" ref="modal">
         <img class="icon" src="../assets/icon-gift.png" alt="">
-        <h3>ЕЖЕДНЕВНАЯ НАГРАДА</h3>
-        <p>Забирайте ежедневно приз без пропусков<br>иначесчетчик дней начнется с 1 дня</p>
+        <h3 v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</h3>
+        <h3 v-else>DAILY REWARD</h3>
+        <p v-if="language == 'ru'">Забирайте ежедневно приз без пропусков<br>иначе счетчик дней начнется с 1 дня</p>
+        <p v-else>Collect the prize daily without skipping<br>otherwise the day counter will start from first day</p>
 
         <div class="awards">
           <div class="day">
-            <p class="day-num" >1 ДЕНЬ</p>
+            <p class="day-num" >1 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">500</p>
           </div>
           <div class="day" v-if="days>0">
-            <p class="day-num">2 ДЕНЬ</p>
+            <p class="day-num">2 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">1000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">2 ДЕНЬ</p>
+            <p class="day-num">2 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">1000</p>
           </div>
           <div class="day" v-if="days>1">
-            <p class="day-num">3 ДЕНЬ</p>
+            <p class="day-num">3 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">3000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">3 ДЕНЬ</p>
+            <p class="day-num">3 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">3000</p>
           </div>
           <div class="day" v-if="days>3">
-            <p class="day-num">4 ДЕНЬ</p>
+            <p class="day-num">4 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">5000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">4 ДЕНЬ</p>
+            <p class="day-num">4 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">5000</p>
           </div>
           <div class="day" v-if="days>4">
-            <p class="day-num">5 ДЕНЬ</p>
+            <p class="day-num">5 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">10 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">5 ДЕНЬ</p>
+            <p class="day-num">5 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">10 000</p>
           </div>
           <div class="day" v-if="days>5">
-            <p class="day-num">6 ДЕНЬ</p>
+            <p class="day-num">6 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">20 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">6 ДЕНЬ</p>
+            <p class="day-num">6 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">20 000</p>
           </div>
           <div class="day" v-if="days>6">
-            <p class="day-num">7 ДЕНЬ</p>
+            <p class="day-num">7 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">40 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">7 ДЕНЬ</p>
+            <p class="day-num">7 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">40 000</p>
           </div>
           <div class="day" v-if="days>7">
-            <p class="day-num">8 ДЕНЬ</p>
+            <p class="day-num">8 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">100 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
-            <p class="day-num">8 ДЕНЬ</p>
+            <p class="day-num">8 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
             <p class="amount">100 000</p>
           </div>
         </div>
-        <div @click="toggleModal" class="collect" style="font-size: 10px; background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%)" v-if="this.$user.data.daily_reward_claimed">
-          БУДЕТ ДОСТУПНО ЧЕРЕЗ: {{ countdown }}
+        <div v-if="language == 'ru'">
+          <div @click="toggleModal" class="collect" style="font-size: 10px; background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%)" v-if="this.$user.data.daily_reward_claimed">
+            БУДЕТ ДОСТУПНО ЧЕРЕЗ: {{ countdown }}
+          </div>
+          <div v-else class="collect" @click="toggleModal">
+            ЗАБРАТЬ ПРИЗ
+          </div>
         </div>
-        <div v-else class="collect" @click="toggleModal">
-          ЗАБРАТЬ ПРИЗ
+        <div v-else>
+          <div @click="toggleModal" class="collect" style="font-size: 10px; background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%)" v-if="this.$user.data.daily_reward_claimed">
+            WILL BE AVAILABLE IN: {{ countdown }}
+          </div>
+          <div v-else class="collect" @click="toggleModal">
+            CLAIM PRIZE
+          </div>
         </div>
+        
     </div>
     <AlertMessage :message="alertMessage" style="z-index: 200;"/>
   </div>
@@ -579,6 +592,7 @@ export default {
     font-family: "Druk Wide";
     font-size: 6px;
     margin: 0;
+    width: 100%;
 }
 .daily-tasks{
     display: flex;

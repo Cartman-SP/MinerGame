@@ -18,7 +18,7 @@
                 <div class="statement">
                     <p class="price-locked">ENERGY LIMIT<br> <span>{{upcost[enery_lvl]}}</span></p>
                     <div class="logo-background">
-                        <span style="font-size: 26px;">MAX_lvl</span>LVL
+                        <span style="font-size: 10px;">MAX</span>LVL
                     </div>
                 </div>
             </div>
@@ -63,7 +63,12 @@
             </div>
 
             <div class="buy" @click="upgrade">
-                ПОЛУЧИТЬ ЗА
+                <div v-if="language == 'ru'">
+                    ПОЛУЧИТЬ ЗА
+                </div>
+                <div v-else>
+                    GET FOR
+                </div>
                 <div class="cost">
                     {{ cost }}
 

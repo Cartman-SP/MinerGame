@@ -10,35 +10,35 @@
     </div>
     <div class="information">
       <div class="container">
-        <p class="name" v-if="language = 'ru'">БАЛАНС</p>
+        <p class="name" v-if="language == 'ru'">БАЛАНС</p>
         <p class="name" v-else>BALANCE</p>
         <div class="info">
           <p class="value">{{ formatNumber(user.balance) }}</p>
         </div>
       </div>
       <div class="container">
-        <p class="name" v-if="language = 'ru'">РАНГ</p>
+        <p class="name" v-if="language == 'ru'">РАНГ</p>
         <p class="name" v-else>RANK</p>
         <div class="info">
           <p class="value">{{ ranks[user.lvl] }}</p>
         </div>
       </div>
       <div class="container">
-        <p class="name" v-if="language = 'ru'">ДРУЗЕЙ</p>
+        <p class="name" v-if="language == 'ru'">ДРУЗЕЙ</p>
         <p class="name" v-else>FRIENDS</p>
         <div class="info">
           <p class="value">{{ user.friends_invited }}</p>
         </div>
       </div>
       <div class="container">
-        <p class="name" v-if="language = 'ru'">МИНУТ В ИГРЕ</p>
+        <p class="name" v-if="language == 'ru'">МИНУТ В ИГРЕ</p>
         <p class="name" v-else>MINUTES IN THE GAME</p>
         <div class="info">
           <p class="value">{{Math.floor(user.secs_in_game/60)}}</p>
         </div>
       </div>
       <div class="container">
-        <p class="name" v-if="language = 'ru'">ПРИБЫЛЬ В ЧАС</p>
+        <p class="name" v-if="language == 'ru'">ПРИБЫЛЬ В ЧАС</p>
         <p class="name" v-else>PROFIT PER HOUR</p>
         <div class="info">
           <p class="value">{{ formatNumber(user.gph) }}</p>
@@ -46,7 +46,7 @@
       </div>
 
       <div class="switches">
-        <button v-if="language = 'ru'" class="help">НАПИСАТЬ ПОДДЕРЖКЕ</button>
+        <button v-if="language == 'ru'" class="help">НАПИСАТЬ ПОДДЕРЖКЕ</button>
         <button v-else class="help">SUPPORT</button>
         <Switch :type="1"/>
         <Switch :type="2"/>

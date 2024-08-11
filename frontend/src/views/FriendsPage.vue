@@ -2,12 +2,12 @@
   <div class="friends">
     <div class="buttons">
       <div class="invite" @click="shareLink()">
-        <p v-if="language = 'ru'" class="name">ПРИГЛАСИТЬ ДРУГА</p>
+        <p v-if="language == 'ru'" class="name">ПРИГЛАСИТЬ ДРУГА</p>
         <p v-else class="name">INVITE FRIEND</p>
           <img src="../assets/icon-addfriend-friends.png" alt="" class="invite-icon">
       </div>
       <div class="link" @click="copyLink">
-        <p v-if="language = 'ru'" style="font-size: 10px;" class="name">СКОПИРОВАТЬ ССЫЛКУ</p>
+        <p v-if="language == 'ru'" style="font-size: 10px;" class="name">СКОПИРОВАТЬ ССЫЛКУ</p>
         <p v-else style="font-size: 10px;" class="name">COPY LINK</p>
         <img src="../assets/icon-link-friends.png" alt="" class="link-icon">
       </div>
@@ -15,7 +15,7 @@
 
     <div class="premium">
       <div class="card">
-        <p v-if="language = 'ru'" class="subtitle">БЕЗ PREMIUM</p>
+        <p v-if="language == 'ru'" class="subtitle">БЕЗ PREMIUM</p>
         <p v-else class="subtitle">NO PREMIUM</p>
         <div class="money">
           <p class="money-amount">+ 1 500</p>
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="card">
-        <p v-if="language = 'ru'" class="subtitle">С PREMIUM</p>
+        <p v-if="language == 'ru'" class="subtitle">С PREMIUM</p>
         <p v-else class="subtitle">WITH PREMIUM</p>
         <div class="money">
           <p class="money-amount">+ 4 000</p>
@@ -33,7 +33,7 @@
     </div>
 
     <div class="table-container">
-      <div class="header" v-if="language = 'ru'">
+      <div class="header" v-if="language == 'ru'">
         <span>ДРУЗЬЯ</span>
         <span>ДОХОД ОТ <br>РЕФЕРАЛОВ</span>
       </div>
