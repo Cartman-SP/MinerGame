@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="open_pay(2)" v-if="!video2_lvl">
+            <div class="block" @click="friends>0 ? open_pay(2) : alertMessage='Нужно пригласить хотя бы 1 друга'" v-if="!video2_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="open_pay(3)" v-if="!video3_lvl">
+            <div class="block" @click="friends>3 ? open_pay(3) : alertMessage='Нужно пригласить более 3 друзей'" v-if="!video3_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="open_pay(4)" v-if="!video4_lvl">
+            <div class="block" @click="friends>10 ? open_pay(4) : alertMessage='Нужно пригласить более 10 друзей'" v-if="!video4_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>

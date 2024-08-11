@@ -78,23 +78,25 @@
   }
   .alert{
     z-index: 100;
-      padding: 10px 15px;
-      position: absolute;
-      width: fit-content;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      border-radius: 5px;
-      left: 50%;
-      transform: translateX(-50%);
+    padding: 10px 15px;
+    position: absolute;
+    width: 100px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-radius: 5px;
+    width: 300px;
+    left: 50%;
+    transform: translateX(-50%);
   }
   
   .alert p{
-      margin: 0;
-      margin-top: -2px;
-      color: white;
-      font-family: "Druk Wide";
-      font-size: 14px;
+    margin: 0;
+    margin-top: -2px;
+    color: white;
+    font-family: "Druk Wide";
+    font-size: 14px;
+    white-space: break-spaces;
   }
   
   svg path{

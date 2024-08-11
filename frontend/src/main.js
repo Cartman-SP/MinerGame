@@ -202,6 +202,7 @@ class User {
       window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
     }
     if(this.data.sound){
+      this.data.erroraudio.volume = 0.2
       this.data.erroraudio.play()
     }
   }
