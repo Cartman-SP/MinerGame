@@ -17,5 +17,6 @@ urlpatterns = [
     path('uptime/',uptime),
     path('turnvibrate/',turnvibrate),
     path('turnsound/',turnsound),
-    path('get_invoice_link/',get_innovice_link)
+    path('get_invoice_link/',get_innovice_link),
+    path('set_video/',set_video)
 ]

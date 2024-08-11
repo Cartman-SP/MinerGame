@@ -137,7 +137,7 @@
                     <p class="boost">{{up}}</p>
                 </div>
 
-                <div class="buy" @click="upgrade">
+                <div class="buy" @click="upgrade(num)">
                     УЛУЧШИТЬ ЗА
                     <div class="cost-modal">
                         {{ cost }}
@@ -158,7 +158,7 @@ export default {
     data(){
         return{
             costs:[0,30000,115000,350000,1000000,2950000,8200000,23400000,58500000,175500000,350000000,'MAX LVL'],
-            names: ['SM 1020','SM 1050','SM 1090','SPG 1220','iX 1300','RTG 1500','SR 1750','BP 2000','SSG 2500','DFX 3300','GM 4090'], 
+            names: ['','SM 1020','SM 1050','SM 1090','SPG 1220','iX 1300','RTG 1500','SR 1750','BP 2000','SSG 2500','DFX 3300','GM 4090'], 
             showModal: false,
             name: '',
             lvl: 0,
@@ -173,6 +173,17 @@ export default {
         }
     },
     methods:{
+
+        async set_video(num){
+            let data = {'user_id': this.$user.data.user_id,'num':num};
+            try {
+                const response = await this.$axios.post('/set_video/', data, {withCredentials: true});
+                console.log(response.data);
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
         async open_pay(video) {
             window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
             try {
@@ -208,6 +219,7 @@ export default {
         async upgrade(num){
             this.alertMessage = '';
             this.$user.playTap()
+            console.log(num)
             let data = {'user_id':this.$user.data.user_id,'num':num}
             try {
                 const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
@@ -215,17 +227,54 @@ export default {
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
 
-                this.toggleModal();
-                this.modalType = 2
                 this.$user.playBuy()
                 if(this.num==2){
                     this.$user.data.video_lvl = response.data.video_lvl
+                    this.img_video_lvl = this.video_lvl
+                    this.lvl = this.video_lvl+1
+                    this.num=num
+                    this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video_lvl] + '/час'
+                    if (this.video_lvl<11){
+                        this.cost = this.formatNumber(this.costs[this.video_lvl])
+                    }else{
+                        this.cost = this.costs[this.video_lvl]
+
+                    }
+
                 }else if(this.num==3){
                     this.$user.data.video2_lvl = response.data.video2_lvl
+                    this.lvl = this.video2_lvl+1
+                    this.num=num
+                    this.img_video_lvl = this.video2_lvl
+                    this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video2_lvl] + '/час'
+                    if (this.video2_lvl<11){
+                        this.cost = this.formatNumber(this.costs[this.video2_lvl])
+                    }else{
+                        this.cost = this.costs[this.video2_lvl]
+                    }
                 }else if(this.num==4){
                     this.$user.data.video3_lvl = response.data.video3_lvl
+                    this.lvl = this.video3_lvl+1
+                    this.img_video_lvl = this.video3_lvl
+                    this.num=num
+                    this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video3_lvl] + '/час'
+                    if (this.video3_lvl<11){
+                        this.cost = this.formatNumber(this.costs[this.video3_lvl])
+                    }else{
+                        this.cost = this.costs[this.video3_lvl]
+                    }
                 }else if(this.num==5){
                     this.$user.data.video4_lvl = response.data.video4_lvl
+                    this.lvl = this.video4_lvl+1
+                    this.img_video_lvl = this.video4_lvl
+                    this.num=num
+                    this.up = 'ПРИБЫЛЬ: ' + this.upgph[this.video4_lvl] + '/час'
+                    if (this.video4_lvl<11){
+                        this.cost = this.formatNumber(this.costs[this.video4_lvl])
+                    }else{
+                        this.cost = this.costs[this.video4_lvl]
+                    }
+
                 }
             }
             catch (error) {
@@ -323,6 +372,7 @@ export default {
 
 
             else if(num==3){
+            this.img_video_lvl = this.video2_lvl
             this.name = 'MINING TIME'
             this.lvl = this.video2_lvl+1
             this.num=num
@@ -361,6 +411,7 @@ export default {
 
 
             else if(num==4){
+            this.img_video_lvl = this.video3_lvl
             this.num=num
             this.name = 'MINING TIME'
             this.lvl = this.video3_lvl+1
@@ -384,20 +435,21 @@ export default {
 
             } else {
                 this.$user.playTap()
-                
+
                 this.showModal = true
-                setTimeout(() => {
+                setTimeout(() => {      
                     const modalwindow = this.$refs.modal;
                     modalwindow.classList.add('show');
                     const modaloverlay = this.$refs.overlay;
                     modaloverlay.classList.add('showOverlay');
-                }, 10);
-            }
-            }
+                }, 10);     
+            }   
+            }   
 
 
 
             else if(num==5){
+            this.img_video_lvl = this.video4_lvl
             this.num=num
             this.name = 'MINING TIME'
             this.lvl = this.video4_lvl+1

@@ -224,6 +224,23 @@ def lvlup(request):
     return Response({'gpc':user.gpc,'modifier':user.modifier,'max_energy':user.max_energy}, status=status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+def set_video(request):
+    user_id = request.data.get('user_id')
+    num = request.data.get('num')
+    user = TelegramUser.objects.get(user_id = user_id)
+    if(num==2):
+        user.video2_lvl = 1
+    elif(num==3):
+        user.video3_lvl = 1
+    elif(num==4):
+        user.video4_lvl = 1
+    user.save()
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)
+
+
+
+
 
 @api_view(['POST'])
 def upgrade(request):
@@ -272,7 +289,8 @@ def upgrade_mining(request):
     upgph = [731,1638,3627,8307,18720,42120,94770,213408,480285,1080612,2250550]
     user_id = request.data.get('user_id')
     user = TelegramUser.objects.get(user_id=user_id)
-    num = request.data.get('num')
+    num = request.data.get('num')-1
+    print(num)
     if(num==1):
         cost = upcost[user.video_lvl]
         if(user.balance>cost):
