@@ -261,9 +261,9 @@ class User {
         this.data.buyaudio.volume = .5
         this.data.tapaudio.volume = 1
         this.data.erroraudio.volume = .5 
-        this.data.video2_lvl = response.data.user.video_lvl
-        this.data.video3_lvl = response.data.user.video_lvl
-        this.data.video4_lvl = response.data.user.video_lvl
+        this.data.video2_lvl = response.data.user.video2_lvl
+        this.data.video3_lvl = response.data.user.video3_lvl
+        this.data.video4_lvl = response.data.user.video4_lvl
         this.data.costs = response.data.costs
         this.initTapSocket();
         this.initEnergySocket();

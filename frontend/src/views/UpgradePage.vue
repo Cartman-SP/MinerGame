@@ -8,6 +8,7 @@
             <div class="block"  @click="toggleModal(2), modalType = 2">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video_lvl)" alt="">
+                    <p class="gpu_name">{{ names[video_lvl] }}</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[video_lvl]}}</p>
@@ -17,20 +18,22 @@
                 </div>
             </div>
 
-            <div class="block" @click="open_pay(2)" v-if="video2_lvl">
+            <div class="block" @click="open_pay(2)" v-if="!video2_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
+                    <p class="gpu_name">ЗАБЛОКИРОВАНО</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{don_costs.video2}}</p>
+                    <p class="price">{{don_costs.video2 || 'null'}}</p>
                     <div class="logo-background" >
-                        <img class="logoSmall" src="../assets/stars_logo.svg" alt="" style="width:50px;">
+                        <img class="logoSmall" src="../assets/star_logo.png" alt="" style="height:20px;">
                     </div>
                 </div>
             </div>
             <div class="block"  @click="toggleModal(3), modalType = 2" v-else>
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video2_lvl)" alt="">
+                    <p class="gpu_name">{{ names[video2_lvl] }}</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[video2_lvl]}}</p>
@@ -40,20 +43,22 @@
                 </div>
             </div>
 
-            <div class="block" @click="open_pay(3)" v-if="video3_lvl">
+            <div class="block" @click="open_pay(3)" v-if="!video3_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
+                    <p class="gpu_name">ЗАБЛОКИРОВАНО</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{don_costs.video3}}</p>
+                    <p class="price">{{don_costs.video3 || 'null'}}</p>
                     <div class="logo-background" >
-                        <img class="logoSmall" src="../assets/stars_logo.svg" alt="" style="width:50px;">
+                        <img class="logoSmall" src="../assets/star_logo.png" alt="" style="height:20px;">
                     </div>
                 </div>
             </div>
             <div class="block"  @click="toggleModal(4), modalType = 2" v-else>
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video3_lvl)" alt="">
+                    <p class="gpu_name">{{ names[video3_lvl] }}</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[video3_lvl]}}</p>
@@ -63,20 +68,22 @@
                 </div>
             </div>
 
-            <div class="block" @click="open_pay(4)" v-if="video4_lvl">
+            <div class="block" @click="open_pay(4)" v-if="!video4_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
+                    <p class="gpu_name">ЗАБЛОКИРОВАНО</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{don_costs.video4}}</p>
+                    <p class="price">{{don_costs.video4 || 'null'}}</p>
                     <div class="logo-background" >
-                        <img class="logoSmall" src="../assets/stars_logo.svg" alt="" style="width:50px;">
+                        <img class="logoSmall" src="../assets/star_logo.png" alt="" style="height:20px;">
                     </div>
                 </div>
             </div>
             <div class="block"  @click="toggleModal(5), modalType = 2" v-else>
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video4_lvl)" alt="">
+                    <p class="gpu_name">{{ names[video4_lvl] }}</p>
                 </div>
                 <div class="cost">
                     <p class="price">{{costs[video4_lvl]}}</p>
@@ -166,29 +173,29 @@ export default {
     },
     methods:{
         async open_pay(video) {
-    window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
-    try {
-        const response = await this.$axios.get('/get_invoice_link/', { params: {num: video, withCredentials: true} });
-        const link = response.data.result;
-        
-        window.Telegram.WebApp.openInvoice(link, async(status) => {
-            if (status === "paid") {
-                if (video === 2) {
-                    this.$user.data.video2_lvl = 1;
-                    this.toggleModal(3);
-                } else if (video === 3) {
-                    this.$user.data.video3_lvl = 1;
-                    this.toggleModal(4);
-                } else if (video === 4) {
-                    this.$user.data.video4_lvl = 1;
-                    this.toggleModal(5);
-                }
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+            try {
+                const response = await this.$axios.get('/get_invoice_link/', { params: {num: video, withCredentials: true} });
+                const link = response.data.result;
+                
+                window.Telegram.WebApp.openInvoice(link, async(status) => {
+                    if (status === "paid") {
+                        if (video === 2) {
+                            this.$user.data.video2_lvl = 1;
+                            this.toggleModal(3);
+                        } else if (video === 3) {
+                            this.$user.data.video3_lvl = 1;
+                            this.toggleModal(4);
+                        } else if (video === 4) {
+                            this.$user.data.video4_lvl = 1;
+                            this.toggleModal(5);
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error during payment:', error);
             }
-        });
-    } catch (error) {
-        console.error('Error during payment:', error);
-    }
-},
+        },
         formatNumber(num) {
             return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
                 num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
@@ -484,6 +491,18 @@ export default {
 </script>
 
 <style scoped>
+.gpu_name{
+    margin: 0;
+    margin-bottom: 10px;
+    color: white;
+    font-family: "Druk Wide";
+    font-size: 8px;
+    background: rgba(57,54,53,1);
+    padding: 5px 15px;
+    border: 1px solid rgb(0, 166, 255);
+    width: fit-content;
+    border-radius: 10px;
+}
 .earningPerHour{
     background: rgba(57,54,53,1);
     padding: 5px 15px;
@@ -663,6 +682,11 @@ hr{
     background-color: #535453;
     border-radius: 10px;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .cost {
@@ -677,7 +701,7 @@ hr{
     height: 30px;
 }
 .photo img{
-    width: 90px;
+    width: 120px;
     margin: 5px;
 }
 .logo-background{

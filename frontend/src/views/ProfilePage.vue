@@ -74,14 +74,14 @@ export default {
 
   methods:{
     moveTo(url){
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        this.$user.playTap()
         this.$router.push(url)
       },
     formatNumber(num) {
-    return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
-           num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
-           num.toString();
-  },
+      return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
+            num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
+            num.toString();
+    },
   }
 }
 </script>

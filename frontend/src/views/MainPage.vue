@@ -1,10 +1,15 @@
 <template>
   <div class="mainpage">
-
-
-    <div :class="spinnerClass">
-      <Spinner v-for="n in [video1_lvl,video2_lvl,video3_lvl,video4_lvl]" :key="n" :level="n" :isMining="remainingTime > 0" />
+    
+    <!-- <h1>{{ video_lvl + ' ' + video2_lvl + ' ' + video3_lvl + ' ' + video4_lvl}}</h1> -->
+    <div :class="[spinnerClass(), { bright: isBright }]">
+      <Spinner v-for="n in this.spinnerCount" :key="n" :level="n" :isMining="remainingTime > 0" />
     </div>
+    <transition-group name="coin-fall" tag="div" class="mini-coins-container">
+      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
+        <span class="coin-value">+{{ coin.value }}</span>
+      </div>
+    </transition-group>
     
       
 
@@ -28,8 +33,8 @@
 
 <script>
 import Spinner from '../components/SpinnerMiner.vue';
-
 import AlertMessage from "../components/AlertMessage.vue";
+import { throttle } from 'lodash';
 
 export default {
   components: { Spinner, AlertMessage } ,
@@ -45,9 +50,56 @@ export default {
       remainingTime: 0,
 
       spinnerCount: 1,
+      miniCoins: [],
+      coinId: 0,
+      isBright: false,
     };
   },
   methods: {
+    onTouchStart(event) {
+      if(this.$user.data.energy>0){
+        this.handleTouchStart(event);
+        this.createMiniCoin(event);
+      }
+    },
+    handleTouchStart: throttle(function(event) {
+      if (this.$user.data.energy <= 0) return;
+
+      for (let i = 0; i < event.touches.length; i++) {
+        this.$user.playTap();
+
+        requestAnimationFrame(() => {
+          this.isBright = true;
+        });
+
+        setTimeout(() => {
+          this.isBright = false;
+        }, 100);
+
+        const message = {
+          user_id: this.$user.data.user_id,
+          increment: this.$user.data.gpc,
+        };
+
+        this.$user.data.tapsocket.send(JSON.stringify(message));
+      }
+    }, 100),
+    createMiniCoin(event) {
+      const touch = event.touches[0];
+      const newCoin = {
+        id: this.coinId++,
+        value: this.$user.data.gpc,
+        top: touch.clientY - 200, // Используем координаты касания
+        left: touch.clientX - 30, // Используем координаты касания
+      };
+      this.miniCoins.push(newCoin);
+      setTimeout(() => {
+        this.removeMiniCoin(newCoin.id);
+      }, 1000); // Время удаления монетки
+    },
+    removeMiniCoin(id) {
+      this.miniCoins = this.miniCoins.filter(coin => coin.id !== id);
+    },
     
     moveTo(url){
         this.$router.push(url)
@@ -135,10 +187,16 @@ export default {
           console.log(123)
           this.$user.data.energysocket.send(JSON.stringify(message));
       }, 5000); // каждые 5 секунд
-    }
-  },
-  computed: {
+    }, 
+
     spinnerClass() {
+      if (this.video2_lvl > 0) {
+        this.spinnerCount = 2
+      } else if (this.video3_lvl > 0) {
+        this.spinnerCount = 3
+      } else if (this.video4_lvl > 0) {
+        this.spinnerCount = 4
+      }
       switch (this.spinnerCount) {
         case 1:
           return 'spinner-single';
@@ -152,6 +210,8 @@ export default {
           return '';
       }
     },
+  },
+  computed: {
     getStyle() {
       return this.formattedRemainingTime === '00:00:00'
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
@@ -233,6 +293,50 @@ export default {
 
 
 <style scoped>
+
+.bright {
+  filter: brightness(80%);
+  scale: 0.98;
+}
+.mini-coins-container {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 20%;
+  overflow: visible;
+}
+
+.mini-coin {
+  position: absolute;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  animation: coin-fall 1s ease forwards;
+}
+
+.mini-coin-img {
+  width: 30px;
+  height: 30px;
+}
+
+.coin-value {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  color: white;
+  font-size: 30px;
+  font-family: "Druk Wide";
+}
+
+@keyframes coin-fall {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10%, -50%) scale(0.5);
+  }
+}
 .spinner-single {
   display: flex;
   justify-content: center;
