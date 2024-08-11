@@ -1,17 +1,19 @@
 <template>
-  <div class="mainpage">
+  <div class="mainpage" @touchstart.passive.prevent="onTouchStart">
     
     <!-- <h1>{{ video_lvl + ' ' + video2_lvl + ' ' + video3_lvl + ' ' + video4_lvl}}</h1> -->
-    <div :class="[spinnerClass(), { bright: isBright }]">
-      <Spinner v-for="n in this.spinnerCount" :key="n" :level="n" :isMining="remainingTime > 0" />
+    <div>
+      <div :class="[spinnerClass(), { bright: isBright }]" >
+        <Spinner v-for="n in this.spinnerCount" :key="n" :level="n" :isMining="remainingTime > 0" />
+      </div>
     </div>
+    
     <transition-group name="coin-fall" tag="div" class="mini-coins-container">
       <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
         <span class="coin-value">+{{ coin.value }}</span>
       </div>
     </transition-group>
     
-      
 
     <div class="stats-block">
       <div class="energy-block" @click="moveTo('/boost')">
@@ -34,7 +36,6 @@
 <script>
 import Spinner from '../components/SpinnerMiner.vue';
 import AlertMessage from "../components/AlertMessage.vue";
-import { throttle } from 'lodash';
 
 export default {
   components: { Spinner, AlertMessage } ,
@@ -57,33 +58,28 @@ export default {
   },
   methods: {
     onTouchStart(event) {
-      if(this.$user.data.energy>0){
+      if (this.$user.data.energy > 0) {
         this.handleTouchStart(event);
         this.createMiniCoin(event);
       }
     },
-    handleTouchStart: throttle(function(event) {
+    handleTouchStart() {
       if (this.$user.data.energy <= 0) return;
 
-      for (let i = 0; i < event.touches.length; i++) {
-        this.$user.playTap();
+      this.$user.playTap(); // Reusing preloaded audio
+      this.isBright = true;
 
-        requestAnimationFrame(() => {
-          this.isBright = true;
-        });
+      setTimeout(() => {
+        this.isBright = false;
+      }, 100);
 
-        setTimeout(() => {
-          this.isBright = false;
-        }, 100);
+      const message = {
+        user_id: this.$user.data.user_id,
+        increment: this.$user.data.gpc,
+      };
 
-        const message = {
-          user_id: this.$user.data.user_id,
-          increment: this.$user.data.gpc,
-        };
-
-        this.$user.data.tapsocket.send(JSON.stringify(message));
-      }
-    }, 100),
+      this.$user.data.tapsocket.send(JSON.stringify(message));
+    },
     createMiniCoin(event) {
       const touch = event.touches[0];
       const newCoin = {

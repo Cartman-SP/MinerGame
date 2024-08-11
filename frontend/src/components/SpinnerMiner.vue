@@ -1,5 +1,5 @@
 <template>
-  <div :class="['spinner', `level-${level}`]" @touchstart.passive.prevent="onTouchStart">
+  <div :class="['spinner', `level-${level}`]">
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
