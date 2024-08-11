@@ -424,6 +424,8 @@ export default {
                 return require(`../assets/gpu10-static.png`);
                 case 11:
                 return require(`../assets/gpu11-static.png`);
+                case 12:
+                return require(`../assets/gpu11-static.png`);
             }
             return 1
         }

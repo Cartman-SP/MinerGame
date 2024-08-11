@@ -4,7 +4,7 @@
     <!-- <h1>{{ video1_lvl + ' ' + video2_lvl + ' ' + video3_lvl + ' ' + video4_lvl}}</h1> -->
     <div>
       <div :class="[spinnerClass(), { bright: isBright }]" >
-        <Spinner v-for="n in this.spinnerCount" :key="n" :level="`video${n}_lvl`" :isMining="remainingTime > 0" />
+        <Spinner v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" :isMining="remainingTime > 0" />
       </div>
     </div>
     
@@ -49,8 +49,6 @@ export default {
       timer: null,
       miningTimer: null,
       remainingTime: 0,
-
-      spinnerCount: 1,
       miniCoins: [],
       coinId: 0,
       isBright: false,
@@ -186,13 +184,6 @@ export default {
     }, 
 
     spinnerClass() {
-      if (this.video2_lvl > 0) {
-        this.spinnerCount = 2
-      } else if (this.video3_lvl > 0) {
-        this.spinnerCount = 3
-      } else if (this.video4_lvl > 0) {
-        this.spinnerCount = 4
-      }
       switch (this.spinnerCount) {
         case 1:
           return 'spinner-single';
@@ -213,6 +204,17 @@ export default {
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
         : 'filter: drop-shadow(0 10px 10px rgb(0, 0, 0))';
     },
+    spinnerCount(){
+      if (this.video4_lvl > 0) {
+        return 4
+      } else if (this.video3_lvl > 0) {
+        return 3
+      } else if (this.video2_lvl > 0) {
+        return 2
+      }
+      return 1
+    },
+
     video1_lvl(){
       return this.$user.data.video_lvl
     },
