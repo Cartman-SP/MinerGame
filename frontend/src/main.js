@@ -231,7 +231,7 @@ class User {
         const response = await app.config.globalProperties.$axios.get('/get_user/', { params: data });
         console.log(response.data);
         // tginfo.language_code
-        this.data.lang = 'en';
+        this.data.lang = tginfo.language_code;
         this.data.user_id = response.data.user.user_id;
         this.data.username = response.data.user.username;
         this.data.usertag = response.data.user.usertag;
