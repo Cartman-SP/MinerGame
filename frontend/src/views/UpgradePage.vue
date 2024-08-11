@@ -126,7 +126,7 @@
 
                     </div>
                 </div>
-                <div class="buy" @click="open_time_pay" v-else>
+                <div class="buy" @click="open_time_pay(mining_time_lvl)" v-else>
                     ПОЛУЧИТЬ ЗА
                     <div class="cost-modal" style="display:flex;justify-content: center;font-size: 16px">
                         {{ cost }}
