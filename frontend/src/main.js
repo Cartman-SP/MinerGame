@@ -54,7 +54,8 @@ class User {
       video2_lvl: 0,
       video3_lvl: 0,
       video4_lvl: 0,
-      costs: {}
+      costs: {},
+      lang: ''
     });
     this.loading = reactive({ status: false });
     this.error = null;
@@ -225,7 +226,7 @@ class User {
       tginfo.start = start;
       let data = tginfo;
 
-
+      this.data.lang = tginfo.language_code
       try {
         const response = await app.config.globalProperties.$axios.get('/get_user/', { params: data });
         console.log(response.data);

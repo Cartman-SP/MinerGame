@@ -180,7 +180,7 @@ export default {
           };
           console.log(123)
           this.$user.data.energysocket.send(JSON.stringify(message));
-      }, 5000); // каждые 5 секунд
+      }, 4000); // каждые 5 секунд
     }, 
 
     spinnerClass() {

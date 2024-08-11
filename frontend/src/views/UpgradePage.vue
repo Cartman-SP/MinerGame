@@ -119,11 +119,18 @@
                     <hr>
                     <p class="boost">{{up}}</p>
                 </div>
-
-                <div class="buy" @click="uptime">
+                <div class="buy" @click="uptime" v-if="mining_time_lvl<5">
                     ПОЛУЧИТЬ ЗА
                     <div class="cost-modal">
                         {{ cost }}
+
+                    </div>
+                </div>
+                <div class="buy" @click="open_time_pay" v-else>
+                    ПОЛУЧИТЬ ЗА
+                    <div class="cost-modal" style="display:flex;justify-content: center;font-size: 16px">
+                        {{ cost }}
+                    <img class="logoSmall" src="../assets/star_logo.png" alt="" style="height:20px;">
 
                     </div>
                 </div>
@@ -165,7 +172,6 @@ export default {
             up: '',
             cost: 0,
             num:1,
-            upcost: [0,'6 500','45 000','150 000','500 000','1$','1,25$','1,5$','1,75$','2$'],
             upgph: ['731','1 638','3 627','8 307','18 720','42 120','94 770','213 408','4 80 285','1 080 612','2 250 550'],
             alertMessage: '',
             modalType: 0,
@@ -183,6 +189,25 @@ export default {
                 console.log(error)
             }
         },
+
+        async open_time_pay(time) {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+            try {
+                const response = await this.$axios.get('/get_invoice_link/', { params: {num: time, withCredentials: true} });
+                const link = response.data.result;
+                
+                window.Telegram.WebApp.openInvoice(link, async(status) => {
+                    if (status === "paid") {
+                        if (time === 6) {
+                            this.$user.data.mining_time_lvl = +1;
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error during payment:', error);
+            }
+        },
+
 
         async open_pay(video) {
             window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
@@ -438,7 +463,10 @@ export default {
         don_costs(){
             return this.$user.data.costs
         },
-
+        upcost(){
+            const buff =  this.$user.data.costs
+            return [0,'6 500','45 000','150 000','500 000',buff.mining_duration6,buff.mining_duration7,buff.mining_duration8,buff.mining_duration9,buff.mining_duration10, 'MAX LEVEL']
+        },
         gph(){
             return this.$user.data.gph;
         },

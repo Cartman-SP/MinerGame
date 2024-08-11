@@ -8,7 +8,7 @@ from .serializers import *
 import requests
 
 
-BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
+BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
 @api_view(['GET'])
 def get_innovice_link(request):
@@ -166,7 +166,7 @@ def get_or_create_user(request):
                 user.balance += mined_while_of
             time_diff = timezone.now()-user.last_login
             if time_diff > timedelta(seconds=0):
-                user.energy += min(user.energy+time_diff.total_seconds(),user.max_energy)
+                user.energy += min(user.energy+time_diff.total_seconds()/2,user.max_energy)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()

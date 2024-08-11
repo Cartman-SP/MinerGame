@@ -166,7 +166,7 @@ export default {
                 this.num = num
                 this.name = 'ENERGY LIMIT'
                 this.lvl = this.enery_lvl + 1
-                this.up = '+250 ENERGY'
+                this.up = '+100 ENERGY'
                 this.cost = this.upcost[this.enery_lvl] > 1000 ? (this.upcost[this.enery_lvl] / 1000) + 'K' : this.upcost[this.enery_lvl]
             }else{
                 this.upimg = 1

@@ -9,7 +9,7 @@ class TelegramUser(models.Model):
     usertag = models.CharField(max_length=128)
     balance = models.FloatField(default=5000)
     lvl = models.IntegerField(default=1)
-    energy = models.IntegerField(default=2000)
+    energy = models.IntegerField(default=250)
     created_at = models.DateTimeField(auto_now_add=True)
     gph = models.FloatField(default=731)
     gpc = models.IntegerField(default=1)
