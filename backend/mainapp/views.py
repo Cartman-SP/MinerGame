@@ -119,6 +119,7 @@ def get_or_create_user(request):
                     user=user
                 )
                 inviter.friends_invited += 1
+                inviter.save()
                 if inviter.friends_invited == 3:
                     inviter.balance += 12000
 
@@ -126,7 +127,7 @@ def get_or_create_user(request):
                     inviter.balance += 4000
                 else:
                     inviter.balance += 1500
-
+                inviter.save()
                 task = Task.objects.get(typeT='invite')
                 if task:
                     usertask, created = UserTask.objects.get_or_create(task=task, user=inviter)

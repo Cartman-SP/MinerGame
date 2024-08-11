@@ -7,11 +7,11 @@
         <div class="blocks">
             <div class="block"  @click="toggleModal(2), modalType = 2">
                 <div class="photo">
-                    <img class="spinner" :src="staticPath(this.video_lvl)" alt="">
+                    <img class="spinner" :src="staticPath(this.video_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video_lvl] }}</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{costs[video_lvl]}}</p>
+                    <p class="price">{{formatNumber(costs[video_lvl])}}</p>
                     <div class="logo-background">
                         <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
@@ -32,11 +32,11 @@
             </div>
             <div class="block"  @click="toggleModal(3), modalType = 2" v-else>
                 <div class="photo">
-                    <img class="spinner" :src="staticPath(this.video2_lvl)" alt="">
+                    <img class="spinner" :src="staticPath(this.video2_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video2_lvl] }}</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{costs[video2_lvl]}}</p>
+                    <p class="price">{{formatNumber(costs[video2_lvl])}}</p>
                     <div class="logo-background">
                         <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
@@ -57,11 +57,11 @@
             </div>
             <div class="block"  @click="toggleModal(4), modalType = 2" v-else>
                 <div class="photo">
-                    <img class="spinner" :src="staticPath(this.video3_lvl)" alt="">
+                    <img class="spinner" :src="staticPath(this.video3_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video3_lvl] }}</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{costs[video3_lvl]}}</p>
+                    <p class="price">{{formatNumber(costs[video3_lvl])}}</p>
                     <div class="logo-background">
                         <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
@@ -82,11 +82,11 @@
             </div>
             <div class="block"  @click="toggleModal(5), modalType = 2" v-else>
                 <div class="photo">
-                    <img class="spinner" :src="staticPath(this.video4_lvl)" alt="">
+                    <img class="spinner" :src="staticPath(this.video4_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video4_lvl] }}</p>
                 </div>
                 <div class="cost">
-                    <p class="price">{{costs[video4_lvl]}}</p>
+                    <p class="price">{{formatNumber(costs[video4_lvl])}}</p>
                     <div class="logo-background">
                         <img class="logoSmall" src="../assets/logo-small.png" alt="">
                     </div>
@@ -137,7 +137,7 @@
                     <p class="boost">{{up}}</p>
                 </div>
 
-                <div class="buy" @click="upgrade(num)">
+                <div class="buy" @click="upgrade(num),toggleModal()">
                     УЛУЧШИТЬ ЗА
                     <div class="cost-modal">
                         {{ cost }}
@@ -310,28 +310,7 @@ export default {
             this.lvl = this.mining_time_lvl + 1
             this.up = '+30 MINUTES'
             this.cost = this.upcost[this.mining_time_lvl]
-            if (this.showModal) {
-                const modalwindow = this.$refs.modal;
-                modalwindow.classList.remove('show');
-                const modaloverlay = this.$refs.overlay;
-                modaloverlay.classList.remove('showOverlay');
 
-                setTimeout(() => {
-                    this.showModal = false
-                }, 400);
-                
-
-            } else {
-                this.$user.playTap()
-                
-                this.showModal = true
-                setTimeout(() => {
-                    const modalwindow = this.$refs.modal;
-                    modalwindow.classList.add('show');
-                    const modaloverlay = this.$refs.overlay;
-                    modaloverlay.classList.add('showOverlay');
-                }, 10);
-            }
             }else if(num==2){
             this.img_video_lvl = this.video_lvl
             this.name = 'MINING TIME'
@@ -344,28 +323,6 @@ export default {
                 this.cost = this.costs[this.video_lvl]
             }
             
-            if (this.showModal) {
-                const modalwindow = this.$refs.modal;
-                modalwindow.classList.remove('show');
-                const modaloverlay = this.$refs.overlay;
-                modaloverlay.classList.remove('showOverlay');
-
-                setTimeout(() => {
-                    this.showModal = false
-                }, 400);
-                
-
-            } else {
-                this.$user.playTap()
-                
-                this.showModal = true
-                setTimeout(() => {
-                    const modalwindow = this.$refs.modal;
-                    modalwindow.classList.add('show');
-                    const modaloverlay = this.$refs.overlay;
-                    modaloverlay.classList.add('showOverlay');
-                }, 10);
-            }
             }
 
 
@@ -383,28 +340,6 @@ export default {
                 this.cost = this.costs[this.video2_lvl]
             }
             
-            if (this.showModal) {
-                const modalwindow = this.$refs.modal;
-                modalwindow.classList.remove('show');
-                const modaloverlay = this.$refs.overlay;
-                modaloverlay.classList.remove('showOverlay');
-
-                setTimeout(() => {
-                    this.showModal = false
-                }, 400);
-                
-
-            } else {
-                this.$user.playTap()
-                
-                this.showModal = true
-                setTimeout(() => {
-                    const modalwindow = this.$refs.modal;
-                    modalwindow.classList.add('show');
-                    const modaloverlay = this.$refs.overlay;
-                    modaloverlay.classList.add('showOverlay');
-                }, 10);
-            }
             }
 
 
@@ -421,29 +356,6 @@ export default {
             }else{
                 this.cost = this.costs[this.video3_lvl]
             }
-            
-            if (this.showModal) {
-                const modalwindow = this.$refs.modal;
-                modalwindow.classList.remove('show');
-                const modaloverlay = this.$refs.overlay;
-                modaloverlay.classList.remove('showOverlay');
-
-                setTimeout(() => {
-                    this.showModal = false
-                }, 400);
-                
-
-            } else {
-                this.$user.playTap()
-
-                this.showModal = true
-                setTimeout(() => {      
-                    const modalwindow = this.$refs.modal;
-                    modalwindow.classList.add('show');
-                    const modaloverlay = this.$refs.overlay;
-                    modaloverlay.classList.add('showOverlay');
-                }, 10);     
-            }   
             }   
 
 
@@ -460,6 +372,7 @@ export default {
                 this.cost = this.costs[this.video4_lvl]
             }
             
+            }   
             if (this.showModal) {
                 const modalwindow = this.$refs.modal;
                 modalwindow.classList.remove('show');
@@ -481,7 +394,6 @@ export default {
                     const modaloverlay = this.$refs.overlay;
                     modaloverlay.classList.add('showOverlay');
                 }, 10);
-            }
             }
 
 
@@ -517,6 +429,10 @@ export default {
         }
     },
     computed: {
+        friends(){
+            return this.$user.data.friends_invited
+        },
+
         don_costs(){
             return this.$user.data.costs
         },
