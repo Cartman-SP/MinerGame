@@ -13,7 +13,7 @@ from aiogram.methods.create_invoice_link import CreateInvoiceLink
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
 # Объект бота
-bot = Bot(token= '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA')
+bot = Bot(token= '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM')
 dp = Dispatcher()
 logging.basicConfig(level=logging.INFO)
 router = Router()
@@ -30,8 +30,7 @@ async def star_payment(msg: Message, bot: Bot):
     #     msg.successful_payment.telegram_payment_charge_id,
     # )
 
-    await msg.answer(f"Id транзакции: {msg.successful_payment.telegram_payment_charge_id}")
-
+    pass
 
 async def main():
     await dp.start_polling(bot)

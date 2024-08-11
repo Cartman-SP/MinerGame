@@ -8,7 +8,7 @@ from .serializers import *
 import requests
 
 
-BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
+BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
 @api_view(['GET'])
 def get_innovice_link(request):
