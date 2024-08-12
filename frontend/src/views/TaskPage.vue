@@ -84,7 +84,7 @@
                   <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
               </div>
             </div>
-            <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='invite'">
+            <div class="other-task" @click="shareLink" v-if="i.typeT=='invite'">
               <p class="other-name" v-if="language == 'ru'">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
               <p class="other-name" v-else>INVITE {{ i.friends_toAdd }} FRIENDS<br>+ {{formatNumber(i.reward)}}</p>
               <div class="other-logo-background" v-if="i.complete">
