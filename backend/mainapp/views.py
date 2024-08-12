@@ -516,13 +516,13 @@ def get_friends(request):
     referals = Referal.objects.filter(inviter=user)
     friends = [referal.user for referal in referals]
     
-    # Debug prints
-    for friend in friends:
-        print(friend.username)
-    print(friends)
+    # Sort friends by balance from highest to lowest
+    friends.sort(key=lambda x: x.balance, reverse=True)
+
     
     serializer = TelegramUserSerializer(friends, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 @api_view(['POST'])
