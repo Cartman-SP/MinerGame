@@ -525,6 +525,9 @@ export default {
         }
     },
     computed: {
+        language(){
+          return this.$user.data.lang;
+        },
         friends(){
             return this.$user.data.friends_invited
         },

@@ -128,7 +128,10 @@ export default {
   computed:{
     your_balance(){
       return this.formatNumber(Math.floor(this.$user.data.balance))
-    }
+    },
+    language(){
+      return this.$user.data.lang;
+    },
   }
 }
 </script>

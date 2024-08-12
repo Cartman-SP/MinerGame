@@ -51,6 +51,11 @@
             
 
         }
+    },
+    computed:{
+      language(){
+        return this.$user.data.lang;
+      },
     }
   };
   </script>
