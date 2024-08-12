@@ -4,7 +4,7 @@
           <h1 class="title">PROFILE</h1>
       </div> -->
       <div class="profile"  @click="moveTo('/profile')">
-          <img v-if="userData.avatar" class="avatar" :src="userData.avatar" alt="Avatar">
+          <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar">
           <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
           <p class="profile-name">{{userData.name||'MINER'}}</p>
       </div>
@@ -41,7 +41,7 @@
           <p class="name" v-if="language == 'ru'">ПРИБЫЛЬ В ЧАС</p>
           <p class="name" v-else>PROFIT PER HOUR</p>
           <div class="info">
-            <p class="value">{{ formatNumber(userData.gph) }}</p>
+            <p class="value">{{ userData.gph }}</p>
           </div>
         </div>
         
@@ -54,10 +54,11 @@
   import AlertMessage from "../components/AlertMessage.vue";
   export default {
     components: { AlertMessage } ,
-    props: ['userData'],
+    props: ['userId'],
     data(){
       return {
         ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE'],
+        userData:{}
       }
     },
     computed:{
@@ -65,16 +66,31 @@
         return this.$user.data.lang;
       },
     },
-  
+    mounted(){
+      this.get_player()
+    },
     methods:{
+      async get_player() {
+      try {
+        console.log(this.userId)
+        const response = await this.$axios.get('/get_user/', {
+          params: { user_id: this.userId }
+        });
+        console.log(response.data)
+        this.userData = response.data;
+      } catch (error) {
+        console.error('Error fetching daily reward status:', error);
+      }
+    },
       moveTo(url){
           this.$user.playTap()
           this.$router.push(url)
         },
       formatNumber(num) {
+        console.log(num)
         return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
               num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
-              num.toString();
+              num;
       },
     }
   }

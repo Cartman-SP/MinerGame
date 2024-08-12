@@ -56,10 +56,7 @@ const routes = [
     component: RanksPage
   },
   {
-    path: '/player/:userID',
-    props: route => ({
-      userID: route.params.userID,
-    }),
+    path: '/player/:userId',
     name: 'player',
     component: PlayerPage
   },

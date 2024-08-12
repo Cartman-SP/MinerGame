@@ -539,7 +539,13 @@ def get_friends(request):
     serializer = TelegramUserSerializer(friends, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+@api_view(['GET'])
+def get_user(request):
+    user_id = request.query_params.get('user_id')
+    print(user_id)
+    user = TelegramUser.objects.get(user_id = user_id)
+    serializer = TelegramUserSerializer(user)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def claim_reward(request):
