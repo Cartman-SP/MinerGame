@@ -19,5 +19,5 @@ urlpatterns = [
     path('turnsound/',turnsound),
     path('get_invoice_link/',get_innovice_link),
     path('set_video/',set_video),
-    path('get_user/',get_user),
+    path('get_userprof/',get_user),
 ]

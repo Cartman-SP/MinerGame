@@ -73,8 +73,8 @@
       async get_player() {
       try {
         console.log(this.userId)
-        const response = await this.$axios.get('/get_user/', {
-          params: { user_id: this.userId }
+        const response = await this.$axios.get('/get_userprof/', {
+          params: { 'user_id': this.userId }
         });
         console.log(response.data)
         this.userData = response.data;

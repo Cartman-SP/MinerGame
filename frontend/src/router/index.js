@@ -58,6 +58,9 @@ const routes = [
   {
     path: '/player/:userId',
     name: 'player',
+    props: route => ({
+      userId: route.params.userId,
+    }),
     component: PlayerPage
   },
 ]

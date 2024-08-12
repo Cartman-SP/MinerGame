@@ -542,7 +542,7 @@ def get_friends(request):
 @api_view(['GET'])
 def get_user(request):
     user_id = request.query_params.get('user_id')
-    print(user_id)
+    print('1111111111111111111111111111',user_id)
     user = TelegramUser.objects.get(user_id = user_id)
     serializer = TelegramUserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
