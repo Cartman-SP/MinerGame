@@ -1,15 +1,18 @@
 <template>
-  <div class="ranks">
-    <div class="rank-block" v-for="(i, index) in ranks.slice(1)" :key="i" :style="lvl == index ? 'border: solid 1px #00c3ff' : ''">
-        <p class="position">{{index+1}}</p>
-        <div class="line-rank" v-if="lvl == index"></div>
-        <p class="rank-name">{{ i }}</p>
-        <div class="line-rank" v-if="lvl == index"></div>
-        <div class="mark" v-if="lvl >= index" style="background-color: #00c3ff;"></div>
-        <div class="mark" v-else></div>
-        
+    <div class="rankPage">
+        <div class="ranks">
+            <div class="rank-block" v-for="(i, index) in ranks.slice(1)" :key="i" :style="lvl == index ? 'border: solid 1px #00c3ff' : ''">
+                <p class="position">{{index+1}}</p>
+                <div class="line-rank" v-if="lvl == index"></div>
+                <p class="rank-name">{{ i }}</p>
+                <div class="line-rank" v-if="lvl == index"></div>
+                <div class="mark" v-if="lvl >= index" style="background-color: #00c3ff;"></div>
+                <div class="mark" v-else></div>
+            </div>
+        </div>
+        <div style="height: 60px;"></div>
     </div>
-  </div>
+  
 </template>
 
 <script>
@@ -28,6 +31,10 @@ export default {
 </script>
 
 <style scoped>
+.rankPage{
+    height: 70vh;
+    overflow-y: scroll;
+}
 .line-rank{
     background-color: #00c3ff;
     height: 4px;
@@ -36,11 +43,10 @@ export default {
 }
 .ranks{
     padding: 15px 0 100px 0;
-    height: 60vh;
     display: flex;
     flex-direction: column-reverse;
     gap: 0;
-    overflow-y: scroll;
+    
 }
 .mark{
     height: 30px;
