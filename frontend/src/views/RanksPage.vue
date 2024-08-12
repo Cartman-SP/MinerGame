@@ -1,11 +1,11 @@
 <template>
   <div class="ranks">
-    <div class="rank-block" v-for="(i, index) in ranks" :key="i" :style="now == i ? 'border: solid 1px #00c3ff' : ''">
+    <div class="rank-block" v-for="(i, index) in ranks.slice(1)" :key="i" :style="lvl == index ? 'border: solid 1px #00c3ff' : ''">
         <p class="position">{{index+1}}</p>
-        <div class="line-rank" v-if="now == i"></div>
+        <div class="line-rank" v-if="lvl == index"></div>
         <p class="rank-name">{{ i }}</p>
-        <div class="line-rank" v-if="now == i"></div>
-        <div class="mark" v-if="now != i"></div>
+        <div class="line-rank" v-if="lvl == index"></div>
+        <div class="mark" v-if="lvl != index"></div>
         <div class="mark" v-else style="background-color: #00c3ff;"></div>
     </div>
   </div>
@@ -15,9 +15,13 @@
 export default {
     data(){
         return{
-            ranks:['WHALE','SPARK','TRADER','EPIC','DIAMOND','PLATINUM','GOLD','SILVER','BRONZE','IRON'].reverse(),
-            now: 'DIAMOND'
+            ranks: ['','IRON','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND','IMMORTAL','TRADER','SHARK','WHALE'],
         }
+    },
+    computed:{
+        lvl(){
+            return this.$user.data.lvl-1
+        },
     }
 }
 </script>
