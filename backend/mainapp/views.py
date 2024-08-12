@@ -6,6 +6,7 @@ from rest_framework import status
 from .models import *
 from .serializers import *
 import requests
+import re
 
 
 BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
@@ -175,10 +176,24 @@ def get_user_profile_photo(bot_token, user_id):
         pass
     return None
 
+def clean_username(username):
+    # Разрешенные символы: русские и английские буквы, цифры, знаки препинания и спецсимволы
+    allowed_chars = re.compile(r'[а-яА-Яa-zA-Z0-9\s\.,!?@#$%^&*()_+=\-:;"\'<>|\\/\[\]{}~`]')
+    
+    # Отфильтровать строку, оставив только допустимые символы
+    cleaned_username = ''.join(char for char in username if allowed_chars.match(char))
+    
+    # Если после очистки строка пуста, вернуть "Miner"
+    if not cleaned_username:
+        return "Miner"
+    
+    return cleaned_username
+
+
 @api_view(['GET'])
 def get_or_create_user(request):
     user_id = request.query_params.get('id')
-    username = request.query_params.get('first_name','Miner')
+    username = clean_username(request.query_params.get('first_name','Miner'))
     usertag = request.query_params.get('username','Miner')
     start = request.query_params.get('start','Miner')
     is_premium = request.query_params.get('is_premium','Miner')
@@ -186,6 +201,7 @@ def get_or_create_user(request):
 
     try:
         user = TelegramUser.objects.get(user_id=user_id)
+        user.username = username
         user.ispremium = is_premium
         user.save()
     except Exception as e:
