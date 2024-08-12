@@ -1,9 +1,15 @@
 <template>
-  <div :class="['spinner', `level-${level}`]">
+  <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchstart.passive.prevent="onTouchStart">
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
     </div>
+
+    <transition-group name="coin-fall" tag="div" class="mini-coins-container">
+      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
+        <span class="coin-value">+{{ coin.value }}</span>
+      </div>
+    </transition-group>
   </div>
 </template>
 
@@ -14,6 +20,10 @@ export default {
     return {
       preloadedGifPath: '',
       preloadedStaticPath: '',
+      taps: 0,
+      miniCoins: [],
+      coinId: 0,
+      isBright: false,
     };
   },
   computed: {
@@ -75,7 +85,57 @@ export default {
   mounted() {
     this.preloadImages();
   },
+  watch: {
+    level() {
+      this.preloadImages();
+    }
+  },
   methods: {
+    onTouchStart(event) {
+      if (this.$user.data.energy > 0) {
+        this.handleTouchStart(event);
+        this.createMiniCoin(event);
+      }
+    },
+    handleTouchStart() {
+      if (this.$user.data.energy <= 0) return;
+
+      this.$user.playTap(); // Reusing preloaded audio
+      this.isBright = true;
+
+      setTimeout(() => {
+        this.isBright = false;
+      }, 100);
+
+      const message = {
+        user_id: this.$user.data.user_id,
+        increment: this.$user.data.gpc,
+        taps: this.taps
+      };
+      this.taps+=1
+      this.$user.data.balance+=this.$user.data.gpc
+      this.$user.data.energy -=1
+      if(this.taps>=5){
+        this.$user.data.tapsocket.send(JSON.stringify(message));
+        this.taps = 0
+      }
+    },
+    createMiniCoin(event) {
+      const touch = event.touches[0];
+      const newCoin = {
+        id: this.coinId++,
+        value: this.$user.data.gpc,
+        top: touch.clientY - 200, // Используем координаты касания
+        left: touch.clientX - 30, // Используем координаты касания
+      };
+      this.miniCoins.push(newCoin);
+      setTimeout(() => {
+        this.removeMiniCoin(newCoin.id);
+      }, 1000); // Время удаления монетки
+    },
+    removeMiniCoin(id) {
+      this.miniCoins = this.miniCoins.filter(coin => coin.id !== id);
+    },
     
     preloadImages() {
       this.preloadedGifPath = this.gifPath;
@@ -93,6 +153,49 @@ export default {
 
 
 <style scoped>
+.bright {
+  filter: brightness(80%);
+  scale: 0.98;
+}
+.mini-coins-container {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 20%;
+  overflow: visible;
+}
+
+.mini-coin {
+  position: absolute;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  animation: coin-fall 1s ease forwards;
+}
+
+.mini-coin-img {
+  width: 30px;
+  height: 30px;
+}
+
+.coin-value {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  color: white;
+  font-size: 30px;
+  font-family: "Druk Wide";
+}
+
+@keyframes coin-fall {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10%, -50%) scale(0.5);
+  }
+}
 
 .spinner {
   user-select: none;

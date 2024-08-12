@@ -1,18 +1,22 @@
 <template>
-  <div class="mainpage" @touchstart.passive.prevent="onTouchStart">
+  <div class="mainpage">
     
-    <!-- <h1>{{ video1_lvl + ' ' + video2_lvl + ' ' + video3_lvl + ' ' + video4_lvl}}</h1> -->
     <div>
-      <div :class="[spinnerClass(), { bright: isBright }]" >
-        <Spinner v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" :isMining="remainingTime > 0" />
+      <div class="gpu_selections">
+        <div class="gpu_preview" v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" @click="selected_gpu = [video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]">
+          <img :src="staticPath([video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1])" alt="">
+        </div>
       </div>
+      
+      <div class="spinner-single">
+        <Spinner :isMining="remainingTime > 0" :level="selected_gpu"/>
+      </div>
+      
     </div>
     
-    <transition-group name="coin-fall" tag="div" class="mini-coins-container">
-      <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
-        <span class="coin-value">+{{ coin.value }}</span>
-      </div>
-    </transition-group>
+    
+    <button>{{ selected_gpu }}</button>
+    
     
 
     <div class="stats-block">
@@ -49,58 +53,15 @@ export default {
       timer: null,
       miningTimer: null,
       remainingTime: 0,
-      miniCoins: [],
-      coinId: 0,
+      
       isBright: false,
-      taps: 0,
+      
+
+      selected_gpu: 2,
     };
   },
   methods: {
-    onTouchStart(event) {
-      if (this.$user.data.energy > 0) {
-        this.handleTouchStart(event);
-        this.createMiniCoin(event);
-      }
-    },
-    handleTouchStart() {
-      if (this.$user.data.energy <= 0) return;
-
-      this.$user.playTap(); // Reusing preloaded audio
-      this.isBright = true;
-
-      setTimeout(() => {
-        this.isBright = false;
-      }, 100);
-
-      const message = {
-        user_id: this.$user.data.user_id,
-        increment: this.$user.data.gpc,
-        taps: this.taps
-      };
-      this.taps+=1
-      this.$user.data.balance+=this.$user.data.gpc
-      this.$user.data.energy -=1
-      if(this.taps>=5){
-        this.$user.data.tapsocket.send(JSON.stringify(message));
-        this.taps = 0
-      }
-    },
-    createMiniCoin(event) {
-      const touch = event.touches[0];
-      const newCoin = {
-        id: this.coinId++,
-        value: this.$user.data.gpc,
-        top: touch.clientY - 200, // Используем координаты касания
-        left: touch.clientX - 30, // Используем координаты касания
-      };
-      this.miniCoins.push(newCoin);
-      setTimeout(() => {
-        this.removeMiniCoin(newCoin.id);
-      }, 1000); // Время удаления монетки
-    },
-    removeMiniCoin(id) {
-      this.miniCoins = this.miniCoins.filter(coin => coin.id !== id);
-    },
+    
     
     moveTo(url){
         this.$router.push(url)
@@ -190,20 +151,33 @@ export default {
       }, 6000); // каждые 6 секунд
     }, 
 
-    spinnerClass() {
-      switch (this.spinnerCount) {
+    staticPath(lvl) {
+      switch (lvl) {
         case 1:
-          return 'spinner-single';
+          return require(`../assets/gpu1-static.png`);
         case 2:
-          return 'spinner-double';
+          return require(`../assets/gpu1-static.png`);
         case 3:
-          return 'spinner-triple';
+          return require(`../assets/gpu1-static.png`);
         case 4:
-          return 'spinner-grid';
-        default:
-          return '';
+          return require(`../assets/gpu4-static.png`);
+        case 5:
+          return require(`../assets/gpu5-static.png`);
+        case 6:
+          return require(`../assets/gpu6-static.png`);
+        case 7:
+          return require(`../assets/gpu7-static.png`);
+        case 8:
+          return require(`../assets/gpu8-static.png`);
+        case 9:
+          return require(`../assets/gpu9-static.png`);
+        case 10:
+          return require(`../assets/gpu10-static.png`);
+        case 11:
+          return require(`../assets/gpu11-static.png`);
       }
-    },
+      return 1
+    }
   },
   computed: {
     getStyle() {
@@ -253,7 +227,7 @@ export default {
       const formattedTime = this.formatTime(this.remainingTime);
       console.log("Formatted remaining time:", formattedTime);
       return formattedTime;
-    }
+    },
   },
   mounted() {
     this.$user.data.toppage = false
@@ -272,6 +246,8 @@ export default {
         this.handleMiningEndChange(newVal);
       }
     });
+
+    this.selected_gpu = this.video1_lvl
   },
   beforeUnmount() {
     const message = {
@@ -304,88 +280,21 @@ export default {
 
 
 <style scoped>
-
-.bright {
-  filter: brightness(80%);
-  scale: 0.98;
+.gpu_preview img{
+  width: 20vw;
 }
-.mini-coins-container {
-  position: absolute;
-  width: 100%;
-  height: 50%;
-  top: 20%;
-  overflow: visible;
-}
-
-.mini-coin {
-  position: absolute;
-  z-index: 999;
-  transform: translate(-50%, -50%);
-  animation: coin-fall 1s ease forwards;
-}
-
-.mini-coin-img {
-  width: 30px;
-  height: 30px;
-}
-
-.coin-value {
-  position: absolute;
-  top: 0px;
-  left: 10px;
-  color: white;
-  font-size: 30px;
-  font-family: "Druk Wide";
-}
-
-@keyframes coin-fall {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-10%, -50%) scale(0.5);
-  }
-}
-.spinner-single {
+.gpu_selections{
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.spinner-double {
-  margin: 10vh 0;
-  display: flex;
-  justify-content: space-between;
-}
-.spinner-double > *{
-  width: 50%;
-}
 
-.spinner-triple {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto;
-}
 
-.spinner-triple > *{
+.spinner-single {
+  display: block;
   width: 100%;
-}
-
-.spinner-triple > :nth-child(3) {
-  grid-column: span 2;
-  justify-self: center;
-  width: 50%;
-}
-
-.spinner-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-.spinner-grid > *{
-  width: 100%;
-  scale: .8;
 }
 
 
