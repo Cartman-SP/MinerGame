@@ -10,7 +10,7 @@
             <img class="logo" src="../assets/logo.png" alt="logo">
         </div>
         
-        <div class="level">
+        <div class="level" @click="moveTo('/ranks')">
             <p class="levelName">{{ranks[lvl] || 'RANK'}}</p>
             <div class="lineContainer" v-if="lvl<10">
               <div class="line" :style="lineStyle" ></div>
@@ -41,6 +41,9 @@
     </div>
     <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/boost'">
       <h1 class="title">BOOST</h1>
+    </div>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/ranks'">
+      <h1 class="title">RANK</h1>
     </div>
   </div>
     

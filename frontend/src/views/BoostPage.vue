@@ -36,7 +36,7 @@
                 <div class="statement">
                     <p class="price-locked">MULTITAP<br> <span>{{upcost[tap_lvl]}}</span></p>
                     <div class="logo-background">
-                        <span style="font-size: 26px;">MAX LVL</span>LVL
+                        <span style="font-size: 10px;">MAX</span>LVL
                     </div>
                 </div>
             </div>

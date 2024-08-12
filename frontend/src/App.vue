@@ -24,7 +24,7 @@
 import Balance from '../src/components/BalanceBlock.vue';
 import StatusBar from '../src/components/StatusBar.vue';
 import NavBar from '../src/components/NavBar.vue';
-import Loader from "../src/components/LoaderSpin.vue";
+import Loader from "../src/components/LoaderSpin.vue"; 
 
 export default {
   components: { NavBar, StatusBar, Balance, Loader },
@@ -164,8 +164,10 @@ export default {
     margin: 0;
 }
 @font-face {
-    font-family: "Druk Wide";
-    src: url("assets/drukwidecyr-bold.otf");
+  font-family: "Druk Wide";
+  src: url('@/assets/drukwidecyr-bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
 }
 
 #app {

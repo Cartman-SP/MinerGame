@@ -63,9 +63,11 @@
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
     background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
     height: 20px;
+    text-align: center;
   }
   
   .hide {
+    text-align: center;
     opacity: 0;
     top: 0px;
     transition: all .2s ease;
@@ -88,15 +90,18 @@
     width: 300px;
     left: 50%;
     transform: translateX(-50%);
+    text-align: center;
   }
   
   .alert p{
+    width: 100%;
     margin: 0;
     margin-top: -2px;
     color: white;
     font-family: "Druk Wide";
     font-size: 14px;
     white-space: break-spaces;
+    text-align: center;
   }
   
   svg path{
