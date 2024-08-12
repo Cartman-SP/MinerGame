@@ -89,11 +89,11 @@ class EnergyConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def increase_energy(self, telegram_user):
-        if telegram_user.max_energy < telegram_user.energy + 3:
+        if telegram_user.max_energy < telegram_user.energy + 1:
             telegram_user.energy = telegram_user.max_energy
         else:
-            telegram_user.energy += 3
-        telegram_user.secs_in_game += 6
+            telegram_user.energy += 1
+        telegram_user.secs_in_game += 3
         telegram_user.last_login = timezone.now()
         telegram_user.save()
         return telegram_user.energy

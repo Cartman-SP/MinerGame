@@ -251,7 +251,7 @@ def get_or_create_user(request):
                 user.balance += mined_while_of
             time_diff = timezone.now()-user.last_login
             if time_diff > timedelta(seconds=0):
-                user.energy += min(user.energy+time_diff.total_seconds()/2,user.max_energy)
+                user.energy += min(user.energy+time_diff.total_seconds()/3,user.max_energy)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()
