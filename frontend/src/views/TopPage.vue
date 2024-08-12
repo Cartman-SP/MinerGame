@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main_top">
-      <div class="container">
+      <div class="container" @click="this.$router.push({ path: `/player/${top2}`, params: { user: top2 }})">
         <div class="image-container">
           <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
           <img v-else src="../assets/noPhoto.png" class="img_small">
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <div class="container" @click="this.$router.push({ path: `/player/${top1}`, params: { user: top1 }})">
         <div class="image-container">
           <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
           <img v-else src="../assets/noPhoto.png" class="img_big">
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <div class="container" @click="this.$router.push({ path: `/player/${top3}`, params: { user: top3 }})">
         <div class="image-container">
           <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
           <img v-else src="../assets/noPhoto.png" class="img_smallest">
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="bottom_card" v-for="(user, index) in top" :key="index">
+      <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$router.push({ path: `/player/${user}`, params: { user: user }})">
         <img v-if="user.photo_url" :src="user.photo_url" alt="" >
         <img v-else src="../assets/noPhoto.png">
         <div class="name_container">
@@ -109,7 +109,6 @@ export default {
       try{
             console.log(this.$user.data.user_id)
             const response = await this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
-            console.log(response.data, '----------')
             const top = response.data.top_users
             this.top1 = top[0]
             this.top2 = top[1]
