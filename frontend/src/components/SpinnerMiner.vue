@@ -153,6 +153,12 @@ export default {
 
 
 <style scoped>
+.spinners-block{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 .bright {
   filter: brightness(80%);
   scale: 0.98;
@@ -199,9 +205,9 @@ export default {
 
 .spinner {
   user-select: none;
-  width: 50vh;
   margin: -5vh 0 1vh 0;
   animation: pulseGlow 2s infinite;
+  width: 100%;
 }
 
 .level-1 {
@@ -244,8 +250,8 @@ export default {
 }
 
 .spinner-img {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   filter: drop-shadow(0 0 20px var(--glow-color));
 }
 

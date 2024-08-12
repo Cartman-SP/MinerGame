@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="(friends>0 && video_lvl>0) ? open_pay(2) : alertMessage='Нужно пригласить хотя бы 1 друга'" v-if="!video2_lvl">
+            <div class="block" @click="handleBuy(2)" v-if="!video2_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="(friends>1) ? open_pay(3) : alertMessage='Нужно пригласить хотя бы 2 друзей'" v-if="!video3_lvl">
+            <div class="block"  @click="handleBuy(3)" v-if="!video3_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="(friends>3) ? open_pay(4) : alertMessage='Нужно пригласить хотя бы 4 друзей'" v-if="!video4_lvl">
+            <div class="block"  @click="handleBuy(4)" v-if="!video4_lvl">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -206,6 +206,34 @@ export default {
         }
     },
     methods:{
+        handleBuy(num) {
+            if (num == 2) {
+                if (this.friends < 1) {
+                    this.alertMessage = 'Нужно пригласить хотя бы 1 друга';
+                } else {
+                    this.open_pay(2);
+                }
+            }
+            if (num == 3) {
+                if (this.friends < 2) {
+                    this.alertMessage = 'Нужно пригласить хотя бы 2 друзей';
+                } else if (this.video2_lvl < 1) {
+                    this.alertMessage = 'Сначала надо купить вторую видеокарту';
+                } else {
+                    this.open_pay(3);
+                }
+            }
+            if (num == 4) {
+                if (this.friends < 4) {
+                    this.alertMessage = 'Нужно пригласить хотя бы 4 друзей';
+                } else if (this.video3_lvl < 1) {
+                    this.alertMessage = 'Сначала надо купить третью видеокарту';
+                } else {
+                    this.open_pay(4);
+                }
+            }
+            
+        },
 
         async set_video(num){
             let data = {'user_id': this.$user.data.user_id,'num':num};
