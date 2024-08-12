@@ -179,8 +179,12 @@ export default {
 .player{
   color: #272727;
   font-family: "Druk Wide";
-  font-size: 8px;
+  font-size: 14px;
   margin: 0;
+  max-width: 35vw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .leftPart{
   display: flex;
@@ -243,6 +247,7 @@ export default {
   background-color: #171717;
   border-radius: 10px;
   padding: 15px 25px;
+  width: 30vw;
 }
 .premium{
   display: flex;
