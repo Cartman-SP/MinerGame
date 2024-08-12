@@ -5,8 +5,9 @@
         <div class="line-rank" v-if="lvl == index"></div>
         <p class="rank-name">{{ i }}</p>
         <div class="line-rank" v-if="lvl == index"></div>
-        <div class="mark" v-if="lvl != index"></div>
-        <div class="mark" v-else style="background-color: #00c3ff;"></div>
+        <div class="mark" v-if="lvl >= index" style="background-color: #00c3ff;"></div>
+        <div class="mark" v-else></div>
+        
     </div>
   </div>
 </template>
