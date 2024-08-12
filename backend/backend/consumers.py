@@ -47,12 +47,13 @@ class TapConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         user_id = data['user_id']
         increment = data['increment']
+        taps = data['taps']
 
         telegram_user = await self.get_or_create_telegram_user(user_id)
         if telegram_user:
             if(telegram_user.energy > 0):
-                telegram_user.balance += increment
-                telegram_user.energy -= 1
+                telegram_user.balance += increment*taps
+                telegram_user.energy -= taps
                 await self.update_telegram_user(telegram_user)
 
             await self.send(text_data=json.dumps({
@@ -88,11 +89,11 @@ class EnergyConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def increase_energy(self, telegram_user):
-        if telegram_user.max_energy < telegram_user.energy + 2:
+        if telegram_user.max_energy < telegram_user.energy + 3:
             telegram_user.energy = telegram_user.max_energy
         else:
-            telegram_user.energy += 2
-        telegram_user.secs_in_game += 4
+            telegram_user.energy += 3
+        telegram_user.secs_in_game += 6
         telegram_user.last_login = timezone.now()
         telegram_user.save()
         return telegram_user.energy

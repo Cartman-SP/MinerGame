@@ -52,6 +52,7 @@ export default {
       miniCoins: [],
       coinId: 0,
       isBright: false,
+      taps: 0,
     };
   },
   methods: {
@@ -74,9 +75,15 @@ export default {
       const message = {
         user_id: this.$user.data.user_id,
         increment: this.$user.data.gpc,
+        taps: this.taps
       };
-
-      this.$user.data.tapsocket.send(JSON.stringify(message));
+      this.taps+=1
+      this.$user.data.balance+=this.$user.data.gpc
+      this.$user.data.energy -=1
+      if(taps>=5){
+        this.$user.data.tapsocket.send(JSON.stringify(message));
+        this.taps = 0
+      }
     },
     createMiniCoin(event) {
       const touch = event.touches[0];
@@ -180,7 +187,7 @@ export default {
           };
           console.log(123)
           this.$user.data.energysocket.send(JSON.stringify(message));
-      }, 4000); // каждые 5 секунд
+      }, 6000); // каждые 6 секунд
     }, 
 
     spinnerClass() {
@@ -267,6 +274,12 @@ export default {
     });
   },
   beforeUnmount() {
+    const message = {
+        user_id: this.$user.data.user_id,
+        increment: this.$user.data.gpc,
+        taps: this.taps
+      };
+    this.$user.data.tapsocket.send(JSON.stringify(message));
     if (this.timer) {
       clearInterval(this.timer);
     }

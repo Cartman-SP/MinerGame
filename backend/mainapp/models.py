@@ -17,7 +17,7 @@ class TelegramUser(models.Model):
     mining_duration = models.DurationField(default=timedelta(minutes=60))
     mining_time_lvl = models.IntegerField(default=1)
     last_login = models.DateTimeField(null=True, blank=True)
-    max_energy = models.IntegerField(default=2000)
+    max_energy = models.IntegerField(default=250)
     enery_lvl = models.IntegerField(default=1)
     tap_lvl = models.IntegerField(default=1)
     refresh_energy = models.IntegerField(default=5)

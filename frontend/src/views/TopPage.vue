@@ -127,7 +127,7 @@ export default {
 
   computed:{
     your_balance(){
-      return this.formatNumber(this.$user.data.balance)
+      return this.formatNumber(Math.floor(this.$user.data.balance))
     }
   }
 }
