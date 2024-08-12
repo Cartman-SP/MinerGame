@@ -160,8 +160,9 @@ export default {
   width: 100%;
 }
 .bright {
-  filter: brightness(80%);
-  scale: 0.98;
+  /* filter: brightness(80%);
+  scale: 0.98; */
+  opacity: .8;
 }
 .mini-coins-container {
   position: absolute;
