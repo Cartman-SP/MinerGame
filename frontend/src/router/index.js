@@ -7,6 +7,7 @@ import ProfilePage from '../views/ProfilePage.vue'
 import TaskPage from '../views/TaskPage.vue'
 import FriendsPage from '../views/FriendsPage.vue'
 import TopPage from '../views/TopPage.vue'
+import RanksPage from '../views/RanksPage.vue'
 const routes = [
   {
     path: '/',
@@ -19,19 +20,9 @@ const routes = [
     component: WalletPage
   },
   {
-    path: '/top',
-    name: 'top',
-    component: MainPage
-  },
-  {
     path: '/task',
     name: 'task',
     component: TaskPage
-  },
-  {
-    path: '/friends',
-    name: 'friends',
-    component: MainPage
   },
   {
     path: '/top',
@@ -57,6 +48,11 @@ const routes = [
     path: '/friends',
     name: 'friends',
     component: FriendsPage
+  },
+  {
+    path: '/ranks',
+    name: 'ranks',
+    component: RanksPage
   },
 ]
 

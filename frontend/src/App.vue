@@ -24,7 +24,7 @@
 import Balance from '../src/components/BalanceBlock.vue';
 import StatusBar from '../src/components/StatusBar.vue';
 import NavBar from '../src/components/NavBar.vue';
-import Loader from "../src/components/LoaderSpin.vue";
+import Loader from "../src/components/LoaderSpin.vue"; 
 
 export default {
   components: { NavBar, StatusBar, Balance, Loader },
