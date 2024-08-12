@@ -13,11 +13,6 @@
       </div>
       
     </div>
-    
-    
-    <button>{{ selected_gpu }}</button>
-    
-    
 
     <div class="stats-block">
       <div class="energy-block" @click="moveTo('/boost')">
