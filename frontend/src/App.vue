@@ -164,8 +164,10 @@ export default {
     margin: 0;
 }
 @font-face {
-    font-family: "Druk Wide";
-    src: url("assets/drukwidecyr-bold.otf");
+  font-family: "Druk Wide";
+  src: url('@/assets/drukwidecyr-bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
 }
 
 #app {

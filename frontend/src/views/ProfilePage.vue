@@ -105,7 +105,7 @@ export default {
   border-radius: 10px;
   border: none;color: white;
   font-family: "Druk Wide";
-  font-size: 12px;
+  font-size: 10px;
 }
 .switches{
   display: flex;

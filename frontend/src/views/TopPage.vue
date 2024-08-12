@@ -227,18 +227,14 @@ p{
   font-size: 8px;
 }
 .bottom{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: block;
   border-top: 1px solid #00E6FF;
   margin-top: 20px;
   background: rgb(85, 85, 85);
   border-radius: 7px 7px 0 0;
   box-shadow: 0 -5px 10px rgba(0, 230, 255, 0.3);
   padding: 20px;
-  min-height: 100px;
-  height: fit-content;
-  padding-bottom: 200px;
+  padding-bottom: 70px;
 }
 .bottom_card img{
   height: 65px;
@@ -250,11 +246,16 @@ p{
   color: #FFFFFF;
   text-align: left;
   font-size: 14px;
+  max-width: 30vw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .bottom_card{
   display: flex;
   align-items: center;
   gap: 20px;
+  margin-bottom: 10px;
 }
 .divider {
   border-bottom: 1px solid rgba(255, 255, 255, 1); 

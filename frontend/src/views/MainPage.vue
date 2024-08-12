@@ -80,7 +80,7 @@ export default {
       this.taps+=1
       this.$user.data.balance+=this.$user.data.gpc
       this.$user.data.energy -=1
-      if(taps>=5){
+      if(this.taps>=5){
         this.$user.data.tapsocket.send(JSON.stringify(message));
         this.taps = 0
       }

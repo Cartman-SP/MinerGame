@@ -4,13 +4,15 @@
         <div class="icon-nav">
             <img src="../assets/icon-wallet.png" alt="">
         </div>
-        <p class="title">WALLET</p>
+        <p class="title" v-if="language == 'ru'">КОШЕЛЕК</p>
+        <p class="title" v-else>WALLET</p>
     </div>
     <div class="button" @click="moveto('/top')">
         <div class="icon-nav">
             <img src="../assets/icon-top.png" alt="">
         </div>
-        <p class="title">TOP</p>
+        <p class="title" v-if="language == 'ru'">ТОП</p>
+        <p class="title" v-else>TOP</p>
     </div>
     <div class="mainButton" @click="spinImage">
         <div class="fan-btn">
@@ -22,13 +24,15 @@
         <div class="icon-nav">
             <img  style="width: 25px;" src="../assets/icon-friend.png" alt="">
         </div>
-        <p class="title">FRIENDS</p>
+        <p class="title" v-if="language == 'ru'">ДРУЗЬЯ</p>
+        <p class="title" v-else>FRIENDS</p>
     </div>
     <div class="button"  @click="moveto('/task')">
         <div class="icon-nav">
             <img src="../assets/icon-task.png" alt="">
         </div>
-        <p class="title">TASKS</p>
+        <p class="title" v-if="language == 'ru'">ЗАДАНИЯ</p>
+        <p class="title" v-else>TASKS</p>
     </div>
   </div>
 </template>
@@ -87,7 +91,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    height: 30px;
 }
 
 .button {
@@ -105,7 +109,7 @@ export default {
     border: solid 10px rgb(90, 90, 90);
     bottom: 20px;
     position: absolute;
-    top: -5vh;
+    top: -4vh;
 }
 
 
@@ -123,7 +127,8 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: start;
-    padding-top: 4vh;
+    padding-top: 2vh;
+    gap: 5px;
     align-items: center;
 }
 .button img {

@@ -23,9 +23,11 @@
   -webkit-transition: .4s;
   transition: .4s;
   border-radius: 10px;
+  position: relative;
 }
 
 .switch {
+  position: relative;
   width: 50px;
   height: 30px;
   cursor: pointer;
@@ -46,7 +48,7 @@
   align-items: center;
   justify-content: center;
   width: 80%;
-  height: 100%;
+  height: 30px;
   transition: all .2s ease;
 }
 .switch-disabled{
@@ -60,7 +62,7 @@
   align-items: center;
   justify-content: center;
   width: 80%;
-  height: 100%;
+  height: 30px;
   transition: all .2s ease;
 }
 .switch-icon{
@@ -87,6 +89,7 @@ export default {
   },
   methods: {
     toggle(){
+      this.$user.playTap();
       if (this.type == 1) {
         this.switchvolume()
       } else {
