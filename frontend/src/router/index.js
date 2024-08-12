@@ -8,6 +8,7 @@ import TaskPage from '../views/TaskPage.vue'
 import FriendsPage from '../views/FriendsPage.vue'
 import TopPage from '../views/TopPage.vue'
 import RanksPage from '../views/RanksPage.vue'
+import PlayerPage from '../views/PlayerPage.vue'
 const routes = [
   {
     path: '/',
@@ -53,6 +54,14 @@ const routes = [
     path: '/ranks',
     name: 'ranks',
     component: RanksPage
+  },
+  {
+    path: '/player/:userID',
+    props: route => ({
+      userID: route.params.userID,
+    }),
+    name: 'player',
+    component: PlayerPage
   },
 ]
 

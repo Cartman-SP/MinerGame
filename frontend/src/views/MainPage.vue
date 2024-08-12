@@ -2,22 +2,18 @@
   <div class="mainpage">
     
     <div>
-      <div class="gpu_selections">
+      <div class="gpu_selections" v-if="video2_lvl">
         <div class="gpu_preview" v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" @click="selected_gpu = [video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]">
-          <img :src="staticPath([video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1])" alt="">
+          <img :src="staticPath([video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1])" alt="" :class="[{ currentGPU: [video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1] == selected_gpu }]">
         </div>
       </div>
+      <div v-else style="margin-bottom: 50px;"></div>
       
       <div class="spinner-single">
         <Spinner :isMining="remainingTime > 0" :level="selected_gpu"/>
       </div>
       
     </div>
-    
-    
-    <button>{{ selected_gpu }}</button>
-    
-    
 
     <div class="stats-block">
       <div class="energy-block" @click="moveTo('/boost')">
@@ -282,12 +278,17 @@ export default {
 <style scoped>
 .gpu_preview img{
   width: 20vw;
+  opacity: .3;
+}
+.currentGPU{
+  opacity: 1 !important;
 }
 .gpu_selections{
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 
