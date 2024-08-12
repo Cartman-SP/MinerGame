@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main_top">
-      <div class="container" @click="this.$router.push({ path: `/player/${top2.user_id}`, params: { userData: top2 }})">
+      <div class="container" @click="this.$router.push({ path: `/player/${top2.user_id}`, params: { userId: top2.user_id }})">
         <div class="image-container">
           <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
           <img v-else src="../assets/noPhoto.png" class="img_small">
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="container" @click="this.$router.push({ path: `/player/${top1.user_id}`, params: { userData: top1 }})">
+      <div class="container" @click="this.$router.push({ path: `/player/${top1.user_id}`, params: { userId: top1.user_id }})">
         <div class="image-container">
           <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
           <img v-else src="../assets/noPhoto.png" class="img_big">
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="container" @click="this.$router.push({ path: `/player/${top3.user_id}`, params: { userData: top3 }})">
+      <div class="container" @click="this.$router.push({ path: `/player/${top3.user_id}`, params: { userId: top3.user_id }})">
         <div class="image-container">
           <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
           <img v-else src="../assets/noPhoto.png" class="img_smallest">
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$router.push({ path: `/player/${user.user_id}`, params: { userData: user }})">
+      <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$router.push({ path: `/player/${user.user_id}`, params: { userId: user.user_id }})">
         <img v-if="user.photo_url" :src="user.photo_url" alt="" >
         <img v-else src="../assets/noPhoto.png">
         <div class="name_container">
