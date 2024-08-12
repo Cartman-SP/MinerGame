@@ -45,8 +45,8 @@
     <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/ranks'">
       <h1 class="title">RANK</h1>
     </div>
-    <div class="statusBar" style="justify-content: center;" v-if="this.$route.path === '/player'">
-      <h1 class="title">PROFILE</h1>
+    <div class="statusBar" style="justify-content: center;" v-if="this.$route.name === 'player'">
+      <h1 class="title">PLAYER</h1>
     </div>
   </div>
     
