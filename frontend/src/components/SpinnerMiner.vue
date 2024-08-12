@@ -252,8 +252,8 @@ export default {
 }
 
 .spinner-img {
-  width: 80%;
-  height: 80%;
+  width: 35vh;
+  aspect-ratio: 1;
   filter: drop-shadow(0 0 20px var(--glow-color));
 }
 
