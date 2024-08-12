@@ -2,11 +2,12 @@
   <div class="mainpage">
     
     <div>
-      <div class="gpu_selections">
+      <div class="gpu_selections" v-if="video2_lvl">
         <div class="gpu_preview" v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" @click="selected_gpu = [video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]">
           <img :src="staticPath([video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1])" alt="">
         </div>
       </div>
+      <div v-else style="margin-bottom: 50px;"></div>
       
       <div class="spinner-single">
         <Spinner :isMining="remainingTime > 0" :level="selected_gpu"/>
