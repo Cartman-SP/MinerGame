@@ -4,18 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <link rel="icon" href="{% static 'viewapp/favicon.ico' %}">
-    <title>frontend</title>
-    <script defer="defer" src="{% static 'viewapp/js/chunk-vendors.cc2c2312.js' %}"></script>
-    <script defer="defer" src="{% static 'viewapp/js/app.e008dd04.js' %}"></script>
-    <link href="{% static 'viewapp/css/app.1bfaaffd.css' %}" rel="stylesheet">
+    <title>Frontend</title>
+
+    <!-- Import JavaScript files -->
+    <script src="{% static 'viewapp/js/chunk-vendors.e2819a2f.js' %}" defer></script>
+    <script src="{% static 'viewapp/js/app.702a7d08.js' %}" defer></script>
+    
+    <link href="{% static 'viewapp/css/app.ca6e704b.css' %}" rel="stylesheet">
 </head>
 <body>
     <noscript>
         <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
