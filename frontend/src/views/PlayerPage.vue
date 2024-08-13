@@ -99,6 +99,7 @@
         });
         console.log(response.data)
         this.userData = response.data;
+        this.$user.data.toppage = false
       } catch (error) {
         console.error('Error fetching daily reward status:', error);
       }
