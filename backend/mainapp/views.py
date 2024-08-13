@@ -9,7 +9,7 @@ import requests
 import re
 
 
-BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
+BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
 @api_view(['GET'])
 def get_innovice_link(request):
@@ -178,7 +178,7 @@ def get_user_profile_photo(bot_token, user_id):
 
 def clean_username(username):
     # Разрешенные символы: русские и английские буквы, цифры, знаки препинания и спецсимволы
-    allowed_chars = re.compile(r'[а-яА-Яa-zA-Z0-9\s\.,!?@#$%^&*()_+=\-:;"\'<>|\\/\[\]{}~`]')
+    allowed_chars = re.compile(r'[а-яА-Яa-zA-Z0-9\s\.,ёЁ!?@#$%^&*()_+=\-:;"\'<>|\\/\[\]{}~`]')
     
     # Отфильтровать строку, оставив только допустимые символы
     cleaned_username = ''.join(char for char in username if allowed_chars.match(char))
@@ -542,7 +542,6 @@ def get_friends(request):
 @api_view(['GET'])
 def get_user(request):
     user_id = request.query_params.get('user_id')
-    print('1111111111111111111111111111',user_id)
     user = TelegramUser.objects.get(user_id = user_id)
     serializer = TelegramUserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
