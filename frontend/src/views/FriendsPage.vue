@@ -2,13 +2,13 @@
   <div class="friends">
     <div class="buttons">
       <div class="invite" @click="shareLink()" ref="block_first">
-        <p v-if="language == 'ru'" class="name">ПРИГЛАСИТЬ ДРУГА</p>
-        <p v-else class="name">INVITE FRIEND</p>
+        <p v-if="language == 'ru'" class="name-invite">ПРИГЛАСИТЬ ДРУГА</p>
+        <p v-else class="name-invite">INVITE FRIEND</p>
           <img src="../assets/icon-addfriend-friends.png" alt="" class="invite-icon">
       </div>
       <div class="link" @click="copyLink" ref="block_second">
-        <p v-if="language == 'ru'" style="font-size: 10px;" class="name">СКОПИРОВАТЬ ССЫЛКУ</p>
-        <p v-else style="font-size: 10px;" class="name">COPY LINK</p>
+        <p v-if="language == 'ru'" style="font-size: 10px;" class="name-invite">СКОПИРОВАТЬ ССЫЛКУ</p>
+        <p v-else class="name-invite">COPY LINK</p>
         <img src="../assets/icon-link-friends.png" alt="" class="link-icon">
       </div>
     </div>
@@ -315,7 +315,7 @@ img{
   overflow-y: scroll;
   height: 70vh;
 }
-.name{
+.name-invite{
     color: white;
     font-family: "Druk Wide";
     font-size: 12px;
