@@ -365,9 +365,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100vw;
 }
 .title{
-  
   color: white;
   font-family: "Druk Wide";
   font-size: 8px;

@@ -119,7 +119,7 @@ export default {
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,
-        top: touch.clientY/3, // Используем координаты касания
+        top: touch.clientY/5, // Используем координаты касания
         left: touch.clientX/2, // Используем координаты касания
       };
       this.miniCoins.push(newCoin);
