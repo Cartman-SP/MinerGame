@@ -51,7 +51,7 @@
             </div>
 
             
-            <div class="task" @click="redirectToTelegram" ref="block_third">
+            <div class="task" @click="redirectToTelegram" ref="block_telegram">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
@@ -70,7 +70,7 @@
     <div class="other">
       <p class="naming" style="margin-top: 30px;" v-if="language == 'ru'">ЗАДАНИЯ</p>
       <p class="naming" style="margin-top: 30px;" v-else>TASKS</p>
-        <div class="other-tasks" ref="block_third">
+        <div class="other-tasks"  ref="block_customs">
           <div v-for="i in tasks" :key="i">
 
 
@@ -417,7 +417,8 @@ export default {
     const blocks = [
     this.$refs.block_first,
     this.$refs.block_second,
-    this.$refs.block_third,
+    this.$refs.block_telegram,
+    this.$refs.block_customs,
     ];
 
     const interval = setInterval(() => {
