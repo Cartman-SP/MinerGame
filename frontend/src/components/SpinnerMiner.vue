@@ -98,26 +98,21 @@ export default {
       }
     },
     handleTouchStart() {
-      if (this.$user.data.energy <= 0) return;
+      if (this.$user.data.energy > 0){
+        this.$user.playTap(); // Reusing preloaded audio
+        this.isBright = true;
 
-      this.$user.playTap(); // Reusing preloaded audio
-      this.isBright = true;
+        setTimeout(() => {
+          this.isBright = false;
+        }, 100);
 
-      setTimeout(() => {
-        this.isBright = false;
-      }, 100);
-
-      const message = {
-        user_id: this.$user.data.user_id,
-        increment: this.$user.data.gpc,
-        taps: this.taps
-      };
-      this.taps+=1
-      this.$user.data.balance+=this.$user.data.gpc
-      this.$user.data.energy -=1
-      if(this.taps>=5){
+        const message = {
+          user_id: this.$user.data.user_id,
+          increment: this.$user.data.gpc,
+        };
+        this.$user.data.balance+=this.$user.data.gpc
+        this.$user.data.energy -=1
         this.$user.data.tapsocket.send(JSON.stringify(message));
-        this.taps = 0
       }
     },
     createMiniCoin(event) {

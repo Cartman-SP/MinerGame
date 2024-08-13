@@ -9,7 +9,7 @@ import requests
 import re
 
 
-BOT_TOKEN = '7233799288:AAF0WYqgm5H0pgL5t66nip78HQfBHxF8ThA'
+BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
 @api_view(['GET'])
 def get_innovice_link(request):
@@ -178,7 +178,7 @@ def get_user_profile_photo(bot_token, user_id):
 
 def clean_username(username):
     # Разрешенные символы: русские и английские буквы, цифры, знаки препинания и спецсимволы
-    allowed_chars = re.compile(r'[а-яА-Яa-zA-Z0-9\s\.,!?@#$%^&*()_+=\-:;"\'<>|\\/\[\]{}~`]')
+    allowed_chars = re.compile(r'[а-яА-Яa-zA-Z0-9\s\.,ёЁ!?@#$%^&*()_+=\-:;"\'<>|\\/\[\]{}~`]')
     
     # Отфильтровать строку, оставив только допустимые символы
     cleaned_username = ''.join(char for char in username if allowed_chars.match(char))
@@ -188,6 +188,20 @@ def clean_username(username):
         return "Miner"
     
     return cleaned_username
+
+def set_first(request):
+    user_id = request.data.get('user_id')
+    num = request.data.get('num')
+    user = TelegramUser.objects.get(user_id=user_id)
+    if(num==2):
+        user.video2_lvl = 1
+    elif(num==3):
+        user.video3_lvl = 1
+    elif(num==4):
+        user.video4_lvl = 1
+    user.save()
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)
+
 
 
 @api_view(['GET'])
@@ -267,7 +281,7 @@ def get_or_create_user(request):
                 user.balance += mined_while_of
             time_diff = timezone.now()-user.last_login
             if time_diff > timedelta(seconds=0):
-                user.energy += min(user.energy+time_diff.total_seconds()/3,user.max_energy)
+                user.energy += min(user.energy+(time_diff.total_seconds()/3),user.max_energy)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()
@@ -542,7 +556,6 @@ def get_friends(request):
 @api_view(['GET'])
 def get_user(request):
     user_id = request.query_params.get('user_id')
-    print('1111111111111111111111111111',user_id)
     user = TelegramUser.objects.get(user_id = user_id)
     serializer = TelegramUserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)

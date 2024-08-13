@@ -248,12 +248,6 @@ export default {
     this.selected_gpu = 1
   },
   beforeUnmount() {
-    const message = {
-        user_id: this.$user.data.user_id,
-        increment: this.$user.data.gpc,
-        taps: this.taps
-      };
-    this.$user.data.tapsocket.send(JSON.stringify(message));
     if (this.timer) {
       clearInterval(this.timer);
     }

@@ -46,7 +46,7 @@
       </div>
 
       <div class="switches">
-        <button v-if="language == 'ru'" class="help">НАПИСАТЬ ПОДДЕРЖКЕ</button>
+        <button v-if="language == 'ru'" class="help" @click="window.location.href = `https://t.me/supylionbot`">НАПИСАТЬ ПОДДЕРЖКЕ</button>
         <button v-else class="help">SUPPORT</button>
         <Switch :type="1"/>
         <Switch :type="2"/>
