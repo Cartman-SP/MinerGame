@@ -61,6 +61,14 @@
         <p class="center_text">YOUR RANK</p>
       </div>
     </div>
+    <div class="description" v-if="language == 'ru'">
+      <p>ИГРОКИ</p>
+      <p>БАЛАНС/МЕСТО</p>
+    </div>
+    <div class="description" v-else>
+      <p>PLAYERS</p>
+      <p>BALANCE/PLACE</p>
+    </div>
     <div class="bottom">
       <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${user.user_id}`, params: { userId: user.user_id }}), this.$user.playTap()">
         <img v-if="user.photo_url" :src="user.photo_url" alt="" >
@@ -157,6 +165,7 @@ export default {
 </script>
 
 <style scoped>
+
 
 p{
   margin: 0;
@@ -258,10 +267,23 @@ p{
   color: #FFFFFF;
   font-size: 8px;
 }
+
+.description{
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  margin-top: 20px;
+  padding: 0 10px;
+}
+.description p{
+  color: #FFFFFF;
+  font-size: 12px;
+  margin: 0;
+}
+
 .bottom{
   display: block;
   border-top: 1px solid #00E6FF;
-  margin-top: 20px;
   background: rgb(85, 85, 85);
   border-radius: 7px 7px 0 0;
   box-shadow: 0 -5px 10px rgba(0, 230, 255, 0.3);

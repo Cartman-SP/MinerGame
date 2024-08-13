@@ -33,50 +33,43 @@
     </div>
 
     <div class="table-container" ref="block_fifth">
-      <div class="header" v-if="language == 'ru'">
-        <span>ДРУЗЬЯ</span>
-        <span>ДОХОД ОТ <br>РЕФЕРАЛОВ</span>
+      <div class="description" v-if="language == 'ru'">
+        <p>ДРУЗЬЯ</p>
+        <p>ДОХОД ОТ <br>РЕФЕРАЛОВ</p>
       </div>
-      <div class="header" v-else>
-        <span>FRIENDS</span>
-        <span>PROFIT FROM <br>REFERRALS</span>
+      <div class="description" v-else>
+        <p>FRIENDS</p>
+        <p>PROFIT FROM <br>REFERRALS</p>
       </div>
-      <div class="table">
-        <div v-for="i in friends" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
-          <div class="human">
-            <div class="leftPart">
-              <div class="avatar">
-                <img v-if="i.photo_url" :src="i.photo_url" alt="" srcset="">
-                <img v-else src="../assets/noPhoto.png">
-              </div>
-              <h4 class="player">
-                {{i.username || 'MINER'}}
-              </h4>
-            </div>
-            
-            <div class="earningBlock">
-              <h2 class="earning" v-if="i.ispremium">
-                {{Math.floor(i.balance * 0.01)}}
-              </h2>
-              <h2 class="earning" v-else>
-                {{Math.floor(i.balance * 0.005)}}
-              </h2>
-              
-              <h2 class="percent" v-if="i.ispremium">
+      <div class="bottom" v-if="friends.length>0">
+        <div class="bottom_card" v-for="i in friends" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
+          <img v-if="i.photo_url" :src="i.photo_url" alt="" srcset="">
+          <img v-else src="../assets/noPhoto.png">
+          <div class="name_container">
+            <p class="name">{{i.username || 'MINER'}}</p>
+            <div class="divider"></div>
+          </div>
+          <div class="amount">
+            <p class="amount_text" v-if="i.ispremium"> {{Math.floor(i.balance * 0.01)}} </p>
+            <p class="amount_text" v-else> {{Math.floor(i.balance * 0.005)}} </p>
+            <div class="number">
+              <p class="number_text" v-if="i.ispremium">
                 1
                 <br>
                 %
-              </h2>
-              <h2 class="percent" v-else>
+              </p>
+              <p class="number_text" v-else>
                 0.5
                 <br>
                 %
-              </h2>
+              </p>
             </div>
           </div>
-          <hr>
         </div>
-        
+      </div>
+      <div v-else class="bottom">
+        <h3 v-if="language == 'ru'"  class="noFriends">ТЫ ПОКА НЕ ПРИГЛАСИЛ <br> НИ ОДНОГО ДРУГА :(</h3>
+        <h3 v-else class="noFriends">YOU HAVEN'T INVITED <br> ANY FRIENDS YET :(</h3>
       </div>
     </div>
     <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -166,92 +159,124 @@ export default {
 </script>
 
 <style scoped>
+.noFriends{
+  font-family: "Druk Wide";
+  color: #FFFFFF;
+  font-size: 12px;
+  margin: 30px 0;
+}
+.description{
+  font-family: "Druk Wide";
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  margin-top: 20px;
+  padding: 0 10px;
+}
+.description p{
+  color: #FFFFFF;
+  font-size: 12px;
+  margin: 0;
+}
+
+.bottom{
+  display: block;
+  border-top: 1px solid #00E6FF;
+  background: rgb(85, 85, 85);
+  border-radius: 7px 7px 0 0;
+  box-shadow: 0 -5px 10px rgba(0, 230, 255, 0.3);
+  padding: 20px;
+  padding-bottom: 70px;
+  min-height: 300px;
+}
+.bottom_card img{
+  height: 65px;
+  width: 65px;
+  border: 1px solid #FFFFFF;
+  border-radius: 50%;
+}
+.name{
+  color: #FFFFFF;
+  text-align: left;
+  font-size: 14px;
+  max-width: 30vw;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.bottom_card{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+.divider {
+  border-bottom: 1px solid rgba(255, 255, 255, 1); 
+  width: 100%;
+  margin: 0;
+}
+.name_container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.amount{
+  padding-left: 10px;
+  background: rgb(65, 65, 65);
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+.amount_text{
+  color: #FFFFFF;
+}
+.number{
+  background: #00E6FF;
+  border-radius: 10px;
+  padding: 10px;
+  margin-left: 5px;
+}
+.number_text{
+  color: #FFFFFF;
+}
+.num{
+  border-radius: 50%;
+}
+.num p{
+  font-size: 12px;
+}
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%); 
+  border-radius: 10px; 
+  color: white;
+  background: #00E6FF;
+  z-index: 10;
+}
+img{
+  object-fit: cover;
+}
+
 .friends-block-show{
   scale: 1 !important;
   opacity: 1 !important;
   transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
-.hr{
-  border: 1px solid #A8A8A8;
-}
-.percent{
-  color: #ffffff;
-  font-family: "Druk Wide";
-  font-size: 10px;
-  margin: 0;
-  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
-  border-radius: 5px;
-  height: 40px;
-  width: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.earning{
-  color: #ffffff;
-  font-family: "Druk Wide";
-  font-size: 10px;
-  margin: 0;
-}
-.earningBlock{
-  height: 40px;
-  background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: space-between;
-  padding: 0px 0px 0px 20px;
-  border-radius: 5px;
-}
-.player{
-  color: #272727;
-  font-family: "Druk Wide";
-  font-size: 14px;
-  margin: 0;
-  max-width: 35vw;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.leftPart{
-  display: flex;
-  justify-content: start;
-  gap: 10px;
-  align-items: center;
-}
-.avatar img{
-  width: 40px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: red;
-}
-.human{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.table{
-  padding: 10px;
-  background: linear-gradient(180deg, rgba(165,165,164,1) 0%, rgba(223,223,223,1) 100%);
-  border-radius: 10px;
-}
-.header{
-  display: flex;
-  justify-content: space-between;
-  color: white;
-  font-family: "Druk Wide";
-  font-size: 10px;
-  margin: 0;
-  align-items: center;
-}
-.table-container{
-  padding: 10px;
-  margin-bottom: 70px;
-  scale: 0;
-  opacity: 0;
-}
 .money img{
   width: 16px;
 }
