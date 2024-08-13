@@ -118,7 +118,6 @@ export default {
   margin-top: 20px;
   width: 90%;
   height: 50px;
-  filter: drop-shadow(0 0px 5px #00c3ff8d);
 }
 .ok:hover{
   scale: .8;
