@@ -42,7 +42,7 @@
         <span>PROFIT FROM <br>REFERRALS</span>
       </div>
       <div class="table">
-        <div v-for="i in friends" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }})">
+        <div v-for="i in friends" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
           <div class="human">
             <div class="leftPart">
               <div class="avatar">

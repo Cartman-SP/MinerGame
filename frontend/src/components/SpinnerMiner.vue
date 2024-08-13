@@ -163,6 +163,7 @@ export default {
   /* filter: brightness(80%);
   scale: 0.98; */
   opacity: .8;
+  scale: 0.98;
 }
 .mini-coins-container {
   position: absolute;
@@ -251,8 +252,8 @@ export default {
 }
 
 .spinner-img {
-  width: 80%;
-  height: 80%;
+  width: 35vh;
+  aspect-ratio: 1;
   filter: drop-shadow(0 0 20px var(--glow-color));
 }
 

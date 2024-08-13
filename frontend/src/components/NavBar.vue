@@ -61,7 +61,12 @@ export default {
             }
             this.$router.push(url);
         }
-    }
+    },
+     computed:{
+        language(){
+          return this.$user.data.lang;
+        },
+     }
 }
 </script>
 
