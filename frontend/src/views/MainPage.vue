@@ -2,6 +2,7 @@
   <div class="mainpage">
     
     <div>
+
       <div class="gpu_selections" v-if="video2_lvl">
         <div class="gpu_preview" v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" @click="selected_gpu = n">
           <img :src="staticPath([video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1])" alt="" :class="[{ currentGPU: n == selected_gpu }]">
@@ -248,6 +249,12 @@ export default {
     this.selected_gpu = 1
   },
   beforeUnmount() {
+    const message = {
+        user_id: this.$user.data.user_id,
+        increment: this.$user.data.gpc,
+        taps: this.taps
+      };
+    this.$user.data.tapsocket.send(JSON.stringify(message));
     if (this.timer) {
       clearInterval(this.timer);
     }
@@ -275,6 +282,7 @@ export default {
 .gpu_preview img{
   width: 13vw;
   opacity: .3;
+  filter: drop-shadow(0 0px 10px #00E6FF);
 }
 .currentGPU{
   opacity: 1 !important;
@@ -285,9 +293,9 @@ export default {
   justify-content: center;
   gap: 10px;
   margin-bottom: 30px;
-  background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
+  background-color: #171717;
   border-radius: 20px;
-  border: 1px solid #848484;
+  border: 1px solid #00E6FF;
 }
 
 
