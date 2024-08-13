@@ -32,7 +32,7 @@
       </div>
       <div class="container" ref="block_fourth">
         <p class="name" v-if="language == 'ru'">МИНУТ В ИГРЕ</p>
-        <p class="name" v-else>MINUTES IN THE GAME</p>
+        <p class="name" v-else>MINUTES IN GAME</p>
         <div class="info">
           <p class="value">{{Math.floor(user.secs_in_game/60)}}</p>
         </div>
