@@ -55,6 +55,8 @@
         <!-- <button @click="switchvolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>
         <button @click="switchvibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button> -->
       </div>
+
+      <p class="studio">DEVELOPED BY <span>HEDGECODE</span></p>
       
     </div>
     <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -119,6 +121,14 @@ export default {
 </script>
 
 <style scoped>
+.studio{
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 10px;
+}
+.studio span{
+  color: rgba(0,192,255,1);
+}
 .help{
   width: 70%;
   height: 30px;
@@ -126,7 +136,8 @@ export default {
   background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
   filter: drop-shadow(0 1px 3px rgb(23, 23, 23));
   border-radius: 10px;
-  border: none;color: white;
+  border: none;
+  color: white;
   font-family: "Druk Wide";
   font-size: 10px;
 }
