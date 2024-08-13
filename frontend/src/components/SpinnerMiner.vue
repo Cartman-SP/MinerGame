@@ -3,13 +3,10 @@
     <div class="spinners-block">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
-    </div>
-
-    <transition-group name="coin-fall" tag="div" class="mini-coins-container">
       <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
         <span class="coin-value">+{{ coin.value }}</span>
       </div>
-    </transition-group>
+    </div>
   </div>
 </template>
 
@@ -119,8 +116,8 @@ export default {
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,
-        top: touch.clientY/5, // Используем координаты касания
-        left: touch.clientX/2, // Используем координаты касания
+        top: touch.clientY - 300, // Используем координаты касания
+        left: touch.clientX - 120, // Используем координаты касания
       };
       this.miniCoins.push(newCoin);
       setTimeout(() => {
@@ -162,8 +159,8 @@ export default {
 }
 .mini-coins-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 35vh;
+  aspect-ratio: 1;
   top: 0;
   overflow: hidden;
 }

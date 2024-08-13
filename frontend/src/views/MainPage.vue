@@ -282,7 +282,7 @@ export default {
 .gpu_preview img{
   width: 13vw;
   opacity: .3;
-  filter: drop-shadow(0 0px 10px #00E6FF);
+  filter: drop-shadow(0 0px 5px #00E6FF);
 }
 .currentGPU{
   opacity: 1 !important;
@@ -292,7 +292,7 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 5vh;
   background-color: #171717;
   border-radius: 20px;
   border: 1px solid #00E6FF;
