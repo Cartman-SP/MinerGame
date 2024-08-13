@@ -128,7 +128,7 @@ export default {
 .studio{
   color: white;
   font-family: "Druk Wide";
-  font-size: 10px;
+  font-size: 7px;
 }
 .studio span{
   color: rgba(0,192,255,1);
