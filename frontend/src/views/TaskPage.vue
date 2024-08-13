@@ -70,7 +70,7 @@
     <div class="other">
       <p class="naming" style="margin-top: 30px;" v-if="language == 'ru'">ЗАДАНИЯ</p>
       <p class="naming" style="margin-top: 30px;" v-else>TASKS</p>
-        <div class="other-tasks">
+        <div class="other-tasks" ref="block_third">
           <div v-for="i in tasks" :key="i">
 
 
@@ -632,6 +632,10 @@ export default {
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
     scale: 0;
     opacity: 0;
+}
+.other-tasks{
+  scale: 0;
+  opacity: 0;
 }
 .task-block-show{
     scale: 1 !important;

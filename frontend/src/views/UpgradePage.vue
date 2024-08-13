@@ -573,15 +573,15 @@ export default {
         ];
 
         const interval = setInterval(() => {
-        if (index < blocks.length) {
-            const block = blocks[index];
-            if (block) {
-                block.classList.add('upgrade-block-show');
+            if (index < blocks.length) {
+                const block = blocks[index];
+                if (block) {
+                    block.classList.add('upgrade-block-show');
+                }
+                index++;
+            } else {
+                clearInterval(interval);
             }
-            index++;
-        } else {
-            clearInterval(interval);
-        }
         }, 50);
   },
 }

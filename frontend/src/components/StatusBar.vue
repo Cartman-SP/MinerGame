@@ -7,8 +7,9 @@
           <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
           <p class="name">{{username || 'MINER'}}</p>
         </div>
+
         <div style="width: 120px;">
-            <img class="logo" src="../assets/logo.png" alt="logo">
+            <img class="logo" ref="logo" src="../assets/logo.png" alt="logo">
         </div>
         
         <div class="level" @click="moveTo('/ranks')" ref="level">
@@ -93,6 +94,11 @@
             profileblock.classList.add('profile-show');
           }
 
+          const logo = this.$refs.logo;
+          if (logo) {
+            logo.classList.add('logo-show');
+          }
+
           const levelblock = this.$refs.level;
           if (levelblock) {
             levelblock.classList.add('level-show');
@@ -105,6 +111,11 @@
         const profileblock = this.$refs.profile;
         if (profileblock) {
           profileblock.classList.add('profile-show');
+        }
+
+        const logo = this.$refs.logo;
+        if (logo) {
+          logo.classList.add('logo-show');
         }
 
         const levelblock = this.$refs.level;
@@ -147,6 +158,12 @@
   .logo{
     width: 100%;
     scale: .8;
+    transform: translateY(-100px);
+  }
+
+  .logo-show{
+    transform: translateY(0px);
+    transition: transform .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
   }
   .statusBar{
     display: flex;

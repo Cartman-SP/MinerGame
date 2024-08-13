@@ -1,12 +1,12 @@
 <template>
   <div class="friends">
     <div class="buttons">
-      <div class="invite" @click="shareLink()">
+      <div class="invite" @click="shareLink()" ref="block_first">
         <p v-if="language == 'ru'" class="name">ПРИГЛАСИТЬ ДРУГА</p>
         <p v-else class="name">INVITE FRIEND</p>
           <img src="../assets/icon-addfriend-friends.png" alt="" class="invite-icon">
       </div>
-      <div class="link" @click="copyLink">
+      <div class="link" @click="copyLink" ref="block_second">
         <p v-if="language == 'ru'" style="font-size: 10px;" class="name">СКОПИРОВАТЬ ССЫЛКУ</p>
         <p v-else style="font-size: 10px;" class="name">COPY LINK</p>
         <img src="../assets/icon-link-friends.png" alt="" class="link-icon">
@@ -14,7 +14,7 @@
     </div>
 
     <div class="premium">
-      <div class="card">
+      <div class="card" ref="block_third">
         <p v-if="language == 'ru'" class="subtitle">БЕЗ PREMIUM</p>
         <p v-else class="subtitle">NO PREMIUM</p>
         <div class="money">
@@ -22,7 +22,7 @@
           <img src="../assets/logo-small-blue.png" alt="">
         </div>
       </div>
-      <div class="card">
+      <div class="card" ref="block_fourth">
         <p v-if="language == 'ru'" class="subtitle">С PREMIUM</p>
         <p v-else class="subtitle">WITH PREMIUM</p>
         <div class="money">
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="table-container">
+    <div class="table-container" ref="block_fifth">
       <div class="header" v-if="language == 'ru'">
         <span>ДРУЗЬЯ</span>
         <span>ДОХОД ОТ <br>РЕФЕРАЛОВ</span>
@@ -128,6 +128,27 @@ export default {
         this.friends = response.data;
         setTimeout(() => {
           this.$user.data.toppage = false
+
+          let index = 0;
+          const blocks = [
+          this.$refs.block_first,
+          this.$refs.block_second,
+          this.$refs.block_third,
+          this.$refs.block_fourth,
+          this.$refs.block_fifth
+          ];
+
+          const interval = setInterval(() => {
+              if (index < blocks.length) {
+                  const block = blocks[index];
+                  if (block) {
+                      block.classList.add('friends-block-show');
+                  }
+                  index++;
+              } else {
+                  clearInterval(interval);
+              }
+          }, 50);
         }, 300);
         console.log(this.friends);
     } catch (error) {
@@ -138,11 +159,18 @@ export default {
   },
   mounted(){
     this.get_friends()
+
+    
   }
 }
 </script>
 
 <style scoped>
+.friends-block-show{
+  scale: 1 !important;
+  opacity: 1 !important;
+  transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
+}
 .hr{
   border: 1px solid #A8A8A8;
 }
@@ -221,6 +249,8 @@ export default {
 .table-container{
   padding: 10px;
   margin-bottom: 70px;
+  scale: 0;
+  opacity: 0;
 }
 .money img{
   width: 16px;
@@ -248,6 +278,8 @@ export default {
   border-radius: 10px;
   padding: 15px 25px;
   width: 30vw;
+  scale: 0;
+  opacity: 0;
 }
 .premium{
   display: flex;
@@ -281,6 +313,8 @@ export default {
     height: 50px;
     border-radius: 15px;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    scale: 0;
+    opacity: 0;
 }
 .invite:hover, .link:hover{
   background: linear-gradient(0deg, rgb(44, 42, 41) 0%, rgb(69, 69, 70) 100%);

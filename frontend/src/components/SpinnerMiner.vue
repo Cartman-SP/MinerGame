@@ -92,6 +92,15 @@ export default {
   watch: {
     level() {
       this.preloadImages();
+
+      const clickerwindow = this.$refs.clicker
+      clickerwindow.classList.remove('clicker-show')
+      setTimeout(() => {
+        const clickerwindow = this.$refs.clicker;
+        if (clickerwindow) {
+          clickerwindow.classList.add('clicker-show');
+        }
+      }, 10);
     }
   },
   methods: {
