@@ -6,38 +6,38 @@
       <div class="profile">
           <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar">
           <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
-          <p class="profile-name">{{userData.name||'MINER'}}</p>
+          <p class="profile-name">{{userData.username||'MINER'}}</p>
       </div>
       <div class="information">
-        <div class="container">
+        <div class="container" ref="block_first">
           <p class="name" v-if="language == 'ru'">БАЛАНС</p>
           <p class="name" v-else>BALANCE</p>
           <div class="info">
             <p class="value">{{ formatNumber(userData.balance) }}</p>
           </div>
         </div>
-        <div class="container">
+        <div class="container" ref="block_second">
           <p class="name" v-if="language == 'ru'">РАНГ</p>
           <p class="name" v-else>RANK</p>
           <div class="info">
             <p class="value">{{ ranks[userData.lvl] }}</p>
           </div>
         </div>
-        <div class="container">
+        <div class="container" ref="block_third">
           <p class="name" v-if="language == 'ru'">ДРУЗЕЙ</p>
           <p class="name" v-else>FRIENDS</p>
           <div class="info">
             <p class="value">{{ userData.friends_invited }}</p>
           </div>
         </div>
-        <div class="container">
+        <div class="container" ref="block_fourth">
           <p class="name" v-if="language == 'ru'">МИНУТ В ИГРЕ</p>
           <p class="name" v-else>MINUTES IN THE GAME</p>
           <div class="info">
             <p class="value">{{Math.floor(userData.secs_in_game/60)}}</p>
           </div>
         </div>
-        <div class="container">
+        <div class="container" ref="block_fifth">
           <p class="name" v-if="language == 'ru'">ПРИБЫЛЬ В ЧАС</p>
           <p class="name" v-else>PROFIT PER HOUR</p>
           <div class="info">
@@ -68,6 +68,27 @@
     },
     mounted(){
       this.get_player()
+
+      let index = 0;
+      const blocks = [
+      this.$refs.block_first,
+      this.$refs.block_second,
+      this.$refs.block_third,
+      this.$refs.block_fourth,
+      this.$refs.block_fifth,
+      ];
+
+      const interval = setInterval(() => {
+      if (index < blocks.length) {
+          const block = blocks[index];
+          if (block) {
+              block.classList.add('profile-block-show');
+          }
+          index++;
+      } else {
+          clearInterval(interval);
+      }
+      }, 50);
     },
     methods:{
       async get_player() {
@@ -194,14 +215,22 @@
   }
   
   .container{
-      background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
-      display: flex;
-      width: 90%;
-      align-items: center;
-      justify-content: space-between;
-      padding: 5px;
-      border-radius: 10px;
-      filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 10px;
+    filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    scale: 0;
+    opacity: 0;
+
+  }
+  .profile-block-show{
+      scale: 1 !important;
+      opacity: 1 !important;
+      transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
   }
   .header{
       width: 100%;
