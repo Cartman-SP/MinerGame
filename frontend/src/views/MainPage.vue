@@ -8,6 +8,7 @@
         </div>
       </div>
       
+      
       <div v-else style="margin-bottom: 50px;"></div>
       <div class="spinner-single">
         <Spinner :isMining="remainingTime > 0" 
@@ -278,7 +279,7 @@ export default {
 
 <style scoped>
 .gpu_preview img{
-  width: 20vw;
+  width: 13vw;
   opacity: .3;
 }
 .currentGPU{
@@ -290,6 +291,9 @@ export default {
   justify-content: center;
   gap: 10px;
   margin-bottom: 30px;
+  background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
+  border-radius: 20px;
+  border: 1px solid #848484;
 }
 
 
