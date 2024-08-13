@@ -16,7 +16,7 @@
       <button class="ok" @click="toggleModal">ЗАБРАТЬ</button>
   </div>
   
-  <NavBar style="z-index: 100;"/>
+  <NavBar style="z-index: 100;" v-if="nav"/>
 
 </template>
 
@@ -33,6 +33,7 @@ export default {
       logs: '',
       loaded: false,
       showModal: false,
+      nav: false,
     }
   },
   computed:{
@@ -55,6 +56,7 @@ export default {
           setTimeout(() => {
               this.showModal = false
           }, 400);
+          this.nav=true
           
 
       } else {
@@ -112,8 +114,15 @@ export default {
   border: none;
   color: white;
   font-family: "Druk Wide";
-  font-size: 12px;
+  font-size: 18px;
   margin-top: 20px;
+  width: 90%;
+  height: 50px;
+}
+.ok:hover{
+  scale: .8;
+  filter: brightness(50%);
+  transition: all .3s ease;
 }
 
 .price{
@@ -134,15 +143,15 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 350px;
-    bottom: -500px;
+    height: 300px;
+    bottom: -400px;
     transform: translateY(0px);
     z-index: 10;
     transition: transform .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
 .show{
-    transform: translateY(-500px);
-    transition: transform .5s cubic-bezier(0.410, 0.245, 0.025, 1.295);
+    transform: translateY(-400px);
+    transition: transform .5s ease;
 }
 .showOverlay{
     opacity: 1 !important;

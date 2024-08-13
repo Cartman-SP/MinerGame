@@ -774,7 +774,7 @@ hr{
 }
 .upgrade-block-show{
     scale: 1 !important;
-    opacity: 1 !important;;
+    opacity: 1 !important;
     transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .blocks{

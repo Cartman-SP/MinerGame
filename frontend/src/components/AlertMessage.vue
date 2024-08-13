@@ -1,5 +1,5 @@
 <template>
-    <div class="alert" :class="{ 'show': isVisible, 'hide': !isVisible }">
+    <div class="alert" :class="{ 'show-alert': isVisible, 'hide-alert': !isVisible }">
       <p>{{ m }}</p>
       <!-- <div @click="hideNotification" style="display: flex; align-items: center; cursor: pointer;">
         <svg  width="8" height="8" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +42,7 @@
         }
         this.timeoutId = setTimeout(() => {
           this.hideNotification();
-        }, 3000);
+        }, 2000);
       },
       hideNotification() {
         this.isVisible = false;
@@ -56,22 +56,26 @@
   </script>
   
   <style scoped>
-  .show {
+  .show-alert {
+    top: 0;
     opacity: 100%;
-    top: 150px;
-    transition: all .2s ease;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
     background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
     height: 20px;
     text-align: center;
+    transform: translate(-50%, 100px);
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
   }
   
-  .hide {
-    text-align: center;
+  .hide-alert {
+    top: 0;
     opacity: 0;
-    top: 0px;
-    transition: all .2s ease;
+    filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
     background: linear-gradient(180deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+    height: 20px;
+    text-align: center;
+    transform: translate(-50%, -100px);
+    transition: all .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
   }
   
   svg:hover path{
@@ -89,7 +93,6 @@
     border-radius: 5px;
     width: 300px;
     left: 50%;
-    transform: translateX(-50%);
     text-align: center;
   }
   
