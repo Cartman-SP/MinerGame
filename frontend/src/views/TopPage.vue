@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main_top">
-      <div class="container" @click="this.$router.push({ path: `/player/${top2.user_id}`, params: { userId: top2.user_id }}), this.$user.playTap()">
+      <div class="container" ref="block_second" @click="this.$router.push({ path: `/player/${top2.user_id}`, params: { userId: top2.user_id }}), this.$user.playTap()">
         <div class="image-container">
           <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
           <img v-else src="../assets/noPhoto.png" class="img_small">
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="container" @click="this.$router.push({ path: `/player/${top1.user_id}`, params: { userId: top1.user_id }}), this.$user.playTap()">
+      <div class="container" ref="block_first" @click="this.$router.push({ path: `/player/${top1.user_id}`, params: { userId: top1.user_id }}), this.$user.playTap()">
         <div class="image-container">
           <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
           <img v-else src="../assets/noPhoto.png" class="img_big">
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="container" @click="this.$router.push({ path: `/player/${top3.user_id}`, params: { userId: top3.user_id }}), this.$user.playTap()">
+      <div class="container" ref="block_third" @click="this.$router.push({ path: `/player/${top3.user_id}`, params: { userId: top3.user_id }}), this.$user.playTap()">
         <div class="image-container">
           <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
           <img v-else src="../assets/noPhoto.png" class="img_smallest">
@@ -96,6 +96,8 @@ export default {
   },
    mounted(){
     this.get_top()
+
+    
   },
 
   methods:{
@@ -107,21 +109,39 @@ export default {
 
     async get_top(){
       try{
-            console.log(this.$user.data.user_id)
-            const response = await this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
-            const top = response.data.top_users
-            this.top1 = top[0]
-            this.top2 = top[1]
-            this.top3 = top[2]
-            this.top = top.slice(3);
-            console.log(this.top)
-            this.user_position = response.data.user_position
-            setTimeout(() => {
-              this.$user.data.toppage = false
-            }, 300);
-        }catch(error){
-            console.log(error)
-        }
+        console.log(this.$user.data.user_id)
+        const response = await this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
+        const top = response.data.top_users
+        this.top1 = top[0]
+        this.top2 = top[1]
+        this.top3 = top[2]
+        this.top = top.slice(3);
+        console.log(this.top)
+        this.user_position = response.data.user_position
+        setTimeout(() => {
+          this.$user.data.toppage = false
+          let index = 0;
+          const blocks = [
+          this.$refs.block_first,
+          this.$refs.block_second,
+          this.$refs.block_third,
+          ];
+
+          const interval = setInterval(() => {
+          if (index < blocks.length) {
+              const block = blocks[index];
+              if (block) {
+                  block.classList.add('top-block-show');
+              }
+              index++;
+          } else {
+              clearInterval(interval);
+          }
+          }, 50);
+        }, 300);
+      }catch(error){
+          console.log(error)
+      }
     }
   },
 
@@ -149,6 +169,9 @@ p{
   gap: 20px;
   align-items: center;
   height: 180px;
+  
+  scale: 0;
+  opacity: 0;
 }
 .main{
   display: flex;
@@ -201,6 +224,12 @@ p{
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.top-block-show{
+    scale: 1 !important;
+    opacity: 1 !important;;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .center{
   display: flex;

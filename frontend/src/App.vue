@@ -136,16 +136,17 @@ export default {
     flex-direction: column;
     height: 350px;
     bottom: -500px;
+    transform: translateY(0px);
     z-index: 10;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
 .show{
-    bottom: 0;
-    transition: all .4s ease;
+    transform: translateY(-500px);
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.025, 1.295);
 }
 .showOverlay{
     opacity: 1 !important;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.000, 1.365);
 }
 .overlay{
     opacity: 0;

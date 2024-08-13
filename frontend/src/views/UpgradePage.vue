@@ -5,7 +5,7 @@
         </div> -->
 
         <div class="blocks">
-            <div class="block"  @click="toggleModal(2), modalType = 2">
+            <div class="block"  @click="toggleModal(2), modalType = 2" ref="block_first">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video_lvl] }}</p>
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="handleBuy(2)" v-if="!video2_lvl">
+            <div class="block" @click="handleBuy(2)" v-if="!video2_lvl" ref="block_second">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block"  @click="toggleModal(3), modalType = 2" v-else>
+            <div class="block"  @click="toggleModal(3), modalType = 2" v-else ref="block_second">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video2_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video2_lvl] }}</p>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="block"  @click="handleBuy(3)" v-if="!video3_lvl">
+            <div class="block"  @click="handleBuy(3)" v-if="!video3_lvl" ref="block_third">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block"  @click="toggleModal(4), modalType = 2" v-else>
+            <div class="block"  @click="toggleModal(4), modalType = 2" v-else ref="block_third">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video3_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video3_lvl] }}</p>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="block"  @click="handleBuy(4)" v-if="!video4_lvl">
+            <div class="block"  @click="handleBuy(4)" v-if="!video4_lvl" ref="block_fourth">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block"  @click="toggleModal(5), modalType = 2" v-else>
+            <div class="block"  @click="toggleModal(5), modalType = 2" v-else ref="block_fourth">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video4_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video4_lvl] }}</p>
@@ -561,7 +561,29 @@ export default {
         video4_lvl(){
             return this.$user.data.video4_lvl
         }
-    }
+
+    },
+    mounted() {
+        let index = 0;
+        const blocks = [
+        this.$refs.block_first,
+        this.$refs.block_second,
+        this.$refs.block_third,
+        this.$refs.block_fourth
+        ];
+
+        const interval = setInterval(() => {
+        if (index < blocks.length) {
+            const block = blocks[index];
+            if (block) {
+                block.classList.add('upgrade-block-show');
+            }
+            index++;
+        } else {
+            clearInterval(interval);
+        }
+        }, 50);
+  },
 }
 </script>
 
@@ -616,16 +638,17 @@ export default {
     height: fit-content;
     padding-bottom: 130px;
     bottom: -500px;
+    transform: translateY(0px);
     z-index: 10;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
 .show{
-    bottom: 0;
-    transition: all .4s ease;
+    transform: translateY(-500px);
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.025, 1.295);
 }
 .showOverlay{
     opacity: 1 !important;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.000, 1.365);
 }
 .overlay{
     opacity: 0;
@@ -744,6 +767,15 @@ hr{
     font-size: 12px;
     margin: 0;
     width: 70%;
+}
+.block{
+    scale: 0;
+    opacity: 0;
+}
+.upgrade-block-show{
+    scale: 1 !important;
+    opacity: 1 !important;;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .blocks{
     display: grid;

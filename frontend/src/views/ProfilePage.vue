@@ -3,41 +3,41 @@
     <!-- <div class="header">
         <h1 class="title">PROFILE</h1>
     </div> -->
-    <div class="profile"  @click="moveTo('/profile')">
+    <div class="profile">
         <img v-if="user.avatar" class="avatar" :src="user.avatar" alt="Avatar">
         <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
         <p class="profile-name">{{user.username||'MINER'}}</p>
     </div>
     <div class="information">
-      <div class="container">
+      <div class="container" ref="block_first">
         <p class="name" v-if="language == 'ru'">БАЛАНС</p>
         <p class="name" v-else>BALANCE</p>
         <div class="info">
           <p class="value">{{ formatNumber(user.balance) }}</p>
         </div>
       </div>
-      <div class="container">
+      <div class="container" ref="block_second">
         <p class="name" v-if="language == 'ru'">РАНГ</p>
         <p class="name" v-else>RANK</p>
         <div class="info">
           <p class="value">{{ ranks[user.lvl] }}</p>
         </div>
       </div>
-      <div class="container">
+      <div class="container" ref="block_third">
         <p class="name" v-if="language == 'ru'">ДРУЗЕЙ</p>
         <p class="name" v-else>FRIENDS</p>
         <div class="info">
           <p class="value">{{ user.friends_invited }}</p>
         </div>
       </div>
-      <div class="container">
+      <div class="container" ref="block_fourth">
         <p class="name" v-if="language == 'ru'">МИНУТ В ИГРЕ</p>
         <p class="name" v-else>MINUTES IN THE GAME</p>
         <div class="info">
           <p class="value">{{Math.floor(user.secs_in_game/60)}}</p>
         </div>
       </div>
-      <div class="container">
+      <div class="container" ref="block_fifth">
         <p class="name" v-if="language == 'ru'">ПРИБЫЛЬ В ЧАС</p>
         <p class="name" v-else>PROFIT PER HOUR</p>
         <div class="info">
@@ -79,6 +79,29 @@ export default {
     language(){
       return this.$user.data.lang;
     },
+  },
+
+  mounted(){
+    let index = 0;
+    const blocks = [
+    this.$refs.block_first,
+    this.$refs.block_second,
+    this.$refs.block_third,
+    this.$refs.block_fourth,
+    this.$refs.block_fifth,
+    ];
+
+    const interval = setInterval(() => {
+    if (index < blocks.length) {
+        const block = blocks[index];
+        if (block) {
+            block.classList.add('profile-block-show');
+        }
+        index++;
+    } else {
+        clearInterval(interval);
+    }
+    }, 50);
   },
 
   methods:{
@@ -201,6 +224,14 @@ export default {
     padding: 5px;
     border-radius: 10px;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    scale: 0;
+    opacity: 0;
+
+}
+.profile-block-show{
+    scale: 1 !important;
+    opacity: 1 !important;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .header{
     width: 100%;
