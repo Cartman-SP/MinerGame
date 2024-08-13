@@ -4,7 +4,7 @@
             <h1 class="title">BOOST</h1>
         </div> -->
         <div class="content">
-            <div class="block" @click="toggleModal(1)" v-if="enery_lvl<15">
+            <div class="block" @click="toggleModal(1)" v-if="enery_lvl<15" ref="block_first">
                 <img class="icon" src="../assets/icon-battery-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">ENERGY LIMIT<br> <span>{{upcost[enery_lvl]}}</span></p>
@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block" v-else>
+            <div class="block" v-else ref="block_first">
                 <img class="icon" src="../assets/icon-battery-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">ENERGY LIMIT<br> <span>{{upcost[enery_lvl]}}</span></p>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block" @click="toggleModal(2)" v-if="tap_lvl<15">
+            <div class="block" @click="toggleModal(2)" v-if="tap_lvl<15" ref="block_second">
                 <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">MULTITAP<br> <span>{{upcost[tap_lvl]}}</span></p>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block" v-else>
+            <div class="block" v-else ref="block_second">
                 <img class="icon" src="../assets/icon-multitap-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">MULTITAP<br> <span>{{upcost[tap_lvl]}}</span></p>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block" @click="give_energy">
+            <div class="block" @click="give_energy" ref="block_third">
                 <img class="icon" src="../assets/icon-energy-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">FULL ENERGY<br> </p>
@@ -204,6 +204,26 @@ export default {
                 }, 10);
             }
         },
+    },
+    mounted(){
+        let index = 0;
+        const blocks = [
+        this.$refs.block_first,
+        this.$refs.block_second,
+        this.$refs.block_third,
+        ];
+
+        const interval = setInterval(() => {
+        if (index < blocks.length) {
+            const block = blocks[index];
+            if (block) {
+                block.classList.add('boost-block-show');
+            }
+            index++;
+        } else {
+            clearInterval(interval);
+        }
+        }, 50);
     }
     
 }
@@ -223,16 +243,20 @@ export default {
     flex-direction: column;
     height: 350px;
     bottom: -500px;
+    transform: translateY(0px);
     z-index: 10;
-    transition: all .4s ease;
+    opacity: 0;
+    transition: all .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
 .show{
-    bottom: 0;
-    transition: all .4s ease;
+    opacity: 1 !important;
+    transform: translateY(-500px);
+    
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.025, 1.295);
 }
 .showOverlay{
     opacity: 1 !important;
-    transition: all .4s ease;
+    transition: opacity .5s cubic-bezier(0.410, 0.245, 0.000, 1.365);
 }
 .overlay{
     opacity: 0;
@@ -322,6 +346,13 @@ hr{
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    scale: 0;
+    opacity: 0;
+}
+.boost-block-show{
+    scale: 1 !important;
+    opacity: 1 !important;;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .logo-background{
   width: 60px;

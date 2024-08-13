@@ -4,7 +4,7 @@
     <div>
 
       <div class="gpu_selections" v-if="video2_lvl">
-        <div class="gpu_preview" v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" @click="selected_gpu = n">
+        <div class="gpu_preview" v-for="n in this.spinnerCount" :key="n" :level="[video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1]" @click="selected_gpu = n, this.$user.playTap()">
           <img :src="staticPath([video1_lvl,video2_lvl,video3_lvl,video4_lvl][n-1])" alt="" :class="[{ currentGPU: n == selected_gpu }]">
         </div>
       </div>

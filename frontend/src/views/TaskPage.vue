@@ -8,7 +8,7 @@
       <p v-if="language == 'ru'" class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
       <p v-else class="naming">DAILY TASKS</p>
         <div class="daily-tasks">
-            <div class="task" @click="toggleModal" v-if="claimed">
+            <div class="task" @click="toggleModal" v-if="claimed" ref="block_first">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
@@ -18,7 +18,7 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <div class="task" @click="toggleModal" v-else>
+            <div class="task" @click="toggleModal" v-else ref="block_first">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
@@ -28,7 +28,7 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <div class="task" @click="shareLink" v-if="friends_invited<3">  
+            <div class="task" @click="shareLink" v-if="friends_invited<3" ref="block_second">  
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="task" @click="shareLink" v-else>  
+            <div class="task" @click="shareLink" v-else ref="block_second">  
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
@@ -51,7 +51,7 @@
             </div>
 
             
-            <div class="task" @click="redirectToTelegram">
+            <div class="task" @click="redirectToTelegram" ref="block_third">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
@@ -412,6 +412,25 @@ export default {
     this.gettasks();
     this.startCountdown();
     this.startResetTimer();
+
+    let index = 0;
+    const blocks = [
+    this.$refs.block_first,
+    this.$refs.block_second,
+    this.$refs.block_third,
+    ];
+
+    const interval = setInterval(() => {
+    if (index < blocks.length) {
+        const block = blocks[index];
+        if (block) {
+            block.classList.add('task-block-show');
+        }
+        index++;
+    } else {
+        clearInterval(interval);
+    }
+    }, 50);
   },
   beforeUnmount() {
     this.stopCountdown();
@@ -468,16 +487,17 @@ export default {
     flex-direction: column;
     height: 550px;
     bottom: -600px;
+    transform: translateY(0px);
     z-index: 10;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
 .show{
-    bottom: 0;
-    transition: all .4s ease;
+    transform: translateY(-600px);
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.025, 1.295);
 }
 .showOverlay{
     opacity: 1 !important;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.000, 1.365);
 }
 .overlay{
     opacity: 0;
@@ -610,6 +630,13 @@ export default {
     padding: 5px;
     border-radius: 10px;
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
+    scale: 0;
+    opacity: 0;
+}
+.task-block-show{
+    scale: 1 !important;
+    opacity: 1 !important;;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .other-task{
     background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);

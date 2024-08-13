@@ -3,7 +3,7 @@
       <!-- <div class="header">
           <h1 class="title">PROFILE</h1>
       </div> -->
-      <div class="profile"  @click="moveTo('/profile')">
+      <div class="profile">
           <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar">
           <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
           <p class="profile-name">{{userData.name||'MINER'}}</p>

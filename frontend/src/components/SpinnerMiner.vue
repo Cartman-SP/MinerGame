@@ -1,6 +1,6 @@
 <template>
   <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchstart.passive.prevent="onTouchStart">
-    <div class="spinners-block">
+    <div class="spinners-block" ref="clicker">
       <img v-if="isMining" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
       <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
@@ -81,6 +81,13 @@ export default {
   },
   mounted() {
     this.preloadImages();
+
+    setTimeout(() => {
+      const clickerwindow = this.$refs.clicker;
+      if (clickerwindow) {
+        clickerwindow.classList.add('clicker-show');
+      }
+    }, 10);
   },
   watch: {
     level() {
@@ -150,12 +157,11 @@ export default {
   justify-content: center;
   width: 100%;
   position: relative;
+  scale: 0;
 }
 .bright {
-  /* filter: brightness(80%);
-  scale: 0.98; */
   opacity: .8;
-  /* scale: 0.98; */
+  scale: 1;
 }
 .mini-coins-container {
   position: absolute;
@@ -189,11 +195,11 @@ export default {
 @keyframes coin-fall {
   0% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateY(0);
   }
   100% {
+    transform: translateY(-100px);
     opacity: 0;
-    transform: translate(-10%, -50%) scale(0.5);
   }
 }
 
@@ -202,6 +208,10 @@ export default {
   margin: -5vh 0 1vh 0;
   animation: pulseGlow 2s infinite;
   width: 100%;
+}
+.clicker-show{
+  scale: 1 !important;
+  transition: scale .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 
 .level-1 {
