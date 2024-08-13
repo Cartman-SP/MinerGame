@@ -20,4 +20,5 @@ urlpatterns = [
     path('get_invoice_link/',get_innovice_link),
     path('set_video/',set_video),
     path('get_userprof/',get_user),
+    path('set_first/',set_first)
 ]

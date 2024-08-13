@@ -189,6 +189,20 @@ def clean_username(username):
     
     return cleaned_username
 
+def set_first(request):
+    user_id = request.data.get('user_id')
+    num = request.data.get('num')
+    user = TelegramUser.objects.get(user_id=user_id)
+    if(num==2):
+        user.video2_lvl = 1
+    elif(num==3):
+        user.video3_lvl = 1
+    elif(num==4):
+        user.video4_lvl = 1
+    user.save()
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)
+
+
 
 @api_view(['GET'])
 def get_or_create_user(request):
@@ -267,7 +281,7 @@ def get_or_create_user(request):
                 user.balance += mined_while_of
             time_diff = timezone.now()-user.last_login
             if time_diff > timedelta(seconds=0):
-                user.energy += min(user.energy+time_diff.total_seconds()/3,user.max_energy)
+                user.energy += min(user.energy+(time_diff.total_seconds()/3),user.max_energy)
         if user.refresh_energy_date < timezone.now().date():
             user.refresh_energy = 5
             user.refresh_energy_date = timezone.now().date()

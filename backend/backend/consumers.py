@@ -52,8 +52,8 @@ class TapConsumer(AsyncWebsocketConsumer):
         telegram_user = await self.get_or_create_telegram_user(user_id)
         if telegram_user:
             if(telegram_user.energy > 0):
-                telegram_user.balance += increment*taps
-                telegram_user.energy -= taps
+                telegram_user.balance += increment
+                telegram_user.energy -= 1
                 await self.update_telegram_user(telegram_user)
 
             await self.send(text_data=json.dumps({
