@@ -183,7 +183,7 @@ class User {
 
   playBuy(){
     if(this.data.vibrate){
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     }
     if(this.data.sound){
       this.data.buyaudio.volume = 0.1
@@ -192,7 +192,7 @@ class User {
   }
   playTap(){
     if(this.data.vibrate){
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
     if(this.data.sound){
       this.data.tapaudio.play()

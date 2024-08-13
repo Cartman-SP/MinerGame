@@ -46,8 +46,8 @@
       </div>
 
       <div class="switches">
-        <button v-if="language == 'ru'" class="help" @click="window.location.href = `https://t.me/supylionbot`">НАПИСАТЬ ПОДДЕРЖКЕ</button>
-        <button v-else class="help">SUPPORT</button>
+        <button v-if="language == 'ru'" class="help" @click="opensup">НАПИСАТЬ ПОДДЕРЖКЕ</button>
+        <button v-else class="help" @click="opensup" >SUPPORT</button>
         <Switch :type="1"/>
         <Switch :type="2"/>
         
@@ -107,6 +107,10 @@ export default {
   },
 
   methods:{
+    opensup(){
+      window.location.href = `https://t.me/supylionbot`
+    },
+
     moveTo(url){
         this.$user.playTap()
         this.$router.push(url)
@@ -124,7 +128,7 @@ export default {
 .studio{
   color: white;
   font-family: "Druk Wide";
-  font-size: 10px;
+  font-size: 7px;
 }
 .studio span{
   color: rgba(0,192,255,1);

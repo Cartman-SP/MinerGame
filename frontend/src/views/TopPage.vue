@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main_top">
-      <div class="container" ref="block_second" @click="this.$router.push({ path: `/player/${top2.user_id}`, params: { userId: top2.user_id }}), this.$user.playTap()">
+      <div class="container" ref="block_second" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${top2.user_id}`, params: { userId: top2.user_id }}), this.$user.playTap()">
         <div class="image-container">
           <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
           <img v-else src="../assets/noPhoto.png" class="img_small">
@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="container" ref="block_first" @click="this.$router.push({ path: `/player/${top1.user_id}`, params: { userId: top1.user_id }}), this.$user.playTap()">
+      <div class="container" ref="block_first" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${top1.user_id}`, params: { userId: top1.user_id }}), this.$user.playTap()">
         <div class="image-container">
           <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
           <img v-else src="../assets/noPhoto.png" class="img_big">
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="container" ref="block_third" @click="this.$router.push({ path: `/player/${top3.user_id}`, params: { userId: top3.user_id }}), this.$user.playTap()">
+      <div class="container" ref="block_third" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${top3.user_id}`, params: { userId: top3.user_id }}), this.$user.playTap()">
         <div class="image-container">
           <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
           <img v-else src="../assets/noPhoto.png" class="img_smallest">
@@ -70,7 +70,7 @@
       <p>BALANCE/PLACE</p>
     </div>
     <div class="bottom">
-      <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$router.push({ path: `/player/${user.user_id}`, params: { userId: user.user_id }}), this.$user.playTap()">
+      <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${user.user_id}`, params: { userId: user.user_id }}), this.$user.playTap()">
         <img v-if="user.photo_url" :src="user.photo_url" alt="" >
         <img v-else src="../assets/noPhoto.png">
         <div class="name_container">
