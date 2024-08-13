@@ -110,7 +110,6 @@ export default {
           user_id: this.$user.data.user_id,
           increment: this.$user.data.gpc,
         };
-        this.$user.data.balance+=this.$user.data.gpc
         this.$user.data.energy -=1
         this.$user.data.tapsocket.send(JSON.stringify(message));
       }
