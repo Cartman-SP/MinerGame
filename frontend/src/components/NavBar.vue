@@ -1,13 +1,13 @@
 <template>
   <div class="nav">
-    <div class="button" @click="moveto('/wallet')">
+    <div class="button" @click="moveto('/wallet')" ref="block_first">
         <div class="icon-nav">
             <img src="../assets/icon-wallet.png" alt="">
         </div>
         <p class="title" v-if="language == 'ru'">КОШЕЛЕК</p>
         <p class="title" v-else>WALLET</p>
     </div>
-    <div class="button" @click="moveto('/top')">
+    <div class="button" @click="moveto('/top')" ref="block_second">
         <div class="icon-nav">
             <img src="../assets/icon-top.png" alt="">
         </div>
@@ -15,19 +15,19 @@
         <p class="title" v-else>TOP</p>
     </div>
     <div class="mainButton" @click="spinImage">
-        <div class="fan-btn">
+        <div class="fan-btn" ref="block_mainBtn">
             <img ref="spinner" style="width: 100%;" src="../assets/icon-spinner.png" alt="">
         </div>
        
     </div>
-    <div class="button" @click="moveto('/friends')">
+    <div class="button" @click="moveto('/friends')" ref="block_third">
         <div class="icon-nav">
             <img  style="width: 25px;" src="../assets/icon-friend.png" alt="">
         </div>
         <p class="title" v-if="language == 'ru'">ДРУЗЬЯ</p>
         <p class="title" v-else>FRIENDS</p>
     </div>
-    <div class="button"  @click="moveto('/task')">
+    <div class="button"  @click="moveto('/task')" ref="block_fourth">
         <div class="icon-nav">
             <img src="../assets/icon-task.png" alt="">
         </div>
@@ -62,11 +62,37 @@ export default {
             this.$router.push(url);
         }
     },
-     computed:{
+    computed:{
         language(){
-          return this.$user.data.lang;
+            return this.$user.data.lang;
         },
-     }
+    },
+    mounted(){
+        let index = 0;
+        const blocks = [
+        this.$refs.block_first,
+        this.$refs.block_second,
+        this.$refs.block_third,
+        this.$refs.block_fourth,
+        ];
+
+        const interval = setInterval(() => {
+            if (index < blocks.length) {
+                const block = blocks[index];
+                if (block) {
+                    block.classList.add('nav-button-show');
+                }
+                index++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 50);
+        setTimeout(() => {
+            this.$refs.block_mainBtn.classList.add('main-button-show')
+        }, 200);
+        
+    }
+    
 }
 </script>
 
@@ -103,6 +129,11 @@ export default {
     background: var(--color-gradient);
     width: 100%;
     height: 15vh;
+    transform: translateY(100px);
+}
+.nav-button-show{
+    transform: translateY(0px);
+    transition: transform .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .fan-btn{
     background: var(--color-gradient);
@@ -115,7 +146,19 @@ export default {
     bottom: 20px;
     position: absolute;
     top: -4vh;
+
+    scale: 0;
+    opacity: 0;
+    rotate: 180deg;
+    z-index: 10;
 }
+.main-button-show{
+    scale: 1 !important;
+    opacity: 1 !important;
+    rotate: 0deg;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
+}
+
 
 
 .mainButton {
@@ -125,6 +168,7 @@ export default {
     justify-content: center;
     background: var(--color-gradient);
     position: relative;
+    
 }
 
 
