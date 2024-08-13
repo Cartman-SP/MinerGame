@@ -120,8 +120,8 @@ export default {
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,
-        top: touch.clientY - 200, // Используем координаты касания
-        left: touch.clientX - 30, // Используем координаты касания
+        top: touch.clientY/3, // Используем координаты касания
+        left: touch.clientX/2, // Используем координаты касания
       };
       this.miniCoins.push(newCoin);
       setTimeout(() => {
@@ -158,14 +158,14 @@ export default {
   /* filter: brightness(80%);
   scale: 0.98; */
   opacity: .8;
-  scale: 0.98;
+  /* scale: 0.98; */
 }
 .mini-coins-container {
   position: absolute;
   width: 100%;
-  height: 50%;
-  top: 20%;
-  overflow: visible;
+  height: 100%;
+  top: 0;
+  overflow: hidden;
 }
 
 .mini-coin {
