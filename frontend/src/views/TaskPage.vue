@@ -605,13 +605,13 @@ export default {
 .name{
     color: white;
     font-family: "Druk Wide";
-    font-size: 8px;
+    font-size: 10px;
     margin: 0;
 }
 .other-name{
     color: white;
     font-family: "Druk Wide";
-    font-size: 6px;
+    font-size: 8px;
     margin: 0;
     width: 100%;
 }
