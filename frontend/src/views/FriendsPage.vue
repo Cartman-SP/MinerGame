@@ -41,8 +41,8 @@
         <p>FRIENDS</p>
         <p>PROFIT FROM <br>REFERRALS</p>
       </div>
-      <div class="bottom" v-if="friends.length>0">
-        <div class="bottom_card" v-for="i in friends" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
+      <div class="bottom" v-if="friends2.length>0">
+        <div class="bottom_card" v-for="i in friends2" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
           <img v-if="i.photo_url" :src="i.photo_url" alt="" srcset="">
           <img v-else src="../assets/noPhoto.png">
           <div class="name_container">
@@ -82,7 +82,18 @@ export default {
   components: { AlertMessage } ,
   data() {
     return {
-      friends: [],
+      friends2: [
+      {
+          username: 'asdasd',
+          balance: 23984024,
+          ispremium: true
+        },
+        {
+          username: 'sefslekfns',
+          balance: 23,
+          ispremium: false
+        }
+      ],
       alertMessage: '',
       alertColor: '',
     }
@@ -196,6 +207,7 @@ export default {
   border-radius: 50%;
 }
 .name{
+  font-family: "Druk Wide";
   color: #FFFFFF;
   text-align: left;
   font-size: 14px;
@@ -219,7 +231,6 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 .amount{
   padding-left: 10px;
@@ -231,18 +242,25 @@ export default {
 }
 .amount_text{
   color: #FFFFFF;
+  font-family: "Druk Wide";
 }
 .number{
   background: #00E6FF;
   border-radius: 10px;
   padding: 10px;
   margin-left: 5px;
+  font-family: "Druk Wide";
+  height: 40px;
+  width: 40px;
 }
 .number_text{
+  font-family: "Druk Wide";
   color: #FFFFFF;
+  margin: 0;
 }
 .num{
   border-radius: 50%;
+  font-family: "Druk Wide";
 }
 .num p{
   font-size: 12px;
