@@ -3,7 +3,7 @@
     <div class="main_top">
       <div class="container" ref="block_second" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${top2.user_id}`, params: { userId: top2.user_id }}), this.$user.playTap()">
         <div class="image-container">
-          <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small">
+          <img v-if="top2.photo_url" :src="top2.photo_url" alt="" class="img_small" @error="setDefaultImage($event)">
           <img v-else src="../assets/noPhoto.png" class="img_small">
           <div class="num">
               <p>2</p>
@@ -18,7 +18,7 @@
       </div>
       <div class="container" ref="block_first" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${top1.user_id}`, params: { userId: top1.user_id }}), this.$user.playTap()">
         <div class="image-container">
-          <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big">
+          <img v-if="top1.photo_url" :src="top1.photo_url" alt="" class="img_big" @error="setDefaultImage($event)">
           <img v-else src="../assets/noPhoto.png" class="img_big">
           <div class="num">
               <p>1</p>
@@ -33,7 +33,7 @@
       </div>
       <div class="container" ref="block_third" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${top3.user_id}`, params: { userId: top3.user_id }}), this.$user.playTap()">
         <div class="image-container">
-          <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest">
+          <img v-if="top3.photo_url" :src="top3.photo_url" alt="" class="img_smallest" @error="setDefaultImage($event)">
           <img v-else src="../assets/noPhoto.png" class="img_smallest">
           <div class="num">
               <p>3</p>
@@ -85,7 +85,7 @@
     </div>
     <div class="bottom">
       <div class="bottom_card" v-for="(user, index) in top" :key="index" @click="this.$user.data.toppage=true,this.$router.push({ path: `/player/${user.user_id}`, params: { userId: user.user_id }}), this.$user.playTap()">
-        <img v-if="user.photo_url" :src="user.photo_url" alt="" >
+        <img v-if="user.photo_url" :src="user.photo_url" alt="" @error="setDefaultImage($event)">
         <img v-else src="../assets/noPhoto.png">
         <div class="name_container">
           <p class="name">{{user.username || 'MINER'}}</p>
@@ -106,77 +106,80 @@
 <script>
 import AlertMessage from "../components/AlertMessage.vue";
 export default {
-  components: { AlertMessage } ,
+  components: { AlertMessage },
   data() {
     return {
-      top:[],
+      top: [],
       user_position: 0,
-      top1:NaN,
-      top2:NaN,
-      top3:NaN,
+      top1: NaN,
+      top2: NaN,
+      top3: NaN,
     };
   },
-   mounted(){
-    this.get_top()
-
-    
+  mounted() {
+    this.get_top();
   },
-
-  methods:{
+  methods: {
     formatNumber(num) {
-    return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
-           num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
-           num.toString();
-  },
-
-    async get_top(){
-      try{
-        console.log(this.$user.data.user_id)
-        const response = await this.$axios.get('/get_top/', {params:{user_id: this.$user.data.user_id}})
-        const top = response.data.top_users
-        this.top1 = top[0]
-        this.top2 = top[1]
-        this.top3 = top[2]
+      return num >= 1_000_000
+        ? `${(num / 1_000_000).toFixed(1)}M`
+        : num >= 1_000
+        ? `${(num / 1_000).toFixed(1)}K`
+        : num.toString();
+    },
+    async get_top() {
+      try {
+        console.log(this.$user.data.user_id);
+        const response = await this.$axios.get('/get_top/', {
+          params: { user_id: this.$user.data.user_id },
+        });
+        const top = response.data.top_users;
+        this.top1 = top[0];
+        this.top2 = top[1];
+        this.top3 = top[2];
         this.top = top.slice(3);
-        console.log(this.top)
-        this.user_position = response.data.user_position
+        console.log(this.top);
+        this.user_position = response.data.user_position;
         setTimeout(() => {
-          this.$user.data.toppage = false
+          this.$user.data.toppage = false;
           let index = 0;
           const blocks = [
-          this.$refs.block_first,
-          this.$refs.block_second,
-          this.$refs.block_third,
+            this.$refs.block_first,
+            this.$refs.block_second,
+            this.$refs.block_third,
           ];
 
           const interval = setInterval(() => {
-          if (index < blocks.length) {
+            if (index < blocks.length) {
               const block = blocks[index];
               if (block) {
-                  block.classList.add('top-block-show');
+                block.classList.add('top-block-show');
               }
               index++;
-          } else {
+            } else {
               clearInterval(interval);
-          }
+            }
           }, 50);
         }, 300);
-      }catch(error){
-          console.log(error)
+      } catch (error) {
+        console.log(error);
       }
+    },
+    setDefaultImage(event) {
+      event.target.src = "/img/noPhoto.d73ad49f.png";
     }
   },
-
-  computed:{
-    your_balance(){
-      return this.formatNumber(Math.floor(this.$user.data.balance))
+  computed: {
+    your_balance() {
+      return this.formatNumber(Math.floor(this.$user.data.balance));
     },
-    language(){
+    language() {
       return this.$user.data.lang;
     },
-  }
-}
+  },
+};
 </script>
+
 
 <style scoped>
 

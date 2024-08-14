@@ -3,7 +3,7 @@
     <div class="statusBar" v-if="this.$route.path === '/'">
 
         <div class="profile"  @click="moveTo('/profile')" ref="profile">
-          <img v-if="avatar" class="avatar" :src="avatar" alt="Avatar">
+          <img v-if="avatar" class="avatar" :src="avatar" alt="Avatar" @error="setDefaultImage($event)">
           <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
           <p class="name">{{username || 'MINER'}}</p>
         </div>
@@ -65,6 +65,10 @@
       }
     },
     methods:{
+      setDefaultImage(event) {
+      event.target.src = "/img/noPhoto.d73ad49f.png";
+    },
+
       moveTo(url){
         this.$user.playTap()
         this.$router.push(url)

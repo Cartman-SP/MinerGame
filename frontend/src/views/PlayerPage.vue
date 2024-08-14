@@ -5,7 +5,7 @@
     </div> -->
     <div class="profile">
       <div @click="tochat">
-        <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar" >
+        <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar" @error="setDefaultImage($event)">
         <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar" >
       </div>          
         <p class="profile-name">{{userData.username||'MINER'}}</p>
@@ -43,7 +43,7 @@
         <p class="name" v-if="language == 'ru'">ПРИБЫЛЬ В ЧАС</p>
         <p class="name" v-else>PROFIT PER HOUR</p>
         <div class="info">
-          <p class="value">{{ userData.gph }}</p>
+          <p class="value">{{ formatNumber(userData.gph) }}</p>
         </div>
       </div>
       
@@ -93,6 +93,10 @@ export default {
     }, 50);
   },
   methods:{
+    setDefaultImage(event) {
+      event.target.src = "/img/noPhoto.d73ad49f.png";
+    },
+
     tochat(){
       if (this.userData.usertag != 'Miner') {
         window.location.href = `https://t.me/${this.userData.usertag}`

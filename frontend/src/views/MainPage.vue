@@ -63,8 +63,7 @@ export default {
     };
   },
   methods: {
-    
-    
+
     moveTo(url){
         this.$router.push(url)
         this.$user.playTap()
@@ -73,7 +72,7 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
-      
+
 
 
       this.$user.playTap()

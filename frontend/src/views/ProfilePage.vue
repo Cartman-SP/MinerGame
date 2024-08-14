@@ -4,7 +4,7 @@
         <h1 class="title">PROFILE</h1>
     </div> -->
     <div class="profile">
-        <img v-if="user.avatar" class="avatar" :src="user.avatar" alt="Avatar">
+        <img v-if="user.avatar" class="avatar" :src="user.avatar" alt="Avatar" @error="setDefaultImage($event)">
         <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
         <p class="profile-name">{{user.username||'MINER'}}</p>
     </div>
@@ -56,7 +56,7 @@
         <button @click="switchvibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button> -->
       </div>
 
-      <p @click="toHedge()" class="studio">DEVELOPED BY <span style="text-decoration: underline;">HEDGECODE</span></p>
+      <p class="studio">DEVELOPED BY <span>HEDGECODE</span></p>
       
     </div>
     <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -107,9 +107,10 @@ export default {
   },
 
   methods:{
-    toHedge(){
-      window.location.href = 'https://t.me/ShirkinDaniil'
+    setDefaultImage(event) {
+      event.target.src = "/img/noPhoto.d73ad49f.png";
     },
+
     opensup(){
       window.location.href = `https://t.me/supylionbot`
     },

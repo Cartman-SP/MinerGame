@@ -41,8 +41,8 @@
         <p>FRIENDS</p>
         <p>PROFIT FROM <br>REFERRALS</p>
       </div>
-      <div class="bottom" v-if="friends2.length>0">
-        <div class="bottom_card" v-for="i in friends2" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
+      <div class="bottom" v-if="friends.length>0">
+        <div class="bottom_card" v-for="i in friends" :key="i" @click="this.$router.push({ path: `/player/${i.user_id}`, params: { userId: i.user_id }}), this.$user.playTap()">
           <img v-if="i.photo_url" :src="i.photo_url" alt="" srcset="">
           <img v-else src="../assets/noPhoto.png">
           <div class="name_container">
@@ -82,18 +82,7 @@ export default {
   components: { AlertMessage } ,
   data() {
     return {
-      friends2: [
-      {
-          username: 'asdasd',
-          balance: 23984024,
-          ispremium: true
-        },
-        {
-          username: 'sefslekfns',
-          balance: 23,
-          ispremium: false
-        }
-      ],
+      friends: [],
       alertMessage: '',
       alertColor: '',
     }
@@ -107,6 +96,10 @@ export default {
         },
     },
   methods:{
+    setDefaultImage(event) {
+      event.target.src = "../assets/noPhoto.png";
+    },
+
     formatNumber(num) {
     return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
            num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
