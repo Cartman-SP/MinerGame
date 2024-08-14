@@ -8,49 +8,32 @@
       <p v-if="language == 'ru'" class="naming">ЕЖЕДНЕВНЫЕ ЗАДАНИЯ</p>
       <p v-else class="naming">DAILY TASKS</p>
         <div class="daily-tasks">
-            <div class="task" @click="toggleModal" v-if="claimed" ref="block_first">
+            <div class="task" @click="toggleModal" ref="block_first">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
                 <p class="name" style="font-size: 10px;" v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
                 <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
-                <div class="logo-background">
+                <div class="logo-background" v-if="claimed">
+                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+                </div>
+                <div v-else class="logo-background" style="background: #a0a0a0;">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-            <div class="task" @click="toggleModal" v-else ref="block_first">
-                <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
-                    <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
-                </div>
-                <p class="name" style="font-size: 10px;" v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
-                <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
-                <div class="logo-background" style="background: #a0a0a0;">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
-            <div class="task" @click="shareLink" v-if="friends_invited<3" ref="block_second">  
+            <div class="task" @click="shareLink" ref="block_second">  
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
                 <p class="name" v-if="language == 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
                 <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
-                <div class="logo-background" style="background: #a0a0a0;">
+                <div class="logo-background" style="background: #a0a0a0;" v-if="friends_invited<3">
+                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+                </div>
+                <div class="logo-background" v-else>
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
-
-            <div class="task" @click="shareLink" v-else ref="block_second">  
-                <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
-                    <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
-                </div>
-                <p class="name" v-if="language == 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
-                <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
-                <div class="logo-background">
-                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
-                </div>
-            </div>
-
-            
             <div class="task" @click="redirectToTelegram" ref="block_third">
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
