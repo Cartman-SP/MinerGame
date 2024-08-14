@@ -107,6 +107,10 @@ export default {
   },
 
   methods:{
+    tochat(){
+      window.location.href = `https://t.me/${this.$user.data.usertag}`
+    },
+
     opensup(){
       window.location.href = `https://t.me/supylionbot`
     },

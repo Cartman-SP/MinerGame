@@ -77,7 +77,8 @@ export default {
           return require(`../assets/gpu11-static.png`);
       }
       return 1
-    }
+    },
+
   },
   mounted() {
     this.preloadImages();
@@ -109,13 +110,13 @@ export default {
         this.createMiniCoin(event);
         this.$user.playTap(); // Reusing preloaded audio
         this.isBright = true;
-        const message = {
-          user_id: this.$user.data.user_id,
-          increment: this.$user.data.gpc,
-        };
         this.$user.data.energy -=1;
-        this.$user.data.tapsocket.send(JSON.stringify(message));
-                setTimeout(() => {
+        let time = 1000/this.$user.data.gpc
+        for(let i=0;i < this.$user.data.gpc;i+=1){
+          setTimeout(() => {
+          this.$user.data.balance+=1
+        }, time*i);
+        }        setTimeout(() => {
           this.isBright = false;
         }, 100);
       }
@@ -160,7 +161,6 @@ export default {
 }
 .bright {
   opacity: .8;
-  scale: 0.98;
 }
 .mini-coins-container {
   position: absolute;

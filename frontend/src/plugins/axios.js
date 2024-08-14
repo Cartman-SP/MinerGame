@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from 'js-cookie'; // Подключаем библиотеку для работы с куками
 
 let config = {
-  baseURL: 'https://ylionminer.fun/api/', // Укажите правильный базовый URL вашего API
+  baseURL: 'http://127.0.0.1:8000/api/', // Укажите правильный базовый URL вашего API
   withCredentials: true, // Включаем отправку кук в запросе
 };
 

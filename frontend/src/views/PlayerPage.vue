@@ -4,8 +4,10 @@
           <h1 class="title">PROFILE</h1>
       </div> -->
       <div class="profile">
-          <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar">
-          <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar">
+        <div @click="tochat">
+          <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar" >
+          <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar" >
+        </div>          
           <p class="profile-name">{{userData.username||'MINER'}}</p>
       </div>
       <div class="information">
@@ -91,6 +93,9 @@
       }, 50);
     },
     methods:{
+      tochat(){
+      window.location.href = `https://t.me/${this.userData.usertag}`
+    },
       async get_player() {
       try {
         console.log(this.userId)

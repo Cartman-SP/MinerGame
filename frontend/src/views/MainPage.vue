@@ -15,7 +15,6 @@
         <Spinner :isMining="remainingTime > 0" 
         :level="selected_gpu == 1 ? video1_lvl : selected_gpu == 2 ? video2_lvl : selected_gpu == 3 ? video3_lvl : video4_lvl"/>
       </div>
-      
     </div>
 
     <div class="stats-block">
@@ -23,7 +22,7 @@
         <p>{{ formatNumber(energy) }}/{{ formatNumber(max_energy) }}</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
-      <div class="timer-block" @click="start_mining" :style="getStyle">
+      <div class="timer-block" @click="mining_start" :style="getStyle">
         <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
         <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
       </div>
@@ -50,8 +49,6 @@ export default {
       miningSocket: null,
       energySocket: null,
       timer: null,
-      miningTimer: null,
-      remainingTime: 0,
       
       isBright: false,
       
@@ -61,7 +58,9 @@ export default {
   },
   methods: {
     
-    
+    mining_start(){
+      this.$user.start_mining()
+    },
     moveTo(url){
         this.$router.push(url)
         this.$user.playTap()
@@ -69,85 +68,14 @@ export default {
     formatNumber(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
-    async start_mining() {
-      this.$user.playTap()
 
-      if (this.remainingTime > 0) {
-        console.log("Mining already in progress");
-        return;
-      }
-
-      try {
-        const response = await this.$axios.post('/start_mining/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
-        this.$user.data.mining_end = response.data.mining_end;
-        console.log("Mining end time set to:", this.$user.data.mining_end);
-        this.calculateRemainingTime();
-        this.startMiningTimer();
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    },
-    formatTime(duration) {
-      const hours = Math.floor(duration / 3600);
-      const minutes = Math.floor((duration % 3600) / 60);
-      const seconds = Math.floor(duration % 60);
-
-      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    },
-    calculateRemainingTime() {
-      console.log("Calculating remaining time...");
-      if (this.$user.data.mining_end) {
-        const now = new Date().getTime();
-        const end = new Date(this.$user.data.mining_end).getTime();
-        console.log("Current time (now):", now);
-        console.log("Mining end time (end):", end);
-        const remaining = end - now;
-        console.log("Time remaining (ms):", remaining);
-        this.remainingTime = remaining > 0 ? remaining / 1000 : 0;
-        console.log("Remaining time in seconds:", this.remainingTime);
-      } else {
-        this.remainingTime = 0;
-      }
-    },
-    updateRemainingTime() {
-      if (this.remainingTime > 0) {
-        this.remainingTime -= 1;
-        console.log("Updated remaining time in seconds:", this.remainingTime);
-      }
-    },
-    handleMiningEndChange(newEndTime) {
-      console.log("Handling mining end change:", newEndTime);
-      this.$user.data.mining_end = newEndTime;
-      this.calculateRemainingTime();
-    },
-    startMiningTimer() {
-      if (this.miningTimer) {
-        clearInterval(this.miningTimer);  // Clear any existing timer to avoid multiple intervals running simultaneously.
-      }
-
-      this.miningTimer = setInterval(() => {
-        if (this.remainingTime > 0) {
-          const message = {
-            user_id: this.$user.data.user_id,
-            gph: this.$user.data.gph,
-          };
-          this.$user.data.miningsocket.send(JSON.stringify(message));
-
-          this.remainingTime -= 1;  // Decrement remaining time after each second.
-        } else {
-          clearInterval(this.miningTimer);  // Stop the interval when remainingTime reaches 0.
-        }
-      }, 1000);  // Send a message every second (1000 milliseconds).
-    },
 
     startEnergyUpdate() {
-      setInterval(() => {
-          const message = {
-            user_id: this.$user.data.user_id,
-          };
-          console.log(123)
-          this.$user.data.energysocket.send(JSON.stringify(message));
-      }, 6000); // каждые 6 секунд
+      if(this.$user.data.$energy<=this.$user.data.max_energy){
+        setInterval(() => {
+          this.$user.data.energy+=1
+      }, 2000); 
+      }
     }, 
 
     staticPath(lvl) {
@@ -180,9 +108,7 @@ export default {
   },
   computed: {
     getStyle() {
-      return this.formattedRemainingTime === '00:00:00'
-        ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
-        : 'filter: drop-shadow(0 10px 10px rgb(0, 0, 0))';
+      return this.$user.getStyle
     },
     spinnerCount(){
       if (this.video4_lvl > 0) {
@@ -223,53 +149,18 @@ export default {
       return this.$user.data.max_energy;
     },
     formattedRemainingTime() {
-      const formattedTime = this.formatTime(this.remainingTime);
-      console.log("Formatted remaining time:", formattedTime);
-      return formattedTime;
+      return this.$user.formattedRemainingTime()
     },
+    remainingTime(){
+      return this.$user.data.remainingTime
+    }
   },
   mounted() {
     this.$user.data.toppage = false
-    console.log("Component mounted, calculating remaining time...");
-    this.calculateRemainingTime();
-    this.timer = setInterval(() => {
-        this.updateRemainingTime();
-    }, 1000);
-
-    this.startMiningTimer();
-    this.startEnergyUpdate();
-
-    this.$watch(() => this.$user.data.mining_end, (newVal) => {
-      console.log("mining_end changed:", newVal);
-      if (newVal) {
-        this.handleMiningEndChange(newVal);
-      }
-    });
-
     this.selected_gpu = 1
   },
   beforeUnmount() {
-    const message = {
-        user_id: this.$user.data.user_id,
-        increment: this.$user.data.gpc,
-        taps: this.taps
-      };
-    this.$user.data.tapsocket.send(JSON.stringify(message));
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    if (this.miningTimer) {
-      clearInterval(this.miningTimer);
-    }
-    if (this.socket) {
-      this.socket.close();
-    }
-    if (this.miningSocket) {
-      this.miningSocket.close();
-    }
-    if (this.energySocket) {
-      this.energySocket.close();
-    }
+    
   }
 };
 </script>

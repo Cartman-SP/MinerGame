@@ -55,7 +55,10 @@ class User {
       video3_lvl: 0,
       video4_lvl: 0,
       costs: {},
-      lang: ''
+      lang: '',
+      miningTimer: null,
+      remainingTime: 0,
+      timer:null,
     });
     this.loading = reactive({ status: false });
     this.error = null;
@@ -83,6 +86,13 @@ class User {
         this.lvlup(10);
       }
     });
+
+    watch(() => this.data.mining_end, (newVal) => {
+      console.log("mining_end changed:", newVal);
+      if (newVal) {
+        this.handleMiningEndChange(newVal);
+      }
+    });
   }
 
   async lvlup(lvl) {
@@ -100,35 +110,98 @@ class User {
       console.log(error);
     }
   }
+  getStyle() {
+    return this.formattedRemainingTime === '00:00:00'
+      ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'
+      : 'filter: drop-shadow(0 10px 10px rgb(0, 0, 0))';
+  }
+
+
+  
+  formattedRemainingTime() {
+    const formattedTime = this.formatTime(this.data.remainingTime);
+    console.log("Formatted remaining time:", formattedTime);
+    return formattedTime;
+  }
+
+  async start_mining() {
+    console.log(123)
+    this.playTap()
+
+    if (this.data.remainingTime > 0) {
+      console.log("Mining already in progress");
+      return;
+    }
+
+    try {
+      const response = await app.config.globalProperties.$axios.post('/start_mining/', {user_id: this.data.user_id,}, {withCredentials: true});
+      this.data.mining_end = response.data.mining_end;
+      console.log("Mining end time set to:", this.data.mining_end);
+      this.calculateRemainingTime();
+      this.startMiningTimer();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  formatTime(duration) {
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    const seconds = Math.floor(duration % 60);
+    console.log(hours,minutes,seconds)
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+  calculateRemainingTime() {
+    console.log("Calculating remaining time...");
+    if (this.data.mining_end) {
+      const now = new Date().getTime();
+      const end = new Date(this.data.mining_end).getTime();
+      console.log("Current time (now):", now);
+      console.log("Mining end time (end):", end);
+      const remaining = end - now;
+      console.log("Time remaining (ms):", remaining);
+      this.data.remainingTime = remaining > 0 ? remaining / 1000 : 0;
+      console.log("Remaining time in seconds:", this.data.remainingTime);
+    } else {
+      this.data.remainingTime = 0;
+    }
+  }
+  updateRemainingTime() {
+    if (this.data.remainingTime > 0) {
+      this.data.remainingTime -= 1;
+      console.log("Updated remaining time in seconds:", this.data.remainingTime);
+    }
+  }
+  handleMiningEndChange(newEndTime) {
+    console.log("Handling mining end change:", newEndTime);
+    this.data.mining_end = newEndTime;
+    this.calculateRemainingTime();
+  }
+
+  startMiningTimer() {
+    if (this.data.miningTimer) {
+      clearInterval(this.data.miningTimer);
+    }
+
+    this.data.miningTimer = setInterval(() => {
+      if (this.data.remainingTime > 0) {
+        this.data.balance +=this.data.gph/36000
+        this.data.remainingTime -= 0.1;  
+      } else {
+        clearInterval(this.data.miningTimer);  // Stop the interval when remainingTime reaches 0.
+      }
+    }, 100);  // Send a message every second (1000 milliseconds).
+  }
 
   onMessage(event) {
-    const data = JSON.parse(event.data);
-    this.data.balance = data.balance;
-    this.data.energy = data.energy;
-  }
-  onMiningMessage(event) {
-    const data = JSON.parse(event.data);
-    this.data.balance = data.balance;
-    this.data.energy = data.energy;
-  }
-  onEnergyMessage(event) {
-    const data = JSON.parse(event.data);
-    this.data.energy = data.energy;
+    console.log('Данные на сервере обновленны!',event.data)
   }
 
-  reconnectSocket(socketName) {
-    if (this.data[socketName] && this.data[socketName].readyState !== WebSocket.OPEN) {
-      console.log(`Reconnecting ${socketName}...`);
+
+  reconnectSocket() {
+      console.log(`Reconnecting ${}...`);
       setTimeout(() => {
-        if (socketName === 'tapsocket') {
-          this.initTapSocket();
-        } else if (socketName === 'energysocket') {
-          this.initEnergySocket();
-        } else if (socketName === 'miningsocket') {
-          this.initMiningSocket();
-        }
+        this.initTapSocket();
       }, this.reconnectDelay);
-    }
   }
 
   initTapSocket() {
@@ -139,44 +212,11 @@ class User {
     };
     this.data.tapsocket.onclose = () => {
       console.log('WebSocket connection closed');
-      this.reconnectSocket('tapsocket');
+      this.reconnectSocket();
     };
     this.data.tapsocket.onerror = (error) => {
       console.error('WebSocket error:', error);
-      this.reconnectSocket('tapsocket');
-    };
-  }
-
-  initEnergySocket() {
-    this.data.energysocket = new WebSocket(`wss://ylionminer.fun/ws/energy/${this.data.user_id}/`);
-    this.data.energysocket.onmessage = this.onEnergyMessage.bind(this);
-    this.data.energysocket.onopen = () => {
-      console.log('Energy WebSocket connection established');
-    };
-    this.data.energysocket.onclose = () => {
-      console.log('Energy WebSocket connection closed');
-      this.reconnectSocket('energysocket');
-    };
-    this.data.energysocket.onerror = (error) => {
-      console.error('Energy WebSocket error:', error);
-      this.reconnectSocket('energysocket');
-    };
-  }
-
-  initMiningSocket() {
-    this.data.miningsocket = new WebSocket(`wss://ylionminer.fun/ws/mining/${this.data.user_id}/`);
-    this.data.miningsocket.onmessage = this.onMiningMessage.bind(this);
-    this.data.miningsocket.onopen = () => {
-      this.loading.status = true;
-      console.log('Mining WebSocket connection established');
-    };
-    this.data.miningsocket.onclose = () => {
-      console.log('Mining WebSocket connection closed');
-      this.reconnectSocket('miningsocket');
-    };
-    this.data.miningsocket.onerror = (error) => {
-      console.error('Mining WebSocket error:', error);
-      this.reconnectSocket('miningsocket');
+      this.reconnectSocket();
     };
   }
 
@@ -271,8 +311,14 @@ class User {
         this.data.video4_lvl = response.data.user.video4_lvl
         this.data.costs = response.data.costs
         this.initTapSocket();
-        this.initEnergySocket();
-        this.initMiningSocket();
+        this.data.timer = setInterval(() => {
+            this.updateRemainingTime();
+        }, 1000);
+    
+        this.startMiningTimer();
+        this.startEnergyUpdate();
+    
+
         if (this.data.wallet_address) {
           this.tonConnect.restoreConnection(this.data.wallet_address);
         }
