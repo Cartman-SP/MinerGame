@@ -11,7 +11,7 @@
         </div>
         <div class="wrapper">
           <p class="wrapper_text">{{top2.username || 'MINER'}}</p>
-          <div class="quantity">
+          <div class="quantity" style="background-color: rgb(225, 215, 215);">
             <p class="quantity_text">{{formatNumber(Math.floor(top2.balance))}}</p>
           </div>
         </div>
@@ -26,7 +26,7 @@
         </div>
         <div class="wrapper">
           <p class="wrapper_text">{{top1.username || 'MINER'}}</p>
-          <div class="quantity">
+          <div class="quantity" style="background-color: rgb(212, 196, 51);">
             <p class="quantity_text">{{formatNumber(Math.floor(top1.balance))}}</p>
           </div>
         </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="wrapper">
           <p class="wrapper_text">{{top3.username || 'MINER'}}</p>
-          <div class="quantity">
+          <div class="quantity" style="background-color: rgb(167, 115, 88);">
             <p class="quantity_text">{{formatNumber(Math.floor(top3.balance))}}</p>
           </div>
         </div>
