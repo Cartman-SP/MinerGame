@@ -142,7 +142,7 @@ export default {
     border: solid 2vw rgb(90, 90, 90);
     bottom: 20px;
     position: absolute;
-    top: -4vh;
+    top: -8vw;
 
     scale: 0;
     opacity: 0;
@@ -160,7 +160,7 @@ export default {
 
 .mainButton {
     width: 100%;
-    height: 10vh;
+    height: 13vh;
     display: flex;
     justify-content: center;
     background: var(--color-gradient);
