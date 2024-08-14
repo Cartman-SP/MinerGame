@@ -187,7 +187,7 @@
     padding: 5px;
     color: white;
     font-family: "Druk Wide";
-    font-size: 10px;
+    font-size: 2.5vw;
     display: flex;
     gap: 5px;
     align-items: center;
@@ -202,7 +202,7 @@
     padding: 5px;
     color: white;
     font-family: "Druk Wide";
-    font-size: 8px;
+    font-size: 2vw;
     align-items: center;
     background: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
     transform: translateX(100px);

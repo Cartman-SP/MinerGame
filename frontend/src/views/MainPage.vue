@@ -11,7 +11,7 @@
       
       
       <div v-else style="margin-bottom: 50px;"></div>
-      <div class="spinner-single">
+      <div class="spinner-single" ref="clicker">
         <Spinner :isMining="remainingTime > 0" 
         :level="selected_gpu == 1 ? video1_lvl : selected_gpu == 2 ? video2_lvl : selected_gpu == 3 ? video3_lvl : video4_lvl"/>
       </div>
@@ -23,12 +23,15 @@
         <p>{{ formatNumber(energy) }}/{{ formatNumber(max_energy) }}</p>
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
-      <div class="timer-block" @click="start_mining" :style="getStyle">
-        <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
-        <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
+      <div class="timer-block" :style="getStyle" @click="start_mining">
+        <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">{{ formattedRemainingTime }}</p>
+        <p v-else-if="language == 'ru'" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">НАЧАТЬ МАЙНИНГ</p>
+        <p v-else style="color: #00C0FF; font-size: 2.5vw; margin: 0;">START MINING</p>
       </div>
+
       <div class="upgrade-block" @click="moveTo('/upgrade')">
-        <p style="font-size: 8px;">UPGRADE</p>
+        <p style="font-size: 2vw;" v-if="language == 'ru'">УЛУЧШИТЬ</p>
+        <p style="font-size: 2vw;" v-else>UPGRADE</p>
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
     </div>
@@ -70,6 +73,9 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
     async start_mining() {
+      
+
+
       this.$user.playTap()
 
       if (this.remainingTime > 0) {
@@ -78,6 +84,14 @@ export default {
       }
 
       try {
+        this.$refs.clicker.classList.add('startMiningAnimation')
+        this.$refs.clicker.classList.remove('spinner-single')
+
+        setTimeout(() => {
+          this.$refs.clicker.classList.add('spinner-single')
+          this.$refs.clicker.classList.remove('startMiningAnimation')
+        }, 3000);
+
         const response = await this.$axios.post('/start_mining/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
         this.$user.data.mining_end = response.data.mining_end;
         console.log("Mining end time set to:", this.$user.data.mining_end);
@@ -222,6 +236,9 @@ export default {
     max_energy(){
       return this.$user.data.max_energy;
     },
+    language(){
+      return this.$user.data.lang;
+    },
     formattedRemainingTime() {
       const formattedTime = this.formatTime(this.remainingTime);
       console.log("Formatted remaining time:", formattedTime);
@@ -279,6 +296,31 @@ export default {
 
 
 <style scoped>
+.startMiningAnimation{
+  display: block;
+  width: 100%;
+  scale: 1.3;
+  filter: brightness(250%);
+  transition: all 3s ease;
+
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
 .gpu_preview img{
   width: 13vw;
   opacity: .3;
@@ -303,6 +345,9 @@ export default {
 .spinner-single {
   display: block;
   width: 100%;
+  scale: 1;
+  filter: brightness(100%);
+  transition: all .5s ease;
 }
 
 

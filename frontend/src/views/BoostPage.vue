@@ -271,19 +271,19 @@ export default {
 .modal h3{
     color: white;
     font-family: "Druk Wide";
-    font-size: 20px;
+    font-size: 5vw;
     margin: 25px 0;
 }
 .level{
     color: white;
     font-family: "Druk Wide";
-    font-size: 14px;
+    font-size: 3.5vw;
     margin: 5px 0;
 }
 .boost{
     color: white;
     font-family: "Druk Wide";
-    font-size: 16px;
+    font-size: 4vw;
     margin: 5px 0;
 }
 hr{
@@ -293,7 +293,7 @@ hr{
 .buy{
     font-family: "Druk Wide";
     color: white;
-    font-size: 14px;
+    font-size: 3.5vw;
     margin-top: 10px;
     background: linear-gradient(180deg, rgb(0, 166, 255) 0%, rgba(0,230,255,1) 100%);
     width: 300px;
@@ -365,17 +365,17 @@ hr{
   align-items: center;
   color: white;
   font-family: "Druk Wide";
-  font-size: 14px;
+  font-size: 3.5vw;
 }
 .price-locked{
     color: #FFFFFF;
     font-family: "Druk Wide";
-    font-size: 16px;
+    font-size: 4vw;
     margin-bottom: 10px;
     text-align: left;
 }
 .price-locked span{
-    font-size: 22px;
+    font-size: 5.5vw;
     
 }
 .header{
@@ -393,7 +393,7 @@ hr{
     filter: drop-shadow(0 5px 5px rgb(23, 23, 23));
     color: white;
     font-family: "Druk Wide";
-    font-size: 16px;
+    font-size: 4vw;
     margin: 0;
     display: flex;
     justify-content: center;

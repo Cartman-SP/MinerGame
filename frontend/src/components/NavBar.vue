@@ -22,7 +22,7 @@
     </div>
     <div class="button" @click="moveto('/friends')" ref="block_third">
         <div class="icon-nav">
-            <img  style="width: 25px;" src="../assets/icon-friend.png" alt="">
+            <img  style=" width: 8vw; height: 7vw;" src="../assets/icon-friend.png" alt="">
         </div>
         <p class="title" v-if="language == 'ru'">ДРУЗЬЯ</p>
         <p class="title" v-else>FRIENDS</p>
@@ -97,9 +97,6 @@ export default {
 </script>
 
 <style>
-.icon-nav{
-    scale: 1.5;
-}
 :root {
     --color-gradient: linear-gradient(0deg, rgba(57,54,53,1) 0%, rgba(88,88,89,1) 100%);
 }
@@ -122,13 +119,13 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 30px;
+    height: 10vh;
 }
 
 .button {
     background: var(--color-gradient);
     width: 100%;
-    height: 15vh;
+    height: 10vh;
     transform: translateY(100px);
 }
 .nav-button-show{
@@ -138,11 +135,11 @@ export default {
 .fan-btn{
     background: var(--color-gradient);
     padding: 10px;
-    height: 60px;
-    width: 60px;
+    width: 15vw;
+    height: 15vw;
     /* filter: drop-shadow(0 5px 10px #00E6FF); */
     border-radius: 50%;
-    border: solid 10px rgb(90, 90, 90);
+    border: solid 2vw rgb(90, 90, 90);
     bottom: 20px;
     position: absolute;
     top: -4vh;
@@ -163,7 +160,7 @@ export default {
 
 .mainButton {
     width: 100%;
-    height: 19vh;
+    height: 10vh;
     display: flex;
     justify-content: center;
     background: var(--color-gradient);
@@ -181,8 +178,8 @@ export default {
     align-items: center;
 }
 .button img {
-    width: 20px;
-    height: 20px;
+    width: 7vw;
+    aspect-ratio: 1;
 }
 
 .title {

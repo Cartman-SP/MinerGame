@@ -178,7 +178,7 @@ export default {
 .noFriends{
   font-family: "Druk Wide";
   color: #FFFFFF;
-  font-size: 12px;
+  font-size: 3vw;
   margin: 30px 0;
 }
 .description{
@@ -191,7 +191,7 @@ export default {
 }
 .description p{
   color: #FFFFFF;
-  font-size: 12px;
+  font-size: 3vw;
   margin: 0;
 }
 
@@ -215,7 +215,7 @@ export default {
   font-family: "Druk Wide";
   color: #FFFFFF;
   text-align: left;
-  font-size: 14px;
+  font-size: 3.5vw;
   max-width: 30vw;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -248,6 +248,7 @@ export default {
 .amount_text{
   color: #FFFFFF;
   font-family: "Druk Wide";
+  font-size: 3vw;
 }
 .number{
   background: #00E6FF;
@@ -255,8 +256,9 @@ export default {
   padding: 10px;
   margin-left: 5px;
   font-family: "Druk Wide";
-  height: 40px;
-  width: 40px;
+  height: 7vw;
+  width: 7vw;
+  font-size: 3vw;
 }
 .number_text{
   font-family: "Druk Wide";
@@ -268,7 +270,7 @@ export default {
   font-family: "Druk Wide";
 }
 .num p{
-  font-size: 12px;
+  font-size: 3vw;
 }
 .image-container {
   position: relative;
@@ -312,13 +314,13 @@ img{
 .money-amount{
   color: white;
   font-family: "Druk Wide";
-  font-size: 14px;
+  font-size: 3.5vw;
   margin: 0;
 }
 .subtitle{
   color: white;
   font-family: "Druk Wide";
-  font-size: 10px;
+  font-size: 2.5vw;
   margin: 0;
 }
 .card{
@@ -341,7 +343,7 @@ img{
 .name-invite{
     color: white;
     font-family: "Druk Wide";
-    font-size: 12px;
+    font-size: 3vw;
     margin: 0;
     width: 100%;
 }
