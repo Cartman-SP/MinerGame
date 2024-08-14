@@ -46,10 +46,11 @@
       </div>
 
       <div class="switches">
-        <button v-if="language == 'ru'" class="help" @click="opensup">НАПИСАТЬ ПОДДЕРЖКЕ</button>
+        <button v-if="language == 'ru'" class="help" @click="opensup">ПОДДЕРЖКА</button>
         <button v-else class="help" @click="opensup" >SUPPORT</button>
         <Switch :type="1"/>
         <Switch :type="2"/>
+        <Switch :type="3"/>
         
         
         <!-- <button @click="switchvolume" :class="{ active: isVolume, disabled: !isVolume }">Звуки</button>

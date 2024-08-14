@@ -5,7 +5,7 @@
         </div> -->
 
         <div class="blocks">
-            <div class="block"  @click="toggleModal(2), modalType = 2">
+            <div class="block"  @click="toggleModal(2), modalType = 2" ref="block_first">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video_lvl] }}</p>
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="(friends>0 && video_lvl>0) ? open_pay(2) : alertMessage='Нужно пригласить хотя бы 1 друга'" v-if="!video2_lvl">
+            <div class="block" @click="handleBuy(2)" v-if="!video2_lvl" ref="block_second">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block"  @click="toggleModal(3), modalType = 2" v-else>
+            <div class="block"  @click="toggleModal(3), modalType = 2" v-else ref="block_second">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video2_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video2_lvl] }}</p>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="(friends>1) ? open_pay(3) : alertMessage='Нужно пригласить хотя бы 2 друзей'" v-if="!video3_lvl">
+            <div class="block"  @click="handleBuy(3)" v-if="!video3_lvl" ref="block_third">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block"  @click="toggleModal(4), modalType = 2" v-else>
+            <div class="block"  @click="toggleModal(4), modalType = 2" v-else ref="block_third">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video3_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video3_lvl] }}</p>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="block" @click="(friends>3) ? open_pay(4) : alertMessage='Нужно пригласить хотя бы 4 друзей'" v-if="!video4_lvl">
+            <div class="block"  @click="handleBuy(4)" v-if="!video4_lvl" ref="block_fourth">
                 <div class="photo">
                     <img class="spinner" src="../assets/spinner-icon-locked.png" alt="">
                     <p class="gpu_name" v-if="language == 'ru'">ЗАБЛОКИРОВАНО</p>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="block"  @click="toggleModal(5), modalType = 2" v-else>
+            <div class="block"  @click="toggleModal(5), modalType = 2" v-else ref="block_fourth">
                 <div class="photo">
                     <img class="spinner" :src="staticPath(this.video4_lvl+1)" alt="">
                     <p class="gpu_name">{{ names[video4_lvl] }}</p>
@@ -206,11 +206,40 @@ export default {
         }
     },
     methods:{
+        handleBuy(num) {
+            if (num == 2) {
+                if (this.friends < 1) {
+                    this.alertMessage = 'Нужно пригласить хотя бы 1 друга';
+                } else {
+                    this.open_pay(2);
+                }
+            }
+            if (num == 3) {
+                if (this.friends < 2) {
+                    this.alertMessage = 'Нужно пригласить хотя бы 2 друзей';
+                } else if (this.video2_lvl < 1) {
+                    this.alertMessage = 'Сначала надо купить вторую видеокарту';
+                } else {
+                    this.open_pay(3);
+                }
+            }
+            if (num == 4) {
+                if (this.friends < 4) {
+                    this.alertMessage = 'Нужно пригласить хотя бы 4 друзей';
+                } else if (this.video3_lvl < 1) {
+                    this.alertMessage = 'Сначала надо купить третью видеокарту';
+                } else {
+                    this.open_pay(4);
+                }
+            }
+            
+        },
 
         async set_video(num){
             let data = {'user_id': this.$user.data.user_id,'num':num};
             try {
-                await this.$axios.post('/set_video/', data, {withCredentials: true});
+                const response = await this.$axios.post('/set_video/', data, {withCredentials: true});
+                console.log(response.data);
             } catch (error) {
                 console.log(error)
             }
@@ -218,6 +247,7 @@ export default {
 
         async open_time_pay(time) {
             window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+            console.log(time)
             try {
                 const response = await this.$axios.get('/get_invoice_link/', { params: {num: time, withCredentials: true} });
                 const link = response.data.result;
@@ -227,6 +257,7 @@ export default {
                         let data = {'user_id': this.$user.data.user_id};
                         try {
                             const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
+                            console.log(response.data);
                             this.$user.data.mining_time_lvl = response.data.mining_time_lvl;
                             if(this.$user.data.mining_time_lvl==10){
                                 this.toggleModal()
@@ -257,17 +288,14 @@ export default {
                     if (status === "paid") {
                         if (video === 2) {
                             this.$user.data.video2_lvl = 1;
-                            this.set_first_mining_lvl(2)
                             this.modalType = 2
                             this.toggleModal(3);
                         } else if (video === 3) {
                             this.$user.data.video3_lvl = 1;
-                            this.set_first_mining_lvl(2)
                             this.modalType = 2
                             this.toggleModal(4);
                         } else if (video === 4) {
                             this.$user.data.video4_lvl = 1;
-                            this.set_first_mining_lvl(2)
                             this.modalType = 2
                             this.toggleModal(5);
                         }
@@ -277,16 +305,6 @@ export default {
                 console.error('Error during payment:', error);
             }
         },
-
-        async set_first_mining_lvl(type){
-            try {
-                await this.$axios.post('/set_first/', {user_id:this.$user.data.user_id,num:type}, {withCredentials: true});
-            } catch (error) {
-                this.error = error;
-            }
-            
-        },
-
         formatNumber(num) {
             return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
                 num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
@@ -295,9 +313,11 @@ export default {
         async upgrade(num){
             this.alertMessage = '';
             this.$user.playTap()
+            console.log(num)
             let data = {'user_id':this.$user.data.user_id,'num':num}
             try {
                 const response = await this.$axios.post('/upgrade_mining/', data, {withCredentials: true});
+                console.log(response.data);
                 this.$user.data.balance = response.data.balance
                 this.$user.data.gph = response.data.gph
 
@@ -365,6 +385,7 @@ export default {
             let data = {'user_id': this.$user.data.user_id};
             try {
                 const response = await this.$axios.post('/uptime/', data, {withCredentials: true});
+                console.log(response.data);
                 this.$user.data.balance = response.data.balance;
                 this.$user.data.mining_time_lvl = response.data.mining_time_lvl;
                 this.lvl = this.mining_time_lvl +1
@@ -504,6 +525,9 @@ export default {
         }
     },
     computed: {
+        language(){
+          return this.$user.data.lang;
+        },
         friends(){
             return this.$user.data.friends_invited
         },
@@ -537,7 +561,29 @@ export default {
         video4_lvl(){
             return this.$user.data.video4_lvl
         }
-    }
+
+    },
+    mounted() {
+        let index = 0;
+        const blocks = [
+        this.$refs.block_first,
+        this.$refs.block_second,
+        this.$refs.block_third,
+        this.$refs.block_fourth
+        ];
+
+        const interval = setInterval(() => {
+            if (index < blocks.length) {
+                const block = blocks[index];
+                if (block) {
+                    block.classList.add('upgrade-block-show');
+                }
+                index++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 50);
+  },
 }
 </script>
 
@@ -592,16 +638,17 @@ export default {
     height: fit-content;
     padding-bottom: 130px;
     bottom: -500px;
+    transform: translateY(0px);
     z-index: 10;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
 .show{
-    bottom: 0;
-    transition: all .4s ease;
+    transform: translateY(-500px);
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.025, 1.295);
 }
 .showOverlay{
     opacity: 1 !important;
-    transition: all .4s ease;
+    transition: transform .5s cubic-bezier(0.410, 0.245, 0.000, 1.365);
 }
 .overlay{
     opacity: 0;
@@ -720,6 +767,15 @@ hr{
     font-size: 12px;
     margin: 0;
     width: 70%;
+}
+.block{
+    scale: 0;
+    opacity: 0;
+}
+.upgrade-block-show{
+    scale: 1 !important;
+    opacity: 1 !important;
+    transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
 }
 .blocks{
     display: grid;

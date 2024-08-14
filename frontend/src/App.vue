@@ -9,7 +9,7 @@
     <router-view/>
   </div>
   <div class="overlay" ref="overlay" v-if="showModal"></div>
-  <div class="modal" v-if="showModal" ref="modal">
+  <div class="modal-app" v-if="showModal" ref="modal">
     <div v-if="modalType == 'award'">
       <p class="price">ПОКА ТЕБЯ <br> НЕ БЫЛО В ИГРЕ</p>
       <img style="margin-top: 20px; scale: .6;" src="../src/assets/logo-small-blue.png" alt="">
@@ -17,10 +17,11 @@
       <button class="ok" @click="toggleModal(), nav=true">ЗАБРАТЬ</button>
     </div>
     <div v-if="modalType == 'animations'">
-      <img style="margin-top: -160px; width: 300px;" src="../src/assets/icon-interface.png" alt="">
-      <p style="margin-top: -40px;" class="price">ПОКАЗЫВАТЬ АНИМАЦИИ ИНТЕРФЕЙСА?</p>
-      <button class="ok" @click="load()">Да, оставить</button>
-      <button class="ok" @click="load()" style="background: none; border: solid 1px rgba(0,230,255,1);">Нет, отключить</button>
+      <img style="margin-top: -90px; width: 140px;" src="../src/assets/icon-interface.png" alt="">
+      <p style="margin-top: 20px;" class="price">ПОКАЗЫВАТЬ АНИМАЦИИ ИНТЕРФЕЙСА?</p>
+      <button class="ok" @click="this.$user.data.hard_graphic = true, load(1)">Да, оставить</button>
+      <button class="ok" @click="this.$user.data.hard_graphic = false, load(0)">Нет, отключить</button>
+      <!--  style="background: none; border: solid 1px rgba(0,230,255,1);" -->
     </div>
   </div>
   
@@ -49,7 +50,10 @@ export default {
   computed:{
     isLoading(){
       return this.$user.data.toppage
-    }
+    },
+    hardGraphic(){
+      return this.$user.data.hard_graphic
+    },
   },
   methods: {
     formatNumber(number) {
@@ -66,7 +70,7 @@ export default {
       window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
       if (this.showModal) {
           const modalwindow = this.$refs.modal;
-          modalwindow.classList.remove('show');
+          modalwindow.classList.remove('show-app');
           const modaloverlay = this.$refs.overlay;
           modaloverlay.classList.remove('showOverlay');
 
@@ -79,7 +83,7 @@ export default {
           this.showModal = true
           setTimeout(() => {
               const modalwindow = this.$refs.modal;
-              modalwindow.classList.add('show');
+              modalwindow.classList.add('show-app');
               const modaloverlay = this.$refs.overlay;
               modaloverlay.classList.add('showOverlay');
           }, 10);
@@ -94,10 +98,23 @@ export default {
         console.error('Ошибка при копировании: ', err);
       }
     },
-    load() {
+
+    load(condition) {
+      if (!condition) {
+        const style = document.createElement('style');
+        style.innerHTML = `
+          * {
+            transition: all 0s !important;
+          }
+        `;
+        document.head.appendChild(style);
+        this.transitionStyleElement = style;
+      }
+
       this.toggleModal()
       setTimeout(() => {
         this.loaded = true;
+        
         this.toggleModal(2)
       }, 2000); // 5 seconds delay
     }
@@ -105,12 +122,39 @@ export default {
   mounted() {
     window.Telegram.WebApp.expand();
     this.toggleModal(1)
-  }
+  },
+  watch: {
+    // Наблюдение за изменением this.$user.data.hard_graphic
+    '$user.data.hard_graphic'(newVal) {
+      if (!newVal) {
+        // Если включен режим hard graphic, добавляем стиль
+        const style = document.createElement('style');
+        style.innerHTML = `
+          * {
+            transition: all 0s !important;
+          }
+        `;
+        document.head.appendChild(style);
+        this.transitionStyleElement = style;
+      } else {
+        // Если режим выключен, удаляем стиль
+        if (this.transitionStyleElement) {
+          document.head.removeChild(this.transitionStyleElement);
+          this.transitionStyleElement = null;
+        }
+      }
+    }
+  },
 }
 </script>
 
 
 <style>
+.collected{
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 18px;
+}
 .loading{
   background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
   position: absolute;
@@ -150,7 +194,7 @@ export default {
     margin: 0;
     width: 100%;
 }
-.modal{
+.modal-app{
     background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
     border-top: 2px solid #00C5FF;
     filter: drop-shadow(0 -5px 5px #00c3ff8d);
@@ -167,7 +211,7 @@ export default {
     z-index: 10;
     transition: transform .5s cubic-bezier(1.000, -0.440, 0.615, 0.745);
 }
-.show{
+.show-app{
     transform: translateY(-400px);
     transition: transform .5s ease;
 }

@@ -82,13 +82,17 @@ export default {
       }
 
       try {
-        this.$refs.clicker.classList.add('startMiningAnimation')
-        this.$refs.clicker.classList.remove('spinner-single')
 
-        setTimeout(() => {
-          this.$refs.clicker.classList.add('spinner-single')
-          this.$refs.clicker.classList.remove('startMiningAnimation')
-        }, 3000);
+        if (this.hardGraphic) {
+          this.$refs.clicker.classList.add('startMiningAnimation')
+          this.$refs.clicker.classList.remove('spinner-single')
+
+          setTimeout(() => {
+            this.$refs.clicker.classList.add('spinner-single')
+            this.$refs.clicker.classList.remove('startMiningAnimation')
+          }, 3000);
+        }
+        
 
         const response = await this.$axios.post('/start_mining/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
         this.$user.data.mining_end = response.data.mining_end;
@@ -182,6 +186,9 @@ export default {
     }
   },
   computed: {
+    hardGraphic(){
+      return this.$user.data.hard_graphic
+    },
     getStyle() {
       return this.formattedRemainingTime === '00:00:00'
         ? 'filter: drop-shadow(0 0 10px rgb(0, 192, 255))'

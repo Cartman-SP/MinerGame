@@ -88,7 +88,8 @@
         return {
           width: (this.$user.data.balance / this.next_lvl[this.$user.data.lvl])*100 +'%'
         }
-      }
+      },
+      
     },
     watch: {
       '$route.path'() {

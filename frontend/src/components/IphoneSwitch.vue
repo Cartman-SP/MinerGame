@@ -10,6 +10,11 @@
         <img class="switch-icon" src="../assets/icon-vibration.png" alt="">
       </div>
     </div>
+    <div v-if="type == 3" @click="toggle" :class="{'switch-background-active' : isHardGraphic, 'switch' : !(isHardGraphic)}">
+      <div class="span" v-if="type == 3" :class="{'switch-active' : isHardGraphic, 'switch-disabled' : !isHardGraphic}">
+        <img class="switch-icon" src="../assets/icon-animations.png" alt="">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,16 +90,25 @@ export default {
     },
     isVibro(){
       return this.$user.data.vibrate
-    }
+    },
+    isHardGraphic(){
+      return this.$user.data.hard_graphic
+    },
   },
   methods: {
     toggle(){
       this.$user.playTap();
       if (this.type == 1) {
         this.switchvolume()
-      } else {
+      } else if(this.type == 2) {
         this.switchvibro()
+      } else{
+        this.switchGraphic()
       }
+    },
+
+    switchGraphic(){
+      this.$user.data.hard_graphic = !this.$user.data.hard_graphic
     },
 
     async switchvolume(){
