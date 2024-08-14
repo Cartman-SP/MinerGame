@@ -129,7 +129,6 @@ export default {
     },
     async get_top() {
       try {
-        console.log(this.$user.data.user_id);
         const response = await this.$axios.get('/get_top/', {
           params: { user_id: this.$user.data.user_id },
         });
@@ -138,7 +137,6 @@ export default {
         this.top2 = top[1];
         this.top3 = top[2];
         this.top = top.slice(3);
-        console.log(this.top);
         this.user_position = response.data.user_position;
         setTimeout(() => {
           this.$user.data.toppage = false;

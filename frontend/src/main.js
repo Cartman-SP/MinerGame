@@ -61,8 +61,7 @@ class User {
     this.error = null;
 
     // Добавляем watcher для поля balance
-    watch(() => this.data.balance, (newBalance, oldBalance) => {
-      console.log(oldBalance)
+    watch(() => this.data.balance, (newBalance) => {
       if(newBalance > 17500 && this.data.lvl < 2){
         this.lvlup(2);
       } else if(newBalance > 90000 && this.data.lvl < 3){
@@ -92,7 +91,6 @@ class User {
         'user_id': this.data.user_id,
         'lvl': lvl
       }, { withCredentials: true });
-      console.log(response.data);
       this.data.gpc = response.data.gpc;
       this.data.modifier = response.data.modifier;
       this.data.max_energy = response.data.max_energy;
@@ -118,7 +116,6 @@ class User {
 
   reconnectSocket(socketName) {
     if (this.data[socketName] && this.data[socketName].readyState !== WebSocket.OPEN) {
-      console.log(`Reconnecting ${socketName}...`);
       setTimeout(() => {
         if (socketName === 'tapsocket') {
           this.initTapSocket();
@@ -135,10 +132,8 @@ class User {
     this.data.tapsocket = new WebSocket(`wss://ylionminer.fun/ws/some_path/${this.data.user_id}/`);
     this.data.tapsocket.onmessage = this.onMessage.bind(this);
     this.data.tapsocket.onopen = () => {
-      console.log('WebSocket connection established');
     };
     this.data.tapsocket.onclose = () => {
-      console.log('WebSocket connection closed');
       this.reconnectSocket('tapsocket');
     };
     this.data.tapsocket.onerror = (error) => {
@@ -151,10 +146,8 @@ class User {
     this.data.energysocket = new WebSocket(`wss://ylionminer.fun/ws/energy/${this.data.user_id}/`);
     this.data.energysocket.onmessage = this.onEnergyMessage.bind(this);
     this.data.energysocket.onopen = () => {
-      console.log('Energy WebSocket connection established');
     };
     this.data.energysocket.onclose = () => {
-      console.log('Energy WebSocket connection closed');
       this.reconnectSocket('energysocket');
     };
     this.data.energysocket.onerror = (error) => {
@@ -168,14 +161,12 @@ class User {
     this.data.miningsocket.onmessage = this.onMiningMessage.bind(this);
     this.data.miningsocket.onopen = () => {
       this.loading.status = true;
-      console.log('Mining WebSocket connection established');
     };
     this.data.miningsocket.onclose = () => {
-      console.log('Mining WebSocket connection closed');
       this.reconnectSocket('miningsocket');
     };
     this.data.miningsocket.onerror = (error) => {
-      console.error('Mining WebSocket error:', error);
+      console.log(error)
       this.reconnectSocket('miningsocket');
     };
   }
@@ -231,7 +222,6 @@ class User {
       
       try {
         const response = await app.config.globalProperties.$axios.get('/get_user/', { params: data });
-        console.log(response.data);
         // tginfo.language_code
         this.data.lang = tginfo.language_code;
         this.data.user_id = response.data.user.user_id;
@@ -276,7 +266,6 @@ class User {
         if (this.data.wallet_address) {
           this.tonConnect.restoreConnection(this.data.wallet_address);
         }
-        console.log("mining_end after login:", this.data.mining_end);
       } catch (error) {
         this.error = error;
       }

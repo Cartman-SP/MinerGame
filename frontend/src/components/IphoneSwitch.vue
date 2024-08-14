@@ -99,10 +99,8 @@ export default {
 
     async switchvolume(){
       this.$user.data.sound = !this.$user.data.sound
-      console.log(this.$user.data.sound)
       try {
-        const response = await this.$axios.post('/turnsound/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
-        console.log(response)
+        await this.$axios.post('/turnsound/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -110,8 +108,7 @@ export default {
     async switchvibro(){
       this.$user.data.vibrate = !this.$user.data.vibrate
       try {
-        const response = await this.$axios.post('/turnvibrate/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
-        console.log(response)
+        await this.$axios.post('/turnvibrate/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
       } catch (error) {
         console.error('Error fetching data:', error);
       }

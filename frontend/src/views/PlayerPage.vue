@@ -104,11 +104,9 @@ export default {
     },
     async get_player() {
       try {
-        console.log(this.userId)
         const response = await this.$axios.get('/get_userprof/', {
           params: { 'user_id': this.userId }
         });
-        console.log(response.data)
         this.userData = response.data;
         this.$user.data.toppage = false
       } catch (error) {
@@ -120,7 +118,6 @@ export default {
         this.$router.push(url)
       },
     formatNumber(num) {
-      console.log(num)
       return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
             num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
             num;

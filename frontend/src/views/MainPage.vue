@@ -25,7 +25,7 @@
       </div>
       <div class="timer-block" :style="getStyle" @click="start_mining">
         <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">{{ formattedRemainingTime }}</p>
-        <p v-else-if="language == 'ru'" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">НАЧАТЬ МАЙНИНГ</p>
+        <p v-else-if="language == 'ru'" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">НАЧАТЬ ДОБЫЧУ</p>
         <p v-else style="color: #00C0FF; font-size: 2.5vw; margin: 0;">START MINING</p>
       </div>
 
@@ -78,7 +78,6 @@ export default {
       this.$user.playTap()
 
       if (this.remainingTime > 0) {
-        console.log("Mining already in progress");
         return;
       }
 
@@ -93,7 +92,6 @@ export default {
 
         const response = await this.$axios.post('/start_mining/', {user_id: this.$user.data.user_id,}, {withCredentials: true});
         this.$user.data.mining_end = response.data.mining_end;
-        console.log("Mining end time set to:", this.$user.data.mining_end);
         this.calculateRemainingTime();
         this.startMiningTimer();
       } catch (error) {
@@ -108,16 +106,11 @@ export default {
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     },
     calculateRemainingTime() {
-      console.log("Calculating remaining time...");
       if (this.$user.data.mining_end) {
         const now = new Date().getTime();
         const end = new Date(this.$user.data.mining_end).getTime();
-        console.log("Current time (now):", now);
-        console.log("Mining end time (end):", end);
         const remaining = end - now;
-        console.log("Time remaining (ms):", remaining);
         this.remainingTime = remaining > 0 ? remaining / 1000 : 0;
-        console.log("Remaining time in seconds:", this.remainingTime);
       } else {
         this.remainingTime = 0;
       }
@@ -125,11 +118,9 @@ export default {
     updateRemainingTime() {
       if (this.remainingTime > 0) {
         this.remainingTime -= 1;
-        console.log("Updated remaining time in seconds:", this.remainingTime);
       }
     },
     handleMiningEndChange(newEndTime) {
-      console.log("Handling mining end change:", newEndTime);
       this.$user.data.mining_end = newEndTime;
       this.calculateRemainingTime();
     },
@@ -158,7 +149,6 @@ export default {
           const message = {
             user_id: this.$user.data.user_id,
           };
-          console.log(123)
           this.$user.data.energysocket.send(JSON.stringify(message));
       }, 6000); // каждые 6 секунд
     }, 
@@ -240,13 +230,11 @@ export default {
     },
     formattedRemainingTime() {
       const formattedTime = this.formatTime(this.remainingTime);
-      console.log("Formatted remaining time:", formattedTime);
       return formattedTime;
     },
   },
   mounted() {
     this.$user.data.toppage = false
-    console.log("Component mounted, calculating remaining time...");
     this.calculateRemainingTime();
     this.timer = setInterval(() => {
         this.updateRemainingTime();
@@ -256,7 +244,6 @@ export default {
     this.startEnergyUpdate();
 
     this.$watch(() => this.$user.data.mining_end, (newVal) => {
-      console.log("mining_end changed:", newVal);
       if (newVal) {
         this.handleMiningEndChange(newVal);
       }

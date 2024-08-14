@@ -117,8 +117,7 @@ export default {
             if(this.$user.data.refresh_energy>0 && this.$user.data.energy<this.$user.data.max_energy){
                 let data = {'user_id':this.$user.data.user_id}
                 try {
-                    const response = await this.$axios.post('/set_max_energy/', data, {withCredentials: true});
-                    console.log(response)
+                    await this.$axios.post('/set_max_energy/', data, {withCredentials: true});
                     this.$user.data.energy = this.$user.data.max_energy;
                     this.$user.data.refresh_energy -=1
                 }catch (error) {
@@ -132,7 +131,6 @@ export default {
             let data = {'user_id':this.$user.data.user_id,'num':this.num}
             try {
                 const response = await this.$axios.post('/upgrade/', data, {withCredentials: true});
-                console.log(response.data);
                 this.$user.data.balance = response.data.balance
                 this.$user.data.enery_lvl = response.data.energy_lvl
                 this.$user.data.gpc = response.data.gpc

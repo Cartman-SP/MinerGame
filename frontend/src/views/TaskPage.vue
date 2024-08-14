@@ -280,7 +280,6 @@ export default {
     async resetDailyRewardClaimed() {
       try {
         this.$user.data.daily_reward_claimed = false;
-        console.log('Daily reward status reset at midnight UTC.');
       } catch (error) {
         console.error('Error resetting daily reward status:', error);
       }
@@ -309,7 +308,6 @@ export default {
       try {
         const response = await this.$axios.get('/get_task/', { params: { user_id: this.$user.data.user_id } });
         this.tasks = response.data;
-        console.log(this.tasks);
       } catch (error) {
         console.log(error);
       }
@@ -324,7 +322,6 @@ export default {
         this.$user.data.balance = response.data.balance;
         this.$user.data.daily_reward_claimed = response.data.daily_reward_claimed;
         this.$user.data.daily_reward_day = response.data.daily_reward_day;
-        console.log("Mining end time set to:", this.$user.data.mining_end);
         this.calculateRemainingTime();
         this.startCountdown();
         this.$user.playTap()
@@ -334,7 +331,6 @@ export default {
     },
     async check_subscribe() {
       try {
-        console.log(this.$user.data.user_id);
         const response = await this.$axios.get('/check_subscribe/', { params: { user_id: this.$user.data.user_id } });
         this.$user.data.balance = response.data.balance;
         this.$user.data.subscribed = response.data.subscribed;
@@ -365,7 +361,6 @@ export default {
       this.alertMessage = ''
       if (this.showModal) {
         if (this.$user.data.daily_reward_claimed) {
-          console.log('already claimed');
           this.alertMessage = 'Награда уже получена'
           this.$user.playError()
         } else {

@@ -152,7 +152,6 @@ export default {
               }
           }, 50);
         }, 300);
-        console.log(this.friends);
     } catch (error) {
         console.error(error);
     }
