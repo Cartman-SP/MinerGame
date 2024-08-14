@@ -56,7 +56,7 @@
         <button @click="switchvibro" :class="{ active: isVibro, disabled: !isVibro }">Вибрация</button> -->
       </div>
 
-      <p class="studio">DEVELOPED BY <span>HEDGECODE</span></p>
+      <p @click="toHedge()" class="studio">DEVELOPED BY <span style="text-decoration: underline;">HEDGECODE</span></p>
       
     </div>
     <AlertMessage :message="alertMessage" style="z-index: 200;"/>
@@ -107,6 +107,9 @@ export default {
   },
 
   methods:{
+    toHedge(){
+      window.location.href = 'https://t.me/ShirkinDaniil'
+    },
     opensup(){
       window.location.href = `https://t.me/supylionbot`
     },

@@ -92,7 +92,7 @@ export default {
       const levels = [1,4, 5, 6, 7, 8, 9, 10, 11];
       levels.forEach(level => {
         this.imageAssets[`gif${level}`] = require(`../assets/gpu${level}.gif`);
-        this.imageAssets[`static${level}`] = require(`../assets/gpu${level}-static.png`);
+        this.imageAssets[`static${level}`] = require(`../assets/gpu${level}-static.avif`);
       });
 
       this.preloadedGifPath = this.gifPath;
