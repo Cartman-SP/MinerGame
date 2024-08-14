@@ -47,7 +47,21 @@
         </div>
       </div>
     </div>
-    <div class="center">
+    <div class="center" v-if="language == 'ru'">
+      <div class="center_container">
+        <div class="ramka">
+          <p class="ramka_text">{{ your_balance }}</p>
+        </div>
+        <p class="center_text">ТВОЙ БАЛАНС</p>
+      </div>
+      <div class="center_container">
+        <div class="ramka">
+          <p class="ramka_text">{{ user_position }}</p>
+        </div>
+        <p class="center_text">ТВОЯ ПОЗИЦИЯ</p>
+      </div>
+    </div>
+    <div class="center" v-else>
       <div class="center_container">
         <div class="ramka">
           <p class="ramka_text">{{ your_balance }}</p>
@@ -223,7 +237,7 @@ p{
 .quantity{
   background: #00E6FF;
   border-radius: 25px;
-  padding: 5px 0 5px 0;
+  padding: 5px;
 }
 .quantity_text{
   color: #FFFFFF;
@@ -269,6 +283,7 @@ p{
 }
 
 .description{
+  font-family: "Druk Wide";
   display: flex;
   align-items: center;
   justify-content: space-between; 
@@ -277,7 +292,7 @@ p{
 }
 .description p{
   color: #FFFFFF;
-  font-size: 12px;
+  font-size: 3vw;
   margin: 0;
 }
 
@@ -289,6 +304,7 @@ p{
   box-shadow: 0 -5px 10px rgba(0, 230, 255, 0.3);
   padding: 20px;
   padding-bottom: 70px;
+  margin-bottom: 50px;
 }
 .bottom_card img{
   height: 65px;
@@ -297,10 +313,11 @@ p{
   border-radius: 50%;
 }
 .name{
+  font-family: "Druk Wide";
   color: #FFFFFF;
   text-align: left;
-  font-size: 14px;
-  max-width: 30vw;
+  font-size: 3.5vw;
+  max-width: 25vw;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -319,8 +336,8 @@ p{
 .name_container{
   width: 100%;
   display: flex;
+  gap: 3vh;
   flex-direction: column;
-  gap: 20px;
 }
 .amount{
   padding-left: 10px;
@@ -332,21 +349,30 @@ p{
 }
 .amount_text{
   color: #FFFFFF;
+  font-family: "Druk Wide";
+  font-size: 3vw;
 }
 .number{
   background: #00E6FF;
   border-radius: 10px;
   padding: 10px;
   margin-left: 5px;
+  font-family: "Druk Wide";
+  height: 7vw;
+  width: 8vw;
+  font-size: 4vw;
 }
 .number_text{
+  font-family: "Druk Wide";
   color: #FFFFFF;
+  margin: 0;
 }
 .num{
   border-radius: 50%;
+  font-family: "Druk Wide";
 }
 .num p{
-  font-size: 12px;
+  font-size: 3vw;
 }
 .image-container {
   position: relative;

@@ -24,11 +24,13 @@
         <img src="../assets/icon-battery.png" style="width: 20px; height: 10px;" alt="">
       </div>
       <div class="timer-block" @click="start_mining" :style="getStyle">
-        <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 10px; margin: 0;">{{ formattedRemainingTime }}</p>
-        <p v-else style="color: #00C0FF; font-size: 10px; margin: 0;">START MINING</p>
+        <p v-if="remainingTime>0" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">{{ formattedRemainingTime }}</p>
+        <p v-else-if="language == 'ru'" style="color: #00C0FF; font-size: 2.5vw; margin: 0;">НАЧАТЬ МАЙНИНГ</p>
+        <p v-else style="color: #00C0FF; font-size: 2.5vw; margin: 0;">START MINING</p>
       </div>
       <div class="upgrade-block" @click="moveTo('/upgrade')">
-        <p style="font-size: 8px;">UPGRADE</p>
+        <p style="font-size: 2vw;" v-if="language == 'ru'">УЛУЧШИТЬ</p>
+        <p style="font-size: 2vw;" v-else>UPGRADE</p>
         <img src="../assets/icon-upgrade.png" style="width: 20px; height: 20px;" alt="">
       </div>
     </div>
@@ -221,6 +223,9 @@ export default {
     },
     max_energy(){
       return this.$user.data.max_energy;
+    },
+    language(){
+      return this.$user.data.lang;
     },
     formattedRemainingTime() {
       const formattedTime = this.formatTime(this.remainingTime);
