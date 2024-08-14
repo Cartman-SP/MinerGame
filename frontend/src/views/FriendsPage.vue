@@ -50,8 +50,8 @@
             <div class="divider"></div>
           </div>
           <div class="amount">
-            <p class="amount_text" v-if="i.ispremium"> {{Math.floor(i.balance * 0.01)}} </p>
-            <p class="amount_text" v-else> {{Math.floor(i.balance * 0.005)}} </p>
+            <p class="amount_text" v-if="i.ispremium"> {{formatNumber(Math.floor(i.balance * 0.01))}} </p>
+            <p class="amount_text" v-else> {{formatNumber(Math.floor(i.balance * 0.005))}} </p>
             <div class="number">
               <p class="number_text" v-if="i.ispremium">
                 1
@@ -107,6 +107,11 @@ export default {
         },
     },
   methods:{
+    formatNumber(num) {
+    return num >= 1_000_000 ? `${(num / 1_000_000).toFixed(1)}M` : 
+           num >= 1_000 ? `${(num / 1_000).toFixed(1)}K` : 
+           num.toString();
+  },
     async copyLink() {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
 
