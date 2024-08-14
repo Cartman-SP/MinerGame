@@ -497,29 +497,29 @@ export default {
         staticPath(lvl) {
             switch (lvl) {
                 case 1:
-                return require(`../assets/gpu1-static.png`);
+                return require(`../assets/gpu1-static.avif`);
                 case 2:
-                return require(`../assets/gpu1-static.png`);
+                return require(`../assets/gpu1-static.avif`);
                 case 3:
-                return require(`../assets/gpu1-static.png`);
+                return require(`../assets/gpu1-static.avif`);
                 case 4:
-                return require(`../assets/gpu4-static.png`);
+                return require(`../assets/gpu4-static.avif`);
                 case 5:
-                return require(`../assets/gpu5-static.png`);
+                return require(`../assets/gpu5-static.avif`);
                 case 6:
-                return require(`../assets/gpu6-static.png`);
+                return require(`../assets/gpu6-static.avif`);
                 case 7:
-                return require(`../assets/gpu7-static.png`);
+                return require(`../assets/gpu7-static.avif`);
                 case 8:
-                return require(`../assets/gpu8-static.png`);
+                return require(`../assets/gpu8-static.avif`);
                 case 9:
-                return require(`../assets/gpu9-static.png`);
+                return require(`../assets/gpu9-static.avif`);
                 case 10:
-                return require(`../assets/gpu10-static.png`);
+                return require(`../assets/gpu10-static.avif`);
                 case 11:
-                return require(`../assets/gpu11-static.png`);
+                return require(`../assets/gpu11-static.avif`);
                 case 12:
-                return require(`../assets/gpu11-static.png`);
+                return require(`../assets/gpu11-static.avif`);
             }
             return 1
         }
