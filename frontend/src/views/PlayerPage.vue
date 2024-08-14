@@ -94,21 +94,23 @@ export default {
   },
   methods:{
     tochat(){
-    window.location.href = `https://t.me/${this.userData.usertag}`
-  },
+      if (this.userData.usertag != 'Miner') {
+        window.location.href = `https://t.me/${this.userData.usertag}`
+      }
+    },
     async get_player() {
-    try {
-      console.log(this.userId)
-      const response = await this.$axios.get('/get_userprof/', {
-        params: { 'user_id': this.userId }
-      });
-      console.log(response.data)
-      this.userData = response.data;
-      this.$user.data.toppage = false
-    } catch (error) {
-      console.error('Error fetching daily reward status:', error);
-    }
-  },
+      try {
+        console.log(this.userId)
+        const response = await this.$axios.get('/get_userprof/', {
+          params: { 'user_id': this.userId }
+        });
+        console.log(response.data)
+        this.userData = response.data;
+        this.$user.data.toppage = false
+      } catch (error) {
+        console.error('Error fetching daily reward status:', error);
+      }
+    },
     moveTo(url){
         this.$user.playTap()
         this.$router.push(url)
