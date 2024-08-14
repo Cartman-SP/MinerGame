@@ -55,7 +55,8 @@ class User {
       video3_lvl: 0,
       video4_lvl: 0,
       costs: {},
-      lang: ''
+      lang: '', 
+      hard_graphic: false
     });
     this.loading = reactive({ status: false });
     this.error = null;
