@@ -15,6 +15,7 @@ export default {
   props: ['isMining', 'level'],
   data() {
     return {
+      imageAssets: {},
       preloadedGifPath: '',
       preloadedStaticPath: '',
       taps: 0,
@@ -25,58 +26,10 @@ export default {
   },
   computed: {
     gifPath() {
-      switch (this.level) {
-        case 1:
-          return require(`../assets/gpu1.gif`);
-        case 2:
-          return require(`../assets/gpu1.gif`);
-        case 3:
-          return require(`../assets/gpu1.gif`);
-        case 4:
-          return require(`../assets/gpu4.gif`);
-        case 5:
-          return require(`../assets/gpu5.gif`);
-        case 6:
-          return require(`../assets/gpu6.gif`);
-        case 7:
-          return require(`../assets/gpu7.gif`);
-        case 8:
-          return require(`../assets/gpu8.gif`);
-        case 9:
-          return require(`../assets/gpu9.gif`);
-        case 10:
-          return require(`../assets/gpu10.gif`);
-        case 11:
-          return require(`../assets/gpu11.gif`);
-      }
-      return 1
+      return this.imageAssets[`gif${this.level}`];
     },
     staticPath() {
-      switch (this.level) {
-        case 1:
-          return require(`../assets/gpu1-static.png`);
-        case 2:
-          return require(`../assets/gpu1-static.png`);
-        case 3:
-          return require(`../assets/gpu1-static.png`);
-        case 4:
-          return require(`../assets/gpu4-static.png`);
-        case 5:
-          return require(`../assets/gpu5-static.png`);
-        case 6:
-          return require(`../assets/gpu6-static.png`);
-        case 7:
-          return require(`../assets/gpu7-static.png`);
-        case 8:
-          return require(`../assets/gpu8-static.png`);
-        case 9:
-          return require(`../assets/gpu9-static.png`);
-        case 10:
-          return require(`../assets/gpu10-static.png`);
-        case 11:
-          return require(`../assets/gpu11-static.png`);
-      }
-      return 1
+      return this.imageAssets[`static${this.level}`];
     }
   },
   mounted() {
@@ -102,12 +55,11 @@ export default {
   },
   methods: {
     onTouchEnd(event) {
-        this.handleTouchStart(event);
+      this.handleTouchStart(event);
     },
     handleTouchStart(event) {
       if (this.$user.data.energy > 0){
         this.createMiniCoin(event);
-        // this.$user.playTap(); // Reusing preloaded audio
         this.isBright = true;
         const message = {
           user_id: this.$user.data.user_id,
@@ -115,30 +67,37 @@ export default {
         };
         this.$user.data.energy -=1;
         this.$user.data.tapsocket.send(JSON.stringify(message));
-                setTimeout(() => {
+        setTimeout(() => {
           this.isBright = false;
         }, 100);
       }
     },
     createMiniCoin(event) {
-      const touch = event.changedTouches[0]; // Используем changedTouches для получения данных об оторванном касании
+      const touch = event.changedTouches[0];
       const newCoin = {
         id: this.coinId++,
         value: this.$user.data.gpc,
-        top: touch.clientY - 300, // Используем координаты касания
-        left: touch.clientX - 120, // Используем координаты касания
+        top: touch.clientY - 300,
+        left: touch.clientX - 120,
       };
       this.miniCoins.push(newCoin);
       setTimeout(() => {
         this.removeMiniCoin(newCoin.id);
-      }, 1000); // Время удаления монетки
+      }, 1000);
     },
     removeMiniCoin(id) {
       this.miniCoins = this.miniCoins.filter(coin => coin.id !== id);
     },
     preloadImages() {
+      const levels = [1,4, 5, 6, 7, 8, 9, 10, 11];
+      levels.forEach(level => {
+        this.imageAssets[`gif${level}`] = require(`../assets/gpu${level}.gif`);
+        this.imageAssets[`static${level}`] = require(`../assets/gpu${level}-static.png`);
+      });
+
       this.preloadedGifPath = this.gifPath;
       this.preloadedStaticPath = this.staticPath;
+
       const gifImage = new Image();
       gifImage.src = this.preloadedGifPath;
       const staticImage = new Image();
@@ -147,6 +106,7 @@ export default {
   }
 };
 </script>
+
 
 
 <style scoped>
