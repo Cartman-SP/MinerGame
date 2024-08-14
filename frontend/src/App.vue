@@ -1,5 +1,5 @@
 <template>
-  <img v-if="!loaded" src="../src/assets/load.gif" style="object-fit: cover; width: 100%;height: 100%; position:absolute; z-index: 999; left:0; top:0;" alt="">
+  <img v-if="!loaded" src="../src/assets/load.gif" style="object-fit: cover; width: 100%;height: 100%; position:absolute; z-index: 9; left:0; top:0;" alt="">
   <StatusBar/>
   <Balance/>
   <div class="loading" v-if="isLoading">
@@ -8,12 +8,20 @@
   <div style="height: 100%;">
     <router-view/>
   </div>
-  <div class="overlay" ref="overlay" @click="toggleModal(1)" v-if="showModal"></div>
+  <div class="overlay" ref="overlay" v-if="showModal"></div>
   <div class="modal" v-if="showModal" ref="modal">
-      <p  class="price">ПОКА ТЕБЯ <br> НЕ БЫЛО В ИГРЕ</p>
+    <div v-if="modalType == 'award'">
+      <p class="price">ПОКА ТЕБЯ <br> НЕ БЫЛО В ИГРЕ</p>
       <img style="margin-top: 20px; scale: .6;" src="../src/assets/logo-small-blue.png" alt="">
       <h3 class="collected">+{{ formatNumber(Math.floor(this.$user.data.mined_while_of)) }}</h3>
-      <button class="ok" @click="toggleModal">ЗАБРАТЬ</button>
+      <button class="ok" @click="toggleModal(), nav=true">ЗАБРАТЬ</button>
+    </div>
+    <div v-if="modalType == 'animations'">
+      <img style="margin-top: -160px; width: 300px;" src="../src/assets/icon-interface.png" alt="">
+      <p style="margin-top: -40px;" class="price">ПОКАЗЫВАТЬ АНИМАЦИИ ИНТЕРФЕЙСА?</p>
+      <button class="ok" @click="load()">Да, оставить</button>
+      <button class="ok" @click="load()" style="background: none; border: solid 1px rgba(0,230,255,1);">Нет, отключить</button>
+    </div>
   </div>
   
   <NavBar style="z-index: 100;" v-if="nav"/>
@@ -34,6 +42,8 @@ export default {
       loaded: false,
       showModal: false,
       nav: false,
+
+      modalType: 'animations'
     }
   },
   computed:{
@@ -45,7 +55,14 @@ export default {
     formatNumber(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
-    toggleModal(){
+    toggleModal(num){
+      if (num == 2) {
+        this.modalType = 'award'
+      }
+      if (num == 1) {
+        this.modalType = 'animations'
+      }
+
       window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
       if (this.showModal) {
           const modalwindow = this.$refs.modal;
@@ -56,7 +73,6 @@ export default {
           setTimeout(() => {
               this.showModal = false
           }, 400);
-          this.nav=true
           
 
       } else {
@@ -79,15 +95,16 @@ export default {
       }
     },
     load() {
+      this.toggleModal()
       setTimeout(() => {
         this.loaded = true;
-        this.toggleModal()
+        this.toggleModal(2)
       }, 2000); // 5 seconds delay
     }
   },
   mounted() {
     window.Telegram.WebApp.expand();
-    this.load();
+    this.toggleModal(1)
   }
 }
 </script>
@@ -118,6 +135,7 @@ export default {
   margin-top: 20px;
   width: 90%;
   height: 50px;
+  scale: 1;
 }
 .ok:hover{
   scale: .8;
@@ -130,7 +148,7 @@ export default {
     font-family: "Druk Wide";
     font-size: 12px;
     margin: 0;
-    width: 70%;
+    width: 100%;
 }
 .modal{
     background: linear-gradient(180deg, rgba(84,86,85,1) 0%, rgba(50,52,51,1) 100%);
@@ -140,9 +158,9 @@ export default {
     padding: 20px 0;
     position: absolute;
     width: 100%;
-    display: flex;
+    /* display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column; */
     height: 300px;
     bottom: -400px;
     transform: translateY(0px);
