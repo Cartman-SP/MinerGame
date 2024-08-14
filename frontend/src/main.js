@@ -71,15 +71,15 @@ class User {
         this.lvlup(4);
       } else if(newBalance > 5000000 && this.data.lvl < 5){
         this.lvlup(5);
-      } else if(newBalance > 650000 && this.data.lvl < 6){
+      } else if(newBalance > 22000000 && this.data.lvl < 6){
         this.lvlup(6);
       } else if(newBalance > 100000000 && this.data.lvl < 7){
         this.lvlup(7);
       } else if(newBalance > 510000000 && this.data.lvl < 8){
         this.lvlup(8);
-      } else if(newBalance > 1600000000 && this.data.lvl < 9){
+      } else if(newBalance > 800000000 && this.data.lvl < 9){
         this.lvlup(9);
-      } else if(newBalance > 3800000000 && this.data.lvl < 10){
+      } else if(newBalance > 1800000000 && this.data.lvl < 10){
         this.lvlup(10);
       }
     });
