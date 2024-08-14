@@ -53,7 +53,7 @@
     <div class="other">
       <p class="naming" style="margin-top: 30px;" v-if="language == 'ru'">ЗАДАНИЯ</p>
       <p class="naming" style="margin-top: 30px;" v-else>TASKS</p>
-        <div class="other-tasks" ref="block_third">
+        <div class="other-tasks" ref="block_fourth">
           <div v-for="i in tasks" :key="i">
 
 
@@ -401,6 +401,7 @@ export default {
     this.$refs.block_first,
     this.$refs.block_second,
     this.$refs.block_third,
+    this.$refs.block_fourth,
     ];
 
     const interval = setInterval(() => {
