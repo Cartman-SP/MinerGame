@@ -107,7 +107,7 @@ export default {
     handleTouchStart(event) {
       if (this.$user.data.energy > 0){
         this.createMiniCoin(event);
-        this.$user.playTap(); // Reusing preloaded audio
+        // this.$user.playTap(); // Reusing preloaded audio
         this.isBright = true;
         const message = {
           user_id: this.$user.data.user_id,
