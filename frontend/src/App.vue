@@ -18,10 +18,13 @@
     </div>
     <div v-if="modalType == 'animations'">
       <img style="margin-top: -90px; width: 140px;" src="../src/assets/icon-interface.png" alt="">
-      <p style="margin-top: 20px;" class="price">ПОКАЗЫВАТЬ АНИМАЦИИ ИНТЕРФЕЙСА?</p>
-      <button class="ok" @click="this.$user.data.hard_graphic = true, load(1)">Да, оставить</button>
-      <button class="ok" @click="this.$user.data.hard_graphic = false, load(0)">Нет, отключить</button>
-      <!--  style="background: none; border: solid 1px rgba(0,230,255,1);" -->
+      <p style="margin-top: 20px;" v-if="language == 'ru'" class="price">ПОКАЗЫВАТЬ АНИМАЦИИ ИНТЕРФЕЙСА?</p>
+      <p style="margin-top: 20px;" v-else class="price">SHOW INTERFACE ANIMATIONS?</p>
+      <button class="ok" v-if="language == 'ru'" @click="this.$user.data.hard_graphic = true, load(1)">Да, оставить</button>
+      <button class="ok" v-else @click="this.$user.data.hard_graphic = true, load(1)">Yes, turn on</button>
+      <button class="ok" v-if="language == 'ru'" @click="this.$user.data.hard_graphic = false, load(0)" style="background: none; border: solid 1px rgba(0,230,255,1);">Нет, отключить</button>
+      <button class="ok" v-else @click="this.$user.data.hard_graphic = false, load(0)" style="background: none; border: solid 1px rgba(0,230,255,1);">No, turn off</button>
+      <!--   -->
     </div>
   </div>
   
@@ -53,6 +56,9 @@ export default {
     },
     hardGraphic(){
       return this.$user.data.hard_graphic
+    },
+    language(){
+        return this.$user.data.lang;
     },
   },
   methods: {
@@ -100,6 +106,7 @@ export default {
     },
 
     load(condition) {
+      
       if (!condition) {
         const style = document.createElement('style');
         style.innerHTML = `
@@ -109,7 +116,10 @@ export default {
         `;
         document.head.appendChild(style);
         this.transitionStyleElement = style;
+        this.$user.data.sound = false
+        this.$user.data.vibrate = false
       }
+      this.$user.playTap();
 
       this.toggleModal()
       setTimeout(() => {

@@ -12,8 +12,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-calendar-task.png" alt="">
                 </div>
-                <p class="name" style="font-size: 10px;" v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
-                <p class="name" style="font-size: 10px;" v-else>DAILY REWARD</p>
+                <p class="name" style="font-size: 11px;" v-if="language == 'ru'">ЕЖЕДНЕВНАЯ НАГРАДА</p>
+                <p class="name" style="font-size: 11px;" v-else>DAILY REWARD</p>
                 <div class="logo-background" v-if="claimed">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -25,8 +25,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-addfriend-task.png" alt="">
                 </div>
-                <p class="name" v-if="language == 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 12 000</p>
-                <p class="name" v-else>INVITE 3 FRIENDS <br>+ 12 000</p>
+                <p class="name" v-if="language == 'ru'">ПРИГЛАСИТЬ 3 ДРУЗЕЙ <br>+ 75 000</p>
+                <p class="name" v-else>INVITE 3 FRIENDS <br>+ 75 000</p>
                 <div class="logo-background" style="background: #a0a0a0;" v-if="friends_invited<3">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -38,8 +38,8 @@
                 <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
                     <img class="task-icon" src="../assets/icon-telegram-task.png" alt="">
                 </div>
-                <p class="name" v-if="language == 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 4 000</p>
-                <p class="name" v-else>SUBSCRIBE TO THE CHANNEL<br>+ 4 000</p>
+                <p class="name" v-if="language == 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ 25 000</p>
+                <p class="name" v-else>SUBSCRIBE TO THE CHANNEL<br>+ 25 000</p>
                 <div class="logo-background" v-if="subscribed">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -583,13 +583,13 @@ export default {
 .name{
     color: white;
     font-family: "Druk Wide";
-    font-size: 8px;
+    font-size: 11px;
     margin: 0;
 }
 .other-name{
     color: white;
     font-family: "Druk Wide";
-    font-size: 6px;
+    font-size: 10px;
     margin: 0;
     width: 100%;
 }

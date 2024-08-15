@@ -1,5 +1,5 @@
 <template>
-  <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchend="onTouchEnd">
+  <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchend="onTouchEnd" :style="{ animation: hardGraphic ? '' : '0s !important' }">
     <div class="spinners-block" ref="clicker">
       <img v-if="isMining&&hardGraphic" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
       <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
@@ -87,7 +87,7 @@ export default {
         id: this.coinId++,
         value: this.$user.data.gpc,
         top: touch.clientY - 300,
-        left: touch.clientX - 120,
+        left: touch.clientX - 50,
       };
       this.miniCoins.push(newCoin);
       setTimeout(() => {
@@ -123,7 +123,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 95vw;
   position: relative;
   scale: 0;
 }

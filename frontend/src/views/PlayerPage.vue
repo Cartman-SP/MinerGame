@@ -4,12 +4,15 @@
         <h1 class="title">PROFILE</h1>
     </div> -->
     <div class="profile">
-      <div @click="tochat">
+      <div>
         <img v-if="userData.photo_url" class="avatar" :src="userData.photo_url" alt="Avatar" @error="setDefaultImage($event)">
         <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar" >
       </div>          
         <p class="profile-name">{{userData.username||'MINER'}}</p>
+        <button v-if="language == 'ru'" @click="tochat" class="toChat">Написать в Talagram</button>
+        <button v-else @click="tochat" class="toChat">Chat in Talagram</button>
     </div>
+    
     <div class="information">
       <div class="container" ref="block_first">
         <p class="name" v-if="language == 'ru'">БАЛАНС</p>
@@ -127,6 +130,18 @@ export default {
 </script>
 
 <style scoped>
+.toChat{
+  width: fit-content;
+  height: 30px;
+  cursor: pointer;
+  background: linear-gradient(0deg, rgba(0,192,255,1) 0%, rgba(0,230,255,1) 100%);
+  filter: drop-shadow(0 1px 3px rgb(23, 23, 23));
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-family: "Druk Wide";
+  font-size: 10px;
+}
 .help{
   width: 70%;
   height: 30px;
@@ -172,6 +187,7 @@ export default {
   height: 70vh;
 }
 .avatar{
+  object-fit: cover;
   width: 70px;
   height: 70px;
   border-radius: 50%;

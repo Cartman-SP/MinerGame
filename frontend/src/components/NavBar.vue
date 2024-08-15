@@ -1,13 +1,13 @@
 <template>
   <div class="nav">
-    <div class="button" @click="moveto('/wallet')" ref="block_first">
+    <div class="button" @click="$route.path === '/wallet' ? '' : moveto('/wallet')" ref="block_first" :style="{background: $route.path === '/wallet' ? 'linear-gradient(0deg, rgb(37, 35, 34) 0%, rgb(88, 88, 90) 100%)' : ''}">
         <div class="icon-nav">
             <img src="../assets/icon-wallet.png" alt="">
         </div>
         <p class="title" v-if="language == 'ru'">КОШЕЛЕК</p>
         <p class="title" v-else>WALLET</p>
     </div>
-    <div class="button" @click="moveto('/top')" ref="block_second">
+    <div class="button" @click="$route.path === '/top' ? '' : moveto('/top')" ref="block_second" :style="{background: $route.path === '/top' ? 'linear-gradient(0deg, rgb(37, 35, 34) 0%, rgb(88, 88, 90) 100%)' : ''}">
         <div class="icon-nav">
             <img src="../assets/icon-top.png" alt="">
         </div>
@@ -20,14 +20,14 @@
         </div>
        
     </div>
-    <div class="button" @click="moveto('/friends')" ref="block_third">
+    <div class="button" @click="$route.path === '/friends' ? '' : moveto('/friends')" ref="block_third" :style="{background: $route.path === '/friends' ? 'linear-gradient(0deg, rgb(37, 35, 34) 0%, rgb(88, 88, 90) 100%)' : ''}">
         <div class="icon-nav">
-            <img  style=" width: 8vw; height: 7vw;" src="../assets/icon-friend.png" alt="">
+            <img  style=" width: 7vw; height: 6vw;" src="../assets/icon-friend.png" alt="">
         </div>
         <p class="title" v-if="language == 'ru'">ДРУЗЬЯ</p>
         <p class="title" v-else>FRIENDS</p>
     </div>
-    <div class="button"  @click="moveto('/task')" ref="block_fourth">
+    <div class="button"  @click="$route.path === '/task' ? '' : moveto('/task')" ref="block_fourth" :style="{background: $route.path === '/task' ? 'linear-gradient(0deg, rgb(37, 35, 34) 0%, rgb(88, 88, 90) 100%)' : ''}">
         <div class="icon-nav">
             <img src="../assets/icon-task.png" alt="">
         </div>
@@ -128,9 +128,10 @@ export default {
     height: 10vh;
     transform: translateY(100px);
 }
+
 .nav-button-show{
     transform: translateY(0px);
-    transition: transform .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
+    transition: transform .2s ease;
 }
 .fan-btn{
     background: var(--color-gradient);
@@ -178,7 +179,7 @@ export default {
     align-items: center;
 }
 .button img {
-    width: 7vw;
+    width: 6vw;
     aspect-ratio: 1;
 }
 
@@ -187,6 +188,6 @@ export default {
     font-family: "Druk Wide";
     font-size: 8px;
     margin: 0;
-    margin-top: 5px;
+    margin-top: -5px;
 }
 </style>

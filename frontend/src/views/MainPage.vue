@@ -327,10 +327,12 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  margin: 0 10vw;
   margin-bottom: 5vh;
   background-color: #171717;
   border-radius: 20px;
   border: 1px solid #00E6FF;
+  
 }
 
 

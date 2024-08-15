@@ -183,6 +183,7 @@
     height: 40px;
     border-radius: 50%;
     border: 2px solid #00E6FF;
+    object-fit: cover;
   }
 
   .profile{

@@ -184,6 +184,7 @@ export default {
   height: 70vh;
 }
 .avatar{
+  object-fit: cover;
   width: 70px;
   height: 70px;
   border-radius: 50%;
