@@ -2,7 +2,7 @@
   <div :class="['spinner', `level-${level}`, { bright: isBright }]" @touchend="onTouchEnd" :style="{ animation: hardGraphic ? '' : '0s !important' }">
     <div class="spinners-block" ref="clicker">
       <img v-if="isMining&&hardGraphic" class="spinner-img" :src="preloadedGifPath" alt="Spinner GIF" style="user-select: none;">
-      <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner GIF" style="user-select: none;">
+      <img v-else class="spinner-img" :src="preloadedStaticPath" alt="Spinner AVIF" style="user-select: none;">
       <div v-for="coin in miniCoins" :key="coin.id" :style="{ top: coin.top + 'px', left: coin.left + 'px' }" class="mini-coin">
         <span class="coin-value">+{{ coin.value }}</span>
       </div>
