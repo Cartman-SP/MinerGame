@@ -262,14 +262,15 @@ export default {
 }
 
 * {
-  -webkit-tap-highlight-color: transparent; /* отключает подсветку при клике */
-  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  /* -webkit-appearance: none; */
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
 }
+
 img{
   pointer-events: none;
 }
