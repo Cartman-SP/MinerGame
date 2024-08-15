@@ -263,7 +263,7 @@ export default {
 
 * {
   -webkit-tap-highlight-color: transparent;
-  /* -webkit-appearance: none; */
+  -webkit-appearance: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
