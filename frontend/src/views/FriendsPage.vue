@@ -18,7 +18,7 @@
         <p v-if="language == 'ru'" class="subtitle">БЕЗ PREMIUM</p>
         <p v-else class="subtitle">NO PREMIUM</p>
         <div class="money">
-          <p class="money-amount">+ 1 500</p>
+          <p class="money-amount">+ 10 000</p>
           <img src="../assets/logo-small-blue.png" alt="">
         </div>
       </div>
@@ -26,7 +26,7 @@
         <p v-if="language == 'ru'" class="subtitle">С PREMIUM</p>
         <p v-else class="subtitle">WITH PREMIUM</p>
         <div class="money">
-          <p class="money-amount">+ 4 000</p>
+          <p class="money-amount">+ 25 000</p>
           <img src="../assets/logo-small-blue.png" alt="">
         </div>
       </div>

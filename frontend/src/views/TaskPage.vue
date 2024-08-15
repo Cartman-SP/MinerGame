@@ -108,77 +108,77 @@
           <div class="day">
             <p class="day-num" >1 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">500</p>
+            <p class="amount">5 000</p>
           </div>
           <div class="day" v-if="days>0">
             <p class="day-num">2 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">1000</p>
+            <p class="amount">10 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">2 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">1000</p>
+            <p class="amount">10 000</p>
           </div>
           <div class="day" v-if="days>1">
             <p class="day-num">3 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">3000</p>
+            <p class="amount">30 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">3 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">3000</p>
+            <p class="amount">30 000</p>
           </div>
           <div class="day" v-if="days>3">
             <p class="day-num">4 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">5000</p>
+            <p class="amount">50 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">4 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">5000</p>
+            <p class="amount">50 000</p>
           </div>
           <div class="day" v-if="days>4">
             <p class="day-num">5 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">10 000</p>
+            <p class="amount">100 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">5 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">10 000</p>
+            <p class="amount">100 000</p>
           </div>
           <div class="day" v-if="days>5">
             <p class="day-num">6 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">20 000</p>
+            <p class="amount">200 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">6 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">20 000</p>
+            <p class="amount">200 000</p>
           </div>
           <div class="day" v-if="days>6">
             <p class="day-num">7 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">40 000</p>
+            <p class="amount">400 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">7 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">40 000</p>
+            <p class="amount">400 000</p>
           </div>
           <div class="day" v-if="days>7">
             <p class="day-num">8 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">100 000</p>
+            <p class="amount">1 000 000</p>
           </div>
           <div class="day" style="opacity: .4;" v-else>
             <p class="day-num">8 DAY</p>
             <img class="logoSmall" src="../assets/logo-small-blue.png" alt="">
-            <p class="amount">100 000</p>
+            <p class="amount">1 000 000</p>
           </div>
         </div>
         <div v-if="language == 'ru'">
