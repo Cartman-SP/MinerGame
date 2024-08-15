@@ -776,6 +776,7 @@ hr{
     scale: 1 !important;
     opacity: 1 !important;
     transition: all .5s cubic-bezier(0.560, 1.555, 0.305, 0.940);
+    
 }
 .blocks{
     display: grid;
@@ -794,6 +795,9 @@ hr{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-top: solid 2px #00C5FF;
+    border-bottom: solid 2px #00C5FF;
+    border-radius: 10px;
 }
 
 .cost {
@@ -810,6 +814,7 @@ hr{
 .photo img{
     width: 120px;
     margin: 5px;
+    filter: drop-shadow(0 0px 15px #000000);
 }
 .logo-background{
   width: 30px;
