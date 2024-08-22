@@ -200,81 +200,93 @@ class User {
     }
   }
   
-  async login() {
-    const tg = window.Telegram.WebApp;
+async login() {
+  const tg = window.Telegram.WebApp;
 
-    if (tg) {
-      tg.ready();
-      const tginfo = tg.initDataUnsafe.user || {
-        "id": 7139071601,
-        "first_name": "CHXRNVKHA",
-        "last_name": "",
-        "username": "F1owerGG",
-        "language_code": "en",
-        "is_premium": true,
-        "allows_write_to_pm": true,
-        "photo_url": "default-avatar-url" // Добавляем аватарку по умолчанию
-      };
+  if (tg) {
+    tg.ready();
+    const tginfo = tg.initDataUnsafe.user || {
+      "id": 7139071601,
+      "first_name": "CHXRNVKHA",
+      "last_name": "",
+      "username": "F1owerGG",
+      "language_code": "en",
+      "is_premium": true,
+      "allows_write_to_pm": true,
+      "photo_url": "default-avatar-url" // Добавляем аватарку по умолчанию
+    };
 
-      const start = tg.initDataUnsafe.start_param ? tg.initDataUnsafe.start_param : 0;
-      tginfo.start = start;
-      let data = tginfo;
+    const start = tg.initDataUnsafe.start_param ? tg.initDataUnsafe.start_param : 0;
+    tginfo.start = start;
+    let data = tginfo;
 
-      
-      try {
-        const response = await app.config.globalProperties.$axios.get('/get_user/', { params: data });
-        // tginfo.language_code
-        this.data.lang = tginfo.language_code;
-        this.data.user_id = response.data.user.user_id;
-        this.data.username = response.data.user.username;
-        this.data.usertag = response.data.user.usertag;
-        this.data.balance = response.data.user.balance;
-        this.data.lvl = response.data.user.lvl;
-        this.data.energy = response.data.user.energy;
-        this.data.gph = response.data.user.gph;
-        this.data.gpc = response.data.user.gpc;
-        this.data.mining_end = response.data.user.mining_end;
-        this.data.enery_lvl = response.data.user.enery_lvl;
-        this.data.tap_lvl = response.data.user.tap_lvl;
-        this.data.refresh_energy = response.data.user.refresh_energy;
-        this.data.max_energy = response.data.user.max_energy;
-        this.data.modifier = response.data.user.modifier;
-        this.data.subscribed = response.data.user.subscribed;
-        this.data.subscribed_money_gived = response.data.user.subscribed_money_gived;
-        this.data.avatar = response.data.user.avatar || this.data.avatar; // Устанавливаем аватарку из ответа сервера
-        this.data.avatar = response.data.user.photo_url || 'default-avatar-url';
-        this.data.friends_invited = response.data.user.friends_invited
-        this.data.daily_reward_claimed = response.data.user.daily_reward_claimed
-        this.data.daily_reward_day = response.data.user.daily_reward_day
-        this.data.daily_reward_date = response.data.user.daily_reward_date
-        this.data.secs_in_game = response.data.user.secs_in_game
-        this.data.video_lvl = response.data.user.video_lvl
-        this.data.mined_while_of = response.data.mined_while_of
-        this.data.mining_time_lvl = response.data.user.mining_time_lvl
-        this.data.toppage = false
-        this.data.sound = response.data.user.sound
-        this.data.vibrate = response.data.user.vibrate
-        this.data.buyaudio.volume = .5
-        this.data.tapaudio.volume = 1
-        this.data.erroraudio.volume = .5 
-        this.data.video2_lvl = response.data.user.video2_lvl
-        this.data.video3_lvl = response.data.user.video3_lvl
-        this.data.video4_lvl = response.data.user.video4_lvl
-        this.data.costs = response.data.costs
-        this.initTapSocket();
-        this.initEnergySocket();
-        this.initMiningSocket();
-        if (this.data.wallet_address) {
-          this.tonConnect.restoreConnection(this.data.wallet_address);
-        }
-      } catch (error) {
-        this.error = error;
+    // Функция тайм-аута для ограничения времени выполнения одной итерации
+    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error('Iteration timed out')), ms));
+
+    try {
+      const response = await Promise.race([
+        app.config.globalProperties.$axios.get('/get_user/', { params: data }),
+        timeout(7000) // Лимит времени на выполнение одной итерации: 7 секунд
+      ]);
+
+      // Обработка данных пользователя
+      const userData = response.data.user;
+      this.data.lang = tginfo.language_code;
+      this.data.user_id = userData.user_id;
+      this.data.username = userData.username;
+      this.data.usertag = userData.usertag;
+      this.data.balance = userData.balance;
+      this.data.lvl = userData.lvl;
+      this.data.energy = userData.energy;
+      this.data.gph = userData.gph;
+      this.data.gpc = userData.gpc;
+      this.data.mining_end = userData.mining_end;
+      this.data.enery_lvl = userData.enery_lvl;
+      this.data.tap_lvl = userData.tap_lvl;
+      this.data.refresh_energy = userData.refresh_energy;
+      this.data.max_energy = userData.max_energy;
+      this.data.modifier = userData.modifier;
+      this.data.subscribed = userData.subscribed;
+      this.data.subscribed_money_gived = userData.subscribed_money_gived;
+      this.data.avatar = userData.avatar || this.data.avatar;
+      this.data.avatar = userData.photo_url || 'default-avatar-url';
+      this.data.friends_invited = userData.friends_invited;
+      this.data.daily_reward_claimed = userData.daily_reward_claimed;
+      this.data.daily_reward_day = userData.daily_reward_day;
+      this.data.daily_reward_date = userData.daily_reward_date;
+      this.data.secs_in_game = userData.secs_in_game;
+      this.data.video_lvl = userData.video_lvl;
+      this.data.mined_while_of = response.data.mined_while_of;
+      this.data.mining_time_lvl = userData.mining_time_lvl;
+      this.data.toppage = false;
+      this.data.sound = userData.sound;
+      this.data.vibrate = userData.vibrate;
+      this.data.buyaudio.volume = 0.5;
+      this.data.tapaudio.volume = 1;
+      this.data.erroraudio.volume = 0.5;
+      this.data.video2_lvl = userData.video2_lvl;
+      this.data.video3_lvl = userData.video3_lvl;
+      this.data.video4_lvl = userData.video4_lvl;
+      this.data.costs = response.data.costs;
+      if (this.data.wallet_address) {
+        this.tonConnect.restoreConnection(this.data.wallet_address);
       }
-    } else {
-      console.error('Telegram WebApp is not available');
-      this.loading.status = false;
+
+    } catch (error) {
+      console.error('Error occurred:', error);
+      window.location.reload(); // Перезагрузка страницы при ошибке или тайм-ауте
     }
+  } else {
+    console.error('Telegram WebApp is not available');
+    this.loading.status = false;
   }
+  this.initTapSocket();
+  this.initEnergySocket();
+  this.initMiningSocket();
+}
+
+  
+  
 }
 
 
@@ -286,5 +298,7 @@ app.config.globalProperties.$user = user;
 app.use(router);
 
 user.login().then(() => {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
   app.mount('#app');
-});
+})

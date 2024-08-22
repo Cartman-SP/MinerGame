@@ -9,6 +9,15 @@ import requests
 import re
 
 
+@api_view(['GET'])
+def get_post(request):
+    post_id = request.query_params.get('post_id')
+    post = Post.objects.get(id=post_id)
+    serializer = PostSerializer(post)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 BOT_TOKEN = '7079394719:AAHWyslDgeCfWSYnrJ9VvCZDOP5jt9qAeJM'
 
 @api_view(['GET'])

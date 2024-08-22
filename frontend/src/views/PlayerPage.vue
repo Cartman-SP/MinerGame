@@ -9,8 +9,8 @@
         <img v-else class="avatar" src="../assets/noPhoto.png" alt="Avatar" >
       </div>          
         <p class="profile-name">{{userData.username||'MINER'}}</p>
-        <button v-if="language == 'ru'" @click="tochat" class="toChat">Написать в Talagram</button>
-        <button v-else @click="tochat" class="toChat">Chat in Talagram</button>
+        <button v-if="language == 'ru'" @click="tochat" class="toChat">Написать в Telegram</button>
+        <button v-else @click="tochat" class="toChat">Chat in Telegram</button>
     </div>
     
     <div class="information">

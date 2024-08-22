@@ -50,8 +50,8 @@
             <div class="divider"></div>
           </div>
           <div class="amount">
-            <p class="amount_text" v-if="i.ispremium"> {{formatNumber(Math.floor(i.balance * 0.01))}} </p>
-            <p class="amount_text" v-else> {{formatNumber(Math.floor(i.balance * 0.005))}} </p>
+            <p class="amount_text" v-if="i.ispremium"> {{formatNumber(Math.floor(25000 + i.balance * 0.01))}} </p>
+            <p class="amount_text" v-else> {{formatNumber(Math.floor(10000 + i.balance * 0.005))}} </p>
             <div class="number">
               <p class="number_text" v-if="i.ispremium">
                 1

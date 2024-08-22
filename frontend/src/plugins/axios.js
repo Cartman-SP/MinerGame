@@ -1,3 +1,6 @@
+"use strict";
+
+import Vue from 'vue';
 import axios from "axios";
 import Cookies from 'js-cookie'; // Подключаем библиотеку для работы с куками
 
