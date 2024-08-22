@@ -34,11 +34,17 @@
 
     <div class="table-container" ref="block_fifth">
       <div class="description" v-if="language == 'ru'">
-        <p>ДРУЗЬЯ</p>
+        <div class="friend">
+          <p>{{count}}</p>
+          <p>ДРУЗЬЯ</p>
+        </div>
         <p>ДОХОД ОТ <br>РЕФЕРАЛОВ</p>
       </div>
       <div class="description" v-else>
-        <p>FRIENDS</p>
+        <div class="friend"> 
+          <p>{{count}}</p>
+          <p>FRIENDS</p>
+        </div>
         <p>PROFIT FROM <br>REFERRALS</p>
       </div>
       <div class="bottom" v-if="friends.length>0">
@@ -241,6 +247,10 @@ export default {
   color: #FFFFFF;
   font-family: "Druk Wide";
   font-size: 3vw;
+}
+.friend{
+  display: flex;
+  flex-direction: column;
 }
 .number{
   background: #00E6FF;
