@@ -664,3 +664,40 @@ def turnvibrate(request):
     user.vibrate = not(user.vibrate)
     user.save()
     return Response({'status':'ok'}, status=status.HTTP_200_OK)
+@api_view(['POST'])
+def bonus(request):
+    task_id = request.data.get('task_id')
+    user_id = request.data.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    task = Task.objects.get(id=task_id)
+    try:
+        usertask = UserTask.objects.get(user=user,task=task)
+        if (not(usertask.complete)):
+            usertask.complete = True
+            user.balance+=task.reward
+    except Exception as e:
+        usertask = UserTask.objects.create(user=user,task=task)
+        if (not(usertask.complete)):
+            usertask.complete = True
+            user.balance+=task.reward
+    usertask.save()
+    user.save()
+    return Response({'balance':user.balance}, status=status.HTTP_200_OK)
+
+
+
+@api_view(['POST'])
+def claim_reward(request):
+    user_id = request.data.get('user_id')
+    user = TelegramUser.objects.get(user_id=user_id)
+    gifts = [5000,10000,30000,50000,100000,200000,400000,1000000]
+    if(not(user.daily_reward_claimed)):
+        user.balance += gifts[user.daily_reward_day]
+        user.daily_reward_claimed = True
+        user.daily_reward_date = timezone.now().date()
+        user.daily_reward_day+=1
+        if(user.daily_reward_claimed==8):
+            user.daily_reward_claimed=1
+    user.save()
+    return Response({"balance": user.balance, "daily_reward_claimed": user.daily_reward_claimed,"daily_reward_day": user.daily_reward_day,}, status=status.HTTP_200_OK)
+

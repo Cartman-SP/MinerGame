@@ -40,7 +40,16 @@
                     </div>
                 </div>
             </div>
-            <div class="block" @click="give_energy" ref="block_third">
+            <div class="block" @click="give_energy" ref="block_third" v-if="refresh_energy>0">
+                <img class="icon" src="../assets/icon-energy-boost.png" alt="">
+                <div class="statement">
+                    <p class="price-locked">FULL ENERGY<br> </p>
+                    <div class="logo-background">
+                        <span style="font-size: 18px;">{{ refresh_energy }}/5</span>
+                    </div>
+                </div>
+            </div> 
+            <div class="block" ref="block_third" v-else>
                 <img class="icon" src="../assets/icon-energy-boost.png" alt="">
                 <div class="statement">
                     <p class="price-locked">FULL ENERGY<br> </p>

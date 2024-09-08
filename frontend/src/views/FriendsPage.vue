@@ -100,6 +100,9 @@ export default {
         language(){
           return this.$user.data.lang;
         },
+        count(){
+          return this.$user.data.friends_invited;
+        }
     },
   methods:{
     setDefaultImage(event) {

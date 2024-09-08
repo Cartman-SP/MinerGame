@@ -47,6 +47,19 @@
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
             </div>
+            <div class="task" @click="redirectToTelegram3" ref="block_fifth">  
+              <div style="background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(57,54,52,1) 100%);" class="logo-background">
+                  <img class="task-icon" src="../assets/icon-joinchat-task.png" alt="">
+              </div>
+              <p class="name" v-if="language == 'ru'">ВСТУПИТЬ В ЧАТ <br>+ 30 000</p>
+              <p class="name" v-else>JOIN CHAT <br>+ 30 000</p>
+              <div class="logo-background" style="background: #a0a0a0;" v-if="joined">
+                  <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+              </div>
+              <div class="logo-background" v-else>
+                  <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+              </div>
+          </div>
         </div>
         
     </div>
@@ -56,10 +69,21 @@
         <div class="other-tasks" ref="block_fourth">
           <div v-for="i in tasks" :key="i">
 
+            <div class="other-task" @click="get_bonus(i.id)" v-if="i.typeT=='bonus'">
+              <p class="other-name" v-if="language == 'ru'">{{i.name}} <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-else>{{i.en_name}} <br>+ {{formatNumber(i.reward)}}</p>
+                <div class="other-logo-background" v-if="i.complete">
+                    <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+                </div>
+                <div class="other-logo-background" style="background: #a0a0a0;" v-else>
+                  <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
+              </div>
+            </div>
+
 
             <div class="other-task" @click="visit_site(i.id,i.site_link)" v-if="i.typeT=='visit'">
-              <p class="other-name" v-if="language == 'ru'">ПЕРЕЙТИ ПО ССЫЛКЕ <br>+ {{formatNumber(i.reward)}}</p>
-              <p class="other-name" v-else>FOLLOW THE LINK <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-if="language == 'ru'">{{i.name}} <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-else>{{i.en_name}} <br>+ {{formatNumber(i.reward)}}</p>
                 <div class="other-logo-background" v-if="i.complete">
                     <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
                 </div>
@@ -68,8 +92,8 @@
               </div>
             </div>
             <div class="other-task" @click="shareLink" v-if="i.typeT=='invite'">
-              <p class="other-name" v-if="language == 'ru'">ПРИГЛАСИТЬ {{ i.friends_toAdd }} ДРУЗЕЙ<br>+ {{formatNumber(i.reward)}}</p>
-              <p class="other-name" v-else>INVITE {{ i.friends_toAdd }} FRIENDS<br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-if="language == 'ru'">{{i.name}} <br>+ {{formatNumber(i.reward)}}</p>
+              <p class="other-name" v-else>{{i.en_name}} <br>+ {{formatNumber(i.reward)}}</p>
               <div class="other-logo-background" v-if="i.complete">
                   <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
               </div>
@@ -78,9 +102,9 @@
             </div>
           </div>
           <div class="other-task" @click="redirectToTelegram2(i.channel_id)" v-if="i.typeT=='join'">
-            <p class="other-name" v-if="language == 'ru'">ПОДПИСАТЬСЯ НА КАНАЛ<br>+ {{formatNumber(i.reward)}}</p>
-            <p class="other-name" v-else>SUBSCRIBE<br>+ {{formatNumber(i.reward)}}</p>
-            <div class="other-logo-background" v-if="i.complete">
+            <p class="other-name" v-if="language == 'ru'">{{i.name}} <br>+ {{formatNumber(i.reward)}}</p>
+            <p class="other-name" v-else>{{i.en_name}} <br>+ {{formatNumber(i.reward)}}</p>
+          <div class="other-logo-background" v-if="i.complete">
                 <img class="task-icon" src="../assets/icon-complete-task.png" alt="">
             </div>
             <div class="other-logo-background" style="background: #a0a0a0;" v-else>
@@ -220,6 +244,9 @@ export default {
     };
   },
   computed: {
+    joined(){
+      return this.$user.data.joined
+    },
     days() {
       return this.$user.data.daily_reward_day;
     },
@@ -240,6 +267,23 @@ export default {
     },
   },
   methods: {
+    async get_bonus(task_id){
+      this.$user.playTap()
+      try {
+        const response = await this.$axios.post('/sitevisited/', {
+          user_id: this.$user.data.user_id,
+          task_id: task_id
+        }, { withCredentials: true });
+        this.$user.data.balance = response.data.balance;
+        const task = this.tasks.find(task => task.id === task_id);
+        if (task) {
+          task.complete = true;
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+
     async fetchDailyRewardStatus() {
       try {
         const response = await this.$axios.get('/check_daily_reward_status/', {
@@ -344,6 +388,21 @@ export default {
       window.location.href = 'https://t.me/ylionminer';
       this.check_subscribe();
     },
+    async check_join(){
+      try {
+        const response = await this.$axios.get('/check_join/', { params: { user_id: this.$user.data.user_id } });
+        this.$user.data.balance = response.data.balance;
+        this.$user.data.joined = response.data.joined;
+        this.$user.data.joined_money_gived = response.data.joined_money_gived;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    redirectToTelegram3(){
+      this.$user.playTap()
+      window.location.href = 'https://t.me/ylionminerchat';
+      this.check_join();
+    },
     redirectToTelegram2(tag) {
       this.$user.playTap()
       const url = tag.slice(1);
@@ -386,6 +445,7 @@ export default {
     },
   },
   mounted() {
+    this.check_join()
     this.check_subscribe();
     this.gettasks();
     this.startCountdown();
@@ -396,6 +456,7 @@ export default {
     this.$refs.block_first,
     this.$refs.block_second,
     this.$refs.block_third,
+    this.$refs.block_fifth,
     this.$refs.block_fourth,
     ];
 

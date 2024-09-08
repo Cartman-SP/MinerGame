@@ -148,14 +148,6 @@ export default {
       }, 1000);  // Send a message every second (1000 milliseconds).
     },
 
-    startEnergyUpdate() {
-      setInterval(() => {
-          const message = {
-            user_id: this.$user.data.user_id,
-          };
-          this.$user.data.energysocket.send(JSON.stringify(message));
-      }, 6000); // каждые 6 секунд
-    }, 
 
     staticPath(lvl) {
       switch (lvl) {
@@ -241,14 +233,17 @@ export default {
     },
   },
   mounted() {
-    this.$user.data.toppage = false
+    this.$user.data.toppage = false;
     this.calculateRemainingTime();
     this.timer = setInterval(() => {
         this.updateRemainingTime();
     }, 1000);
 
     this.startMiningTimer();
-    this.startEnergyUpdate();
+    
+    setTimeout(() => {
+        this.startEnergyUpdate();
+    }, 3000); // Задержка в 3 секунды
 
     this.$watch(() => this.$user.data.mining_end, (newVal) => {
       if (newVal) {
@@ -256,8 +251,9 @@ export default {
       }
     });
 
-    this.selected_gpu = 1
-  },
+    this.selected_gpu = 1;
+},
+
   beforeUnmount() {
     const message = {
         user_id: this.$user.data.user_id,

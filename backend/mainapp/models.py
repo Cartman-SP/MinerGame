@@ -39,11 +39,15 @@ class TelegramUser(models.Model):
     video4_lvl = models.IntegerField(default=0)
     vibrate = models.BooleanField(default=True)
     wallet_address = models.CharField(max_length=254, blank=True, null=True)
+    joined = models.BooleanField(default=False)
+    joined_money_gived = models.BooleanField(default=False)
+
     def update_mining_end(self):
         self.mining_end = timezone.now() + self.mining_duration
         self.save()
     def __str__(self):
         return self.usertag
+    
 class Referal(models.Model):
     inviter = models.ForeignKey(TelegramUser, related_name='invitations', on_delete=models.CASCADE)
     user = models.ForeignKey(TelegramUser, related_name='referrals', on_delete=models.CASCADE)
@@ -72,6 +76,8 @@ class Task(models.Model):
     channel_id = models.CharField(max_length=254)
     site_link = models.CharField(max_length=254)
     friends_toAdd = models.IntegerField()
+    name = models.CharField(max_length=254)
+    en_name = models.CharField(max_length=254)
 
 class UserTask(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)

@@ -268,6 +268,7 @@ async login() {
       this.data.video3_lvl = userData.video3_lvl;
       this.data.video4_lvl = userData.video4_lvl;
       this.data.costs = response.data.costs;
+      this.data.joined = response.data.joined
       if (this.data.wallet_address) {
         this.tonConnect.restoreConnection(this.data.wallet_address);
       }

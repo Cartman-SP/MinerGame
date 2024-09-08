@@ -9,7 +9,7 @@ from django.urls import re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('mainapp.urls')),
-    re_path(r'^(?!admin|api/).*$', mainview),  # Обрабатывает все остальные пути
+    #re_path(r'^(?!admin|api/).*$', mainview),  # Обрабатывает все остальные пути
 ]
 
 

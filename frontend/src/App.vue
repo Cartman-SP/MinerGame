@@ -62,6 +62,16 @@ export default {
     },
   },
   methods: {
+    startEnergyUpdate() {
+      setInterval(() => {
+          const message = {
+            user_id: this.$user.data.user_id,
+          };
+          console.log('updated')
+          this.$user.data.energysocket.send(JSON.stringify(message));
+      }, 6000); // каждые 6 секунд
+    },
+
     formatNumber(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     },
@@ -132,6 +142,7 @@ export default {
   mounted() {
     window.Telegram.WebApp.expand();
     this.toggleModal(1)
+    this.startEnergyUpdate()
   },
   watch: {
     // Наблюдение за изменением this.$user.data.hard_graphic
